@@ -1,0 +1,20 @@
+{
+    "settings.content": "Contenu",
+    "settings.size": "Taille",
+    "settings.add_logo": "Ajouter un logo",
+    "settings.logo_url": "URL du logo",
+    "settings.logo_url.helper": "Le logo doit être carré afin de conserver le ratio",
+    "settings.logo_size": "Taille du logo",
+    "settings.style": "Forme",
+    "settings.style.helper": "Le code utilisant les point peut être plus difficile à lire",
+    "shape.squares": "Carrées",
+    "shape.dots": "Points",
+    "size.S": "S (100px)",
+    "size.M": "M (150px)",
+    "size.L": "L (200px)",
+    "size.XL": "XL (220px)",
+    "logo_size.S": "S (20px)",
+    "logo_size.M": "M (40px)",
+    "logo_size.L": "L (60px)",
+    "logo_size.XL": "XL (70px)"
+}
