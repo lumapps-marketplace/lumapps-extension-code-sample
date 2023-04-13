@@ -16,35 +16,24 @@ import {
     TableRow,
     ThOrder,
 } from '@lumx/react';
-import { mdiShieldKeyOutline, mdiDelete } from '@lumx/icons';
+import { mdiDelete, mdiPencil } from '@lumx/icons';
 
 import { useContext, useOrganization, useCurrentUser } from 'lumapps-sdk-js';
 import orderBy from 'lodash/orderBy';
 import dateFormat from 'dateformat';
 
 import { listApplication } from '../api';
-import { ApplicationProps, OauthApplicationTableParams } from '../widget/types';
-import { AppSecretDialog } from './Dialogs/AppSecretDialog';
+import { ApplicationProps, ApplicationTableProps } from '../widget/types';
 import { RemoveAppDialog } from './Dialogs/RemoveAppDialog';
+import { EditAppDialog } from './Dialogs/EditAppDialog';
 
-export const OauthApplicationTable = ({
-    loadApplicationSecrets,
-    secret,
-    checkTechAccount,
-    setClientSecret,
-}: OauthApplicationTableParams) => {
+export const OauthApplicationTable = ({ hasNewApp, setHasNewApp }: ApplicationTableProps) => {
     const intl = useIntl();
     const initialHeaders: Array<Partial<TableHeaderProps>> = [
         {
             isSortable: true,
             label: intl.formatMessage({ id: 'global_settings.array.application' }),
             name: 'name',
-        },
-        {
-            isSortable: true,
-            label: intl.formatMessage({ id: 'global_settings.array.tech_account' }),
-            name: 'technicalAccount.email',
-            width: '200',
         },
         {
             isSortable: true,
@@ -55,17 +44,16 @@ export const OauthApplicationTable = ({
     ];
 
     const { id: customerId } = useOrganization();
-    const { baseUrl } = useContext();
+    const { haussmannCell } = useContext();
     const { token } = useCurrentUser();
-    const seeSecretButtonRef = useRef(null);
-
-    const [isAppSecretOpen, setAppSecretOpen] = useState<boolean>(false);
-    const closeAppSecret = useCallback(() => setAppSecretOpen(false), []);
-    const toggleAppSecret = useCallback(() => setAppSecretOpen(!isAppSecretOpen), [isAppSecretOpen]);
 
     const [isRemoveAppOpen, setRemoveAppOpen] = useState<boolean>(false);
     const closeRemoveApp = useCallback(() => setRemoveAppOpen(false), []);
     const toggleRemoveApp = useCallback(() => setRemoveAppOpen(!isRemoveAppOpen), [isRemoveAppOpen]);
+
+    const [isEditAppOpen, setEditAppOpen] = useState<boolean>(false);
+    const closeEditApp = useCallback(() => setEditAppOpen(false), []);
+    const toogleEditApp = useCallback(() => setEditAppOpen(!isEditAppOpen), [isEditAppOpen]);
 
     const [selectedApplication, setSelectedApplication] = useState<ApplicationProps>();
 
@@ -85,19 +73,19 @@ export const OauthApplicationTable = ({
         [tableHeader, tableBody],
     );
 
-    const onSeeAppSecret = (application: ApplicationProps) => {
-        setSelectedApplication(application);
-        toggleAppSecret();
-    };
-
     const onDeleteApp = (application: ApplicationProps) => {
         setSelectedApplication(application);
         toggleRemoveApp();
     };
 
+    const onEditApp = (application: ApplicationProps) => {
+        setSelectedApplication(application);
+        toogleEditApp();
+    };
+
     const loadApplications = async () => {
-        if (token) {
-            const apps = await listApplication(baseUrl, token, customerId);
+        if (haussmannCell && token) {
+            const apps = await listApplication(haussmannCell, token, customerId);
 
             if (apps.items) {
                 setTableBody(apps.items);
@@ -106,7 +94,8 @@ export const OauthApplicationTable = ({
     };
 
     useEffect(() => {
-        if (!tableBody) {
+        if (!tableBody || hasNewApp) {
+            setHasNewApp(false);
             loadApplications();
         }
     }, [loadApplications, tableBody]);
@@ -148,10 +137,9 @@ export const OauthApplicationTable = ({
                                         >
                                             <IconButton
                                                 emphasis={Emphasis.low}
-                                                icon={mdiShieldKeyOutline}
-                                                ref={seeSecretButtonRef}
-                                                label={intl.formatMessage({ id: 'global_settings.array.see_secrets' })}
-                                                onClick={() => onSeeAppSecret(application)}
+                                                icon={mdiPencil}
+                                                label={intl.formatMessage({ id: 'global_settings.array.edit' })}
+                                                onClick={() => onEditApp(application)}
                                             />
                                             <IconButton
                                                 emphasis={Emphasis.low}
@@ -162,7 +150,6 @@ export const OauthApplicationTable = ({
                                         </FlexBox>
                                     </FlexBox>
                                 </TableCell>
-                                <TableCell>{application.technicalAccount.email}</TableCell>
                                 <TableCell>
                                     {dateFormat(
                                         application.createdAt,
@@ -189,22 +176,18 @@ export const OauthApplicationTable = ({
                 ))}
 
             {selectedApplication && (
-                <AppSecretDialog
-                    checkTechAccount={checkTechAccount}
-                    close={closeAppSecret}
-                    isOpen={isAppSecretOpen}
-                    loadApplicationSecrets={loadApplicationSecrets}
-                    secret={secret}
+                <RemoveAppDialog
+                    close={closeRemoveApp}
+                    isOpen={isRemoveAppOpen}
+                    loadApplications={loadApplications}
                     selectedApplication={selectedApplication}
-                    setClientSecret={setClientSecret}
                 />
             )}
 
             {selectedApplication && (
-                <RemoveAppDialog
-                    checkTechAccount={checkTechAccount}
-                    close={closeRemoveApp}
-                    isOpen={isRemoveAppOpen}
+                <EditAppDialog
+                    close={closeEditApp}
+                    isOpen={isEditAppOpen}
                     loadApplications={loadApplications}
                     selectedApplication={selectedApplication}
                 />
