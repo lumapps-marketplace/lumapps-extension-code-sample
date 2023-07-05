@@ -1,0 +1,47 @@
+{
+    "isCurentlyOutOfOffice": false,
+    "apps": [
+        {
+            "type": "gmail",
+            "label": "Gmail",
+            "description": "Activate the vacation responder",
+            "icon": ""
+        },
+        {
+            "type": "slack",
+            "label": "Slack",
+            "description": "Update your status and set yourself as away",
+            "icon": ""
+        },
+        {
+            "type": "calendar",
+            "label": "Calendar",
+            "description": "Create an out of office event",
+            "icon": ""
+        }
+    ],
+    "hasNextOutOfOffice": true,
+    "nextOutOfOffice": [
+        {
+            "apps": [
+                {
+                    "logo": "https://assets.stickpng.com/images/5cb480cd5f1b6d3fbadece79.png"
+                },
+                {
+                    "logo": "https://cdn.icon-icons.com/icons2/2631/PNG/512/google_calendar_new_logo_icon_159141.png"
+                }
+            ],
+            "startDate": "2023-07-07T08:00:00Z",
+            "endDate": "2023-07-09T08:00:00Z"
+        },
+        {
+            "apps": [
+                {
+                    "logo": "https://assets.stickpng.com/images/5cb480cd5f1b6d3fbadece79.png"
+                }
+            ],
+            "startDate": "2023-07-07T08:00:00Z",
+            "endDate": "2023-07-09T08:00:00Z"
+        }
+    ]
+}

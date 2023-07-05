@@ -1,0 +1,110 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "Team planning"
+        },
+        {
+            "type": "TextBlock",
+            "text": "${$root.count} absences today",
+            "wrap": true
+        },
+        {
+            "type": "Container",
+            "$data": "${leaves}",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "${department.name}",
+                    "wrap": true,
+                    "isSubtle": true,
+                    "style": "columnHeader",
+                    "fontType": "Default",
+                    "weight": "Bolder"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "url": "${user.picture.href}",
+                                    "size": "Small",
+                                    "style": "Person"
+                                }
+                            ],
+                            "width": "auto"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "${user.displayName}",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "None",
+                                    "text": "Until {{DATE(${endsOn}Z, SHORT)}}",
+                                    "isSubtle": true,
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "$data": "${users}"
+                },
+                {
+                    "type": "Container",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "No data",
+                            "wrap": true,
+                            "isSubtle": true,
+                            "style": "columnHeader",
+                            "fontType": "Default",
+                            "weight": "Bolder",
+                            "size": "Small"
+                        }
+                    ],
+                    "$when": "${count(users) == 0}"
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "View more"
+                                }
+                            ],
+                            "horizontalAlignment": "Center"
+                        }
+                    ],
+                    "minHeight": "2px",
+                    "spacing": "None"
+                }
+            ],
+            "$when": "${more == true}"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5"
+}

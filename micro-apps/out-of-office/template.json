@@ -1,0 +1,146 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "Out of Office"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "150px",
+                            "items": [
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "width": "auto",
+                                            "$data": "${apps}",
+                                            "items": [
+                                                {
+                                                    "type": "Image",
+                                                    "size": "Small",
+                                                    "url": "${logo}",
+                                                    "horizontalAlignment": "Left"
+                                                }
+                                            ],
+                                            "spacing": "Small",
+                                            "horizontalAlignment": "Left"
+                                        }
+                                    ],
+                                    "horizontalAlignment": "Left"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "Container",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "From {{DATE(${startDate}, COMPACT)}}",
+                                            "wrap": true
+                                        },
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "To {{DATE(${endDate}, COMPACT)}}",
+                                            "wrap": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "url": "https://i.fbcd.co/products/resized/resized-750-500/de18ae7d25cea00a569f391100ae56d990105791a99a2d42f35d84477a869d68.jpg",
+                                    "size": "Small",
+                                    "horizontalAlignment": "Right",
+                                    "spacing": "Medium"
+                                }
+                            ],
+                            "height": "stretch",
+                            "spacing": "None"
+                        }
+                    ],
+                    "$data": "${nextOutOfOffice}",
+                    "spacing": "Large",
+                    "horizontalAlignment": "Left"
+                }
+            ],
+            "$when": "${hasNextOutOfOffice}",
+            "spacing": "Medium"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "Activate an Out of Office responder.",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "separator": true
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ],
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "DATE RANGE",
+            "wrap": true
+        },
+        {
+            "type": "Input.Date",
+            "label": "From",
+            "isRequired": true,
+            "id": "startDate"
+        },
+        {
+            "type": "Input.Date",
+            "label": "To",
+            "id": "endDate"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "Input.Toggle",
+                    "title": "${description}",
+                    "id": "toggle_gmail",
+                    "label": "${label}"
+                }
+            ],
+            "$data": "${apps}"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "actions": [
+        {
+            "type": "Action.Execute",
+            "title": "Save",
+            "associatedInputs": "auto"
+        }
+    ]
+}
