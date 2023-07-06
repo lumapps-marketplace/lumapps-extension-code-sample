@@ -1,0 +1,122 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "Ticket assigned to you"
+        },
+        {
+            "type": "TextBlock",
+            "text": "${count(list.issues)} tickets assigned to you",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Sorted by most recent",
+            "wrap": true,
+            "isSubtle": true
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "style": "Person",
+                            "url": "data:image/jpeg;base64,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",
+                            "size": "Small"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "${fields.summary}",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "${key}",
+                            "isSubtle": true,
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${fields.status.name}",
+                            "wrap": true,
+                            "color": "Default",
+                            "weight": "Bolder",
+                            "size": "Small",
+                            "$when": "${fields.status.name == \"TO DO\"}",
+                            "isSubtle": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${fields.status.name}",
+                            "wrap": true,
+                            "color": "Accent",
+                            "weight": "Bolder",
+                            "size": "Small",
+                            "$when": "${fields.status.name == \"IN PROGRESS\"}"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${fields.status.name}",
+                            "wrap": true,
+                            "color": "Good",
+                            "weight": "Bolder",
+                            "size": "Small",
+                            "$when": "${fields.status.name == \"DONE\"}"
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ],
+            "$data": "${list.issues}"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.ShowCard",
+            "title": "Set due date",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "Input.Date",
+                        "id": "dueDate"
+                    },
+                    {
+                        "type": "Input.Text",
+                        "id": "comment",
+                        "placeholder": "Add a comment",
+                        "isMultiline": true
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK"
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            }
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "View",
+            "url": "${viewUrl}"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5"
+}

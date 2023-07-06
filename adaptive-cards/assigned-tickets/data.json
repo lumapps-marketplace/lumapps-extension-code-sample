@@ -1,0 +1,80 @@
+{
+    "id": "jira",
+    "list": {
+      "expand": "schema,names",
+      "startAt": 0,
+      "maxResults": 15,
+      "total": 302,
+      "issues": [
+        {
+          "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+          "id": "99991",
+          "key": "KEY-001",
+          "fields": {
+            "summary": "Jira ticket #1",
+            "assignee": {
+              "displayName": "John Doe"
+            },
+            "status": {
+              "description": "",
+              "name": "TO DO",
+              "id": "101"
+            }
+          }
+        },
+        {
+          "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+          "id": "99992",
+          "key": "KEY-002",
+          "fields": {
+            "summary": "Jira ticket #2",
+            "assignee": {
+              "displayName": "John Doe"
+            },
+            "status": {
+              "description": "",
+              "name": "IN PROGRESS",
+              "id": "102"
+            }
+          }
+        },
+        {
+          "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+          "id": "99993",
+          "key": "KEY-003",
+          "fields": {
+            "summary": "Jira ticket #3",
+            "assignee": {
+              "displayName": "John Doe"
+            },
+            "status": {
+              "description": "",
+              "name": "DONE",
+              "id": "103"
+            }
+          }
+        }
+      ],
+      "names": {
+        "summary": "Summary",
+        "assignee": "Assignee",
+        "status": "Status"
+      }
+    },
+    "get": {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "99993",
+      "key": "KEY-003",
+      "fields": {
+        "summary": "Jira ticket #3",
+        "assignee": {
+          "displayName": "John Doe"
+        },
+        "status": {
+          "description": "",
+          "name": "IN PROGRESS",
+          "id": "103"
+        }
+      }
+    }
+  }
