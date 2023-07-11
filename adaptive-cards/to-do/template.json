@@ -1,0 +1,92 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "Image",
+              "style": "Person",
+              "url": "https://icons.iconarchive.com/icons/iconsmind/outline/512/Sun-icon.png",
+              "size": "Small"
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "size": "Medium",
+              "weight": "Bolder",
+              "text": "My day"
+            },
+            {
+              "type": "TextBlock",
+              "spacing": "None",
+              "text": "${utcNow('dddd MMMM dd, yy')}",
+              "isSubtle": true,
+              "wrap": true
+            }
+          ],
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "$data": "${msTaskList}",
+      "items": [
+        {
+          "$when": "${status == 'notStarted'}",
+          "type": "Input.Toggle",
+          "title": "${title}",
+          "id": "${id}"
+        },
+        {
+          "$when": "${status == 'completed'}",
+          "type": "Input.Toggle",
+          "title": "~~${title}~~",
+          "value": "true",
+          "id": "${id}",
+          "spacing": "Small",
+          "wrap": true,
+          "separator": true
+        }
+      ]
+    },
+    {
+      "type": "Container"
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Input.Text",
+          "placeholder": "+ Add a new task",
+          "id": "new_task"
+        },
+        {
+          "type": "Container",
+          "items": [
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Execute",
+                  "title": "Save"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5"
+}

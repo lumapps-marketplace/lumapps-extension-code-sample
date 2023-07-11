@@ -1,0 +1,37 @@
+{
+  "employeeExpenses": [
+    {
+      "userInfo": {
+        "id": "1",
+        "name": "John Doe",
+        "city": "Tassin",
+        "jobTitle": "Developer Backend",
+        "profilePicture": "https://amdesigner.azurewebsites.net/samples/assets/Miguel_Garcia.png"
+      },
+      "comment": "New PC for my intern",
+      "approvalId": "1234543"
+    },
+    {
+      "userInfo": {
+        "id": "1",
+        "name": "John Doe",
+        "city": "Tassin",
+        "jobTitle": "Developer Backend",
+        "profilePicture": "https://amdesigner.azurewebsites.net/samples/assets/Miguel_Garcia.png"
+      },
+      "comment": "New SAP Licence for my intern",
+      "approvalId": "123213412"
+    },
+    {
+      "userInfo": {
+        "id": "2",
+        "name": "Michel Nixon",
+        "city": "Los Angeles",
+        "jobTitle": "Art Director",
+        "profilePicture": "https://amdesigner.azurewebsites.net/samples/assets/Daisy_Phillips.png"
+      },
+      "comment": "Travel to Paris to meet President Macron",
+      "approvalId": "987654665"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "auto"
+            },
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${utcNow('dddd dd MMMM')}",
+                  "wrap": true,
+                  "horizontalAlignment": "Center",
+                  "weight": "Bolder"
+                }
+              ],
+              "verticalContentAlignment": "Center"
+            },
+            {
+              "type": "Column",
+              "width": "auto",
+              "horizontalAlignment": "Right"
+            }
+          ]
+        },
+        {
+          "type": "ImageSet",
+          "$data": "${canteenData.dishes}",
+          "images": [
+            {
+              "type": "Image",
+              "size": "Medium",
+              "url": "${image}"
+            }
+          ]
+        },
+        {
+          "type": "FactSet",
+          "$data": "${canteenData.dishes}",
+          "facts": [
+            {
+              "title": "${title}",
+              "value": "${name} - $${price}"
+            }
+          ],
+          "separator": true,
+          "height": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "separator": true,
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Account status",
+                  "wrap": true,
+                  "fontType": "Default"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${add(7,12,8)} $",
+                  "wrap": true,
+                  "horizontalAlignment": "Right",
+                  "weight": "Bolder",
+                  "size": "Medium"
+                }
+              ],
+              "verticalContentAlignment": "Center"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
