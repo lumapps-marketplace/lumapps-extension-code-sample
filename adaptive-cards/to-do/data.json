@@ -1,0 +1,36 @@
+{
+  "msTaskList": [
+    {
+      "@odata.etag": "W/\"h/1NHRP15kaPHk8Qux3z4AADac7zlQ==\"",
+      "importance": "normal",
+      "isReminderOn": false,
+      "status": "completed",
+      "title": "Valider devis client XX",
+      "createdDateTime": "2023-07-10T08:52:34.1706689Z",
+      "lastModifiedDateTime": "2023-07-10T08:57:35.0561112Z",
+      "hasAttachments": false,
+      "categories": [],
+      "id": "U0dE-XmRo8eTxC7HfPgAAAAAAESAACH-U0dE-XmRo8eTxC7HfPgAANqTCxGAAA=",
+      "body": {
+        "content": "",
+        "contentType": "text"
+      }
+    },
+    {
+      "@odata.etag": "W/\"h/1NHRP15kaPHk8Qux3z4AADac7zkA==\"",
+      "importance": "normal",
+      "isReminderOn": false,
+      "status": "notStarted",
+      "title": "Préparation meeting XXXX",
+      "createdDateTime": "2023-07-10T08:52:25.1443341Z",
+      "lastModifiedDateTime": "2023-07-10T08:57:25.7231313Z",
+      "hasAttachments": false,
+      "categories": [],
+      "id": "U0dE-XmRo8eTxC7HfPgAAAAAAESAACH-U0dE-XmRo8eTxC7HfPgAANqTCxFAAA=",
+      "body": {
+        "content": "",
+        "contentType": "text"
+      }
+    }
+  ]
+}

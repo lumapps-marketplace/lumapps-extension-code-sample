@@ -1,0 +1,32 @@
+{
+    "count": 2,
+    "more": false,
+    "birthdays": [
+        {
+            "ownerId": 305,
+            "displayName": "Carlee BUN",
+            "firstName": "Carlee",
+            "lastName": "BUN",
+            "picture": {
+                "href": "https://xsgames.co/randomusers/assets/avatars/female/64.jpg"
+            },
+            "department": {
+                "id": 88,
+                "name": "Marketing"
+            }
+        },
+        {
+            "ownerId": 307,
+            "displayName": "Reinaldo END",
+            "firstName": "Reinaldo",
+            "lastName": "END",
+            "picture": {
+                "href": "https://xsgames.co/randomusers/assets/avatars/male/73.jpg"
+            },
+            "department": {
+                "id": 88,
+                "name": "Marketing"
+            }
+        }
+    ]
+}

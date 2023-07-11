@@ -1,0 +1,105 @@
+{
+    "count": 4,
+    "more": false,
+    "leaves": [
+        {
+            "department": {
+                "id": 88,
+                "name": "Marketing"
+            },
+            "users": [
+                {
+                    "user": {
+                        "ownerId": 305,
+                        "displayName": "Carlee BUN",
+                        "firstName": "Carlee",
+                        "lastName": "BUN",
+                        "picture": {
+                            "href": "https://xsgames.co/randomusers/assets/avatars/female/64.jpg"
+                        },
+                        "department": {
+                            "id": 88,
+                            "name": "Marketing"
+                        }
+                    },
+                    "startsOn": "2023-06-30T00:00:00",
+                    "startsAM": false,
+                    "endsOn": "2023-07-09T00:00:00",
+                    "endsAM": false
+                },
+                {
+                    "user": {
+                        "ownerId": 307,
+                        "displayName": "Reinaldo END",
+                        "firstName": "Reinaldo",
+                        "lastName": "END",
+                        "picture": {
+                            "href": "https://xsgames.co/randomusers/assets/avatars/male/73.jpg"
+                        },
+                        "department": {
+                            "id": 88,
+                            "name": "Marketing"
+                        }
+                    },
+                    "startsOn": "2023-06-25T00:00:00",
+                    "startsAM": false,
+                    "endsOn": "2023-07-09T00:00:00",
+                    "endsAM": false
+                }
+            ]
+        },
+        {
+            "department": {
+                "id": 23,
+                "name": "R&D"
+            },
+            "users": [
+                {
+                    "user": {
+                        "ownerId": 265,
+                        "displayName": "Jeremy GORDON",
+                        "firstName": "Jeremy",
+                        "lastName": "GORDON",
+                        "picture": {
+                            "href": "https://xsgames.co/randomusers/assets/avatars/male/58.jpg"
+                        },
+                        "department": {
+                            "id": 23,
+                            "name": "R&D"
+                        }
+                    },
+                    "startsOn": "2023-06-30T00:00:00",
+                    "startsAM": false,
+                    "endsOn": "2023-07-02T00:00:00",
+                    "endsAM": false
+                },
+                {
+                    "user": {
+                        "ownerId": 129,
+                        "displayName": "Mayra BEDNARZ",
+                        "firstName": "Mayra",
+                        "lastName": "BEDNARZ",
+                        "picture": {
+                            "href": "https://xsgames.co/randomusers/assets/avatars/female/15.jpg"
+                        },
+                        "department": {
+                            "id": 23,
+                            "name": "R1D"
+                        }
+                    },
+                    "startsOn": "2023-06-22T00:00:00",
+                    "startsAM": false,
+                    "endsOn": "2023-07-14T00:00:00",
+                    "endsAM": false
+                }
+            ]
+        },
+        {
+            "department": {
+                "id": 12,
+                "name": "Sales"
+            },
+            "users": []
+        }
+    ]
+}

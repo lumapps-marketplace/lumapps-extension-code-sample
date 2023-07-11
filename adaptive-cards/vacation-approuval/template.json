@@ -1,0 +1,201 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "Container",
+      "style": "emphasis",
+      "items": [
+        {
+          "type": "TextBlock",
+          "horizontalAlignment": "Left",
+          "text": "Vacation Approval",
+          "wrap": true
+        }
+      ],
+      "padding": "Default",
+      "spacing": "None"
+    },
+    {
+      "type": "Container",
+      "separator": true,
+      "style": "accent",
+      "items": [
+        {
+          "type": "TextBlock",
+          "size": "Large",
+          "weight": "Bolder",
+          "color": "Dark",
+          "text": "Vacation request by ${employeeData.leavePeriod.name} is pending for your approval",
+          "wrap": true,
+          "style": "heading"
+        }
+      ],
+      "padding": "Default",
+      "spacing": "None"
+    },
+    {
+      "type": "Container",
+      "separator": true,
+      "items": [
+        {
+          "type": "Container",
+          "items": [
+            {
+              "type": "ColumnSet",
+              "columns": [
+                {
+                  "type": "Column",
+                  "items": [
+                    {
+                      "type": "Image",
+                      "horizontalAlignment": "Center",
+                      "style": "Person",
+                      "url": "${employeeData.leavePeriod.picture}",
+                      "size": "Small",
+                      "altText": "${employeeData.leavePeriod.name} Avatar"
+                    }
+                  ],
+                  "width": "auto",
+                  "padding": "None"
+                },
+                {
+                  "type": "Column",
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "weight": "Bolder",
+                      "text": "${employeeData.leavePeriod.name}",
+                      "wrap": true
+                    },
+                    {
+                      "type": "TextBlock",
+                      "spacing": "None",
+                      "color": "Light",
+                      "text": "${employeeData.leavePeriod.jobTitle}",
+                      "wrap": true,
+                      "size": "Small"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "spacing": "None",
+                      "color": "Light",
+                      "text": "${employeeData.leavePeriod.location}",
+                      "wrap": true,
+                      "size": "Small"
+                    }
+                  ],
+                  "width": "stretch",
+                  "padding": "None"
+                }
+              ],
+              "padding": "None"
+            }
+          ],
+          "padding": "None"
+        },
+        {
+          "type": "FactSet",
+          "facts": [
+            {
+              "title": "Comment:",
+              "value": "${employeeData.leavePeriod.comment}"
+            },
+            {
+              "title": "From:",
+              "value": "${formatDateTime(employeeData.leavePeriod.from, 'YYYY MM DD')}"
+            },
+            {
+              "title": "To:",
+              "value": "${formatDateTime(employeeData.leavePeriod.to, 'YYYY MM DD')}"
+            },
+            {
+              "title": "Type of leave:",
+              "value": "${employeeData.leavePeriod.type}"
+            },
+            {
+              "title": "Balance:",
+              "value": "${employeeData.leavePeriod.balance}"
+            }
+          ]
+        }
+      ],
+      "padding": {
+        "top": "Default",
+        "bottom": "None",
+        "left": "Default",
+        "right": "Default"
+      },
+      "spacing": "None"
+    },
+    {
+      "type": "Container",
+      "id": "466ee0a4-b5ba-520e-0b5d-53841fffe66e",
+      "padding": "Default",
+      "items": [
+        {
+          "type": "ActionSet",
+          "actions": [
+            {
+              "type": "Action.ShowCard",
+              "title": "Approve",
+              "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                  {
+                    "type": "Input.Text",
+                    "id": "ApproveReason",
+                    "placeholder": "Add a reason",
+                    "isMultiline": true
+                  },
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "type": "Action.Execute",
+                        "title": "Submit Approval"
+                      }
+                    ]
+                  }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "padding": "None"
+              },
+              "style": "positive",
+              "isPrimary": true
+            },
+            {
+              "type": "Action.ShowCard",
+              "title": "Decline",
+              "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                  {
+                    "type": "Input.Text",
+                    "id": "DeclineReason",
+                    "placeholder": "Add a reason",
+                    "isMultiline": true
+                  },
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "type": "Action.Execute",
+                        "title": "Submit"
+                      }
+                    ]
+                  }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "padding": "None"
+              }
+            }
+          ],
+          "spacing": "None"
+        }
+      ],
+      "spacing": "None"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5"
+}

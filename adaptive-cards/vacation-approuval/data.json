@@ -1,0 +1,21 @@
+{
+  "employeeData": {
+    "id": 0,
+    "leavePeriodId": 0,
+    "leavePeriod": {
+      "id": 0,
+      "ownerId": 0,
+      "isConfirmed": true,
+      "confirmationDate": null,
+      "name": "John Doe",
+      "picture": "https://amdesigner.azurewebsites.net/samples/assets/Colin_Ballinger.png",
+      "jobTitle": "Design Lead",
+      "location": "Tassin - France",
+      "from": "2023-08-24T14:15:22Z",
+      "to": "2023-08-31T14:15:22Z",
+      "type": "Paid Holiday",
+      "balance": "13",
+      "comment": "🏄‍♂️ Surf in Biarritz  "
+    }
+  }
+}

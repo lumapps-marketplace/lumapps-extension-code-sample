@@ -1,0 +1,121 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "New ticket",
+      "wrap": true,
+      "size": "Large",
+      "weight": "Bolder"
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Input.ChoiceSet",
+          "label": "Project",
+          "choices": [
+            {
+              "title": "Accounts",
+              "value": "Accounts"
+            },
+            {
+              "title": "Software",
+              "value": "Software"
+            },
+            {
+              "title": "Hardware",
+              "value": "Hardware"
+            },
+            {
+              "title": "Services",
+              "value": "Services"
+            }
+          ],
+          "placeholder": "Select a project",
+          "id": "ticketProject",
+          "isRequired": true
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "label": "Type",
+          "choices": [
+            {
+              "title": "Design",
+              "value": "Design"
+            },
+            {
+              "title": "Explore",
+              "value": "Explore"
+            },
+            {
+              "title": "Analytics",
+              "value": "Analytics"
+            },
+            {
+              "title": "Test",
+              "value": "Test"
+            }
+          ],
+          "placeholder": "Select a type",
+          "id": "ticketType",
+          "isRequired": true
+        },
+        {
+          "type": "Input.Text",
+          "label": "Summary",
+          "placeholder": "Type a detailed description of the issue",
+          "id": "ticketSummary",
+          "isRequired": true
+        },
+        {
+          "type": "Input.Text",
+          "label": "Description",
+          "placeholder": "Type a detailed description of the issue",
+          "id": "ticketDescription",
+          "isMultiline": true,
+          "isRequired": true
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "label": "Priority",
+          "choices": [
+            {
+              "title": "P1",
+              "value": "P1"
+            },
+            {
+              "title": "P2",
+              "value": "P2"
+            },
+            {
+              "title": "P3",
+              "value": "P3"
+            },
+            {
+              "title": "P4",
+              "value": "P4"
+            }
+          ],
+          "placeholder": "Select a priority",
+          "id": "ticketPriority"
+        }
+      ],
+      "separator": true,
+      "spacing": "ExtraLarge"
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.Execute",
+          "fallback": "Action.Submit",
+          "title": "Create"
+        }
+      ],
+      "spacing": "ExtraLarge"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "canteenData": {
+    "dishes": [
+      {
+        "title": "starter",
+        "image": "https://www.galbani.fr/wp-content/uploads/2020/05/AdobeStock_213447478-2-800x600.jpeg",
+        "name": "Salad",
+        "price": "5"
+      },
+      {
+        "title": "main course",
+        "image": "https://www.expatica.com/app/uploads/sites/5/2014/05/french-food.jpg",
+        "name": "Pulled pork",
+        "price": "12"
+      },
+      {
+        "title": "dessert",
+        "image": "https://www.jocooks.com/wp-content/uploads/2018/11/sex-in-a-pan-1-28.jpg",
+        "name": "Tiramisu",
+        "price": "8"
+      }
+    ]
+  }
+}
