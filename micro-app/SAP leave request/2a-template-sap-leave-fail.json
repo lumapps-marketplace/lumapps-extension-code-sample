@@ -1,0 +1,38 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://w7.pngwing.com/pngs/1020/417/png-transparent-sap-se-sap-erp-sap-hana-logo-sap-s-4hana-others-thumbnail.png",
+                            "size": "Large"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "❌ We had a technical issue trying to create your request. Please contact the support team.",
+                    "wrap": true,
+                    "size": "Default",
+                    "weight": "Bolder",
+                    "spacing": "Small"
+                }
+            ],
+            "style": "attention"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.6"
+}
+
