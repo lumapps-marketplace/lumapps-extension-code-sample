@@ -1,0 +1,74 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.6",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Jira_Logo.svg/2560px-Jira_Logo.svg.png",
+                            "size": "Large"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "Input.ChoiceSet",
+                    "label": "Ticket type",
+                    "choices": [
+                        {
+                            "title": "Request",
+                            "value": "Request"
+                        },
+                        {
+                            "title": "Incident",
+                            "value": "Incident"
+                        }
+                    ],
+                    "placeholder": "Incident",
+                    "id": "tickettype",
+                    "isRequired": true,
+                    "value": "Incident"
+                },
+                {
+                    "type": "Input.Text",
+                    "label": "Give a title to your ticket",
+                    "placeholder": "Type a brief description of the issue.",
+                    "id": "tickettitle",
+                    "isRequired": true
+                },
+                {
+                    "type": "Input.Text",
+                    "label": "Describe your ticket",
+                    "placeholder": "Type a detailed description of the issue",
+                    "id": "ticketdescription",
+                    "isMultiline": true,
+                    "isRequired": true
+                }
+            ],
+            "spacing": "ExtraLarge"
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Execute",
+                    "fallback": "Action.Submit",
+                    "title": "Create",
+                    "style": "positive",
+                    "role": "Button"
+                }
+            ]
+        }
+    ]
+}

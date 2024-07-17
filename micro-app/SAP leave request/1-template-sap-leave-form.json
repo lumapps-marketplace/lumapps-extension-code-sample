@@ -1,0 +1,115 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.6",
+    "body": [
+        {
+            "type": "Image",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/2560px-SAP_2011_logo.svg.png",
+            "size": "Large"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "style": "emphasis",
+                    "borderRadius": "8px",
+                    "items": [
+                        {
+                            "type": "Input.ChoiceSet",
+                            "choices": [
+                                {
+                                    "title": "Sick Leave",
+                                    "value": "Choice 1"
+                                },
+                                {
+                                    "title": "Vacation",
+                                    "value": "Choice 2"
+                                },
+                                {
+                                    "title": "Parental Leave",
+                                    "value": "Choice 3"
+                                }
+                            ],
+                            "placeholder": "Pick a type of leave",
+                            "label": "Type of leave",
+                            "id": "typeofleave"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.Date",
+                            "label": "From",
+                            "id": "startDate"
+                        },
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "startDatePeriod",
+                            "choices": [
+                                {
+                                    "title": "Morning",
+                                    "value": "morning"
+                                },
+                                {
+                                    "title": "Afternoon",
+                                    "value": "afternoon"
+                                }
+                            ],
+                            "placeholder": "Placeholder text",
+                            "style": "expanded"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.Date",
+                            "label": "To",
+                            "id": "endDate"
+                        },
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "endDatePeriod",
+                            "choices": [
+                                {
+                                    "title": "Morning",
+                                    "value": "morning"
+                                },
+                                {
+                                    "title": "Afternoon",
+                                    "value": "afternoon"
+                                }
+                            ],
+                            "placeholder": "Placeholder text",
+                            "style": "expanded"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Execute",
+                    "title": "Request",
+                    "style": "positive"
+                }
+            ]
+        }
+    ]
+}
+ 

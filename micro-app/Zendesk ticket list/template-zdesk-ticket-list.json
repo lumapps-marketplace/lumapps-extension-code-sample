@@ -1,0 +1,53 @@
+{
+    "body": [
+        {
+                "type": "ColumnSet",
+                "columns": [
+                    {
+                        "type": "Column",
+                        "width": "auto",
+                        "items": [
+                            {
+                                "type": "Image",
+                                "url": "https://w7.pngwing.com/pngs/813/178/png-transparent-logo-brand-zendesk-scalable-graphics-business-text-people-logo-thumbnail.png",
+                                "size": "Large"
+                            }
+                        ]
+                    }
+                ]
+            },
+        {
+            "type": "Container",
+            "$data": "${actions.ticket_list_api.response.body.tickets}",
+            "items": [
+                {
+                    "size": "Medium",
+                    "text": "${subject}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                },
+                {
+                    "text": "${description}",
+                    "type": "TextBlock",
+                    "wrap": true
+                },
+                {
+                    "type": "ActionSet",
+                    "actions": [
+                        {
+                            "type": "Action.OpenUrl",
+                            "title": "Open ticket",
+                            "url": "https://lumapps.zendesk.com/agent/tickets/${id}"
+                        }
+                    ]
+                }
+            ],
+            "spacing": "Large",
+            "separator": true
+        }
+    ],
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.6"
+}
