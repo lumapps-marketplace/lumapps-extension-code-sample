@@ -12,12 +12,12 @@
 
 Get the Jira profile information of the user by identifying the accountId of a user, based on the email used in their LumApps account.
 
-Create an API Call named `get_jira_user_api` according to the following template: [Jira: get_jira_user_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#82145591-a4b3-4106-a189-287b3f68fae3)
+Create an API Call named `get_jira_user_api` according to the following template: [Jira: get_jira_user_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 
 ## Step 2: Get the list of tickets - API Call
 
-Create an API Call named `ticket_list_api` according to the following template: [Jira: ticket_list_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#6db8a32c-9840-413b-a478-a97956f6a38f)
+Create an API Call named `ticket_list_api` according to the following template: [Jira: ticket_list_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 > **Tip:** For more information, refer to the Jira [API documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v3).
 

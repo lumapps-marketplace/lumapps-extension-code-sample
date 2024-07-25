@@ -23,7 +23,7 @@ Create the elements of the workflow according to the steps in this page and the 
 
 You can set the reporter of a ticket by identifying the accountId of a user, based on the email used in their LumApps account.
 
-Create an API Call named `get_jira_user_api` according the following template: [Jira: get_jira_user_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#bcc60043-aa49-4406-9392-f9121494be33)
+Create an API Call named `get_jira_user_api` according the following template: [Jira: get_jira_user_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 ## Step 2: Adaptive Card to display a ticket creation form
 
@@ -38,7 +38,7 @@ To retrieve accountId
 
 ## Step 3: API Call to send the ticket creation data to Jira
 
-Create an API Call named `ticket_creation_api` according the following template: [Jira: ticket_creation_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#6382016e-ac7f-406d-89e2-ef2f94bdb3f1)
+Create an API Call named `ticket_creation_api` according the following template: [Jira: ticket_creation_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 > **Post-requisite:** In the LumApps administrator documentation linked to your extension, you must instruct LumApps administrators on how to update placeholder values. LumApps administrators must import the extension and replace `<your-jira-serviceDeskId>`, `<your-jira-projectId>` and `<your-jira-issuetype>` used in the **API Call** body with their own values.
 

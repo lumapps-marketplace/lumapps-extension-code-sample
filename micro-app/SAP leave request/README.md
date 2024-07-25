@@ -25,11 +25,11 @@ Create the elements of the workflow according to the steps in this page and the 
 
 start your workflow with a public API that retrieves the current date. You need the current date in `YYYY-MM-DD` format for the next step.
 
-Create an API Call named `get_date` according the following template: [Public API: get_date](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#e5b75d47-834d-4ace-af2b-975727c97eed)
+Create an API Call named `get_date` according to the following template: [Public API: get_date](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 ## Step 1: Get the remaining days off of the user
 
-Create an API Call named `leave_balance_api` according the following template: [SAP: leave_balance_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#26c755dc-ddd0-41ae-93f8-07f3afa82eea)
+Create an API Call named `leave_balance_api` according to the following template: [SAP: leave_balance_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 For more information about SAP APIs, refer to [Implementing Time Management in SAP SuccessFactors](https://help.sap.com/docs/SAP_SUCCESSFACTORS_EMPLOYEE_CENTRAL/68de09dff990417b9f0acf6ccc13a14d/5b03a2a52f3e427a8e0b1608f439614f.html).
 
@@ -64,7 +64,7 @@ Create an Adaptive Card named `leave_request_form` using the following template:
 
 ## Step 3: Send the leave request data to SAP
 
-Create an API Call named `leave_request_api` according the following template: [SAP: leave_request_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#43358fd7-998c-4b5e-9e92-41d3515bdc87)
+Create an API Call named `leave_request_api` according the following template: [SAP: leave_request_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 For more information about SAP APIs, refer to the [Time Off](https://api.sap.com/api/ECTimeOff/path/post_EmployeeTime) API reference.
 

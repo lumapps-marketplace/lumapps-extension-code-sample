@@ -10,7 +10,7 @@
 
 ## Step 1: Get the list of tickets - API Call
 
-Create an API Call named `ticket_list_api` according to the following template: [Zendesk: ticket_list_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#a6d2e45c-48c5-4861-9f1e-9c666c2c9913)
+Create an API Call named `ticket_list_api` according to the following template: [Zendesk: ticket_list_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 > **Tip:** For more information about Zendesk APIs, refer to the [Zendesk API](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#list-tickets) reference.
 

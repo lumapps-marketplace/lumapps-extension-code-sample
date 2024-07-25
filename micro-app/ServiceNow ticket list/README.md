@@ -10,7 +10,7 @@
 
 ## Step 1: Get the list of tickets - API Call
 
-Create an API Call named `ticket_list_api` according to the following template: [ServiceNow: ticket_list_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#a9685d68-29f0-40b6-b8d6-975683cba7e9)
+Create an API Call named `ticket_list_api` according to the following template: [ServiceNow: ticket_list_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 > **Tip:** For more information about ServiceNow APIs, refer to the [Table API](https://docs.servicenow.com/bundle/washingtondc-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html#d228766e1289) reference.
 
