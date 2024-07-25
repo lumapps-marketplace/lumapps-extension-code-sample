@@ -25,13 +25,13 @@ Create the elements of the workflow according to the steps in this page and the 
 
 In this example, users have the same value for their LumApps employeeId as their Workday workerId. So you can use a LumApps API to retrieve this ID.
 
-Create an API Call named `get_employee_id` according the following template: [LumApps: get_employee_id](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#229a2837-b7e5-4007-8b13-00be68fff418)
+Create an API Call named `get_employee_id` according the following template: [LumApps: get_employee_id](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 For more information about LumApps APIs, refer to the [LumApps API documentation](https://apiv1.lumapps.com/#tag/Platform-governance-User/operation/user/get).
 
 ## Step 1: Get the remaining days off of the user
 
-Create an API Call named `leave_balance_api` according the following template: [Workday: leave_balance_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#06dc025f-9fbe-4ce4-b3a8-38351010a600)
+Create an API Call named `leave_balance_api` according the following template: [Workday: leave_balance_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 For more information about Workday APIs, refer to the [Workday REST Services Directory](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#absenceManagement/v1/get-/balances).
 
@@ -66,7 +66,7 @@ Create an Adaptive Card named `leave_request_form` using the following template:
 
 ## Step 3: Send the leave request data to Workday
 
-Create an API Call named `leave_request_api` according the following template: [Workday: leave_request_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#0984f696-ae3e-4334-b08f-33968c1b7818)
+Create an API Call named `leave_request_api` according the following template: [Workday: leave_request_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 For more information about Workday APIs, refer to the [Workday REST Services Directory](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#absenceManagement/v1/post-/workers/-ID-/requestTimeOff).
 

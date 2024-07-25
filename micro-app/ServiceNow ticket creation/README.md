@@ -35,11 +35,11 @@ GET https://${snow-instance}.service-now.com/api/now/table/sys_user?sysparm_quer
 
 You can set the reporter of a ticket by identifying the accountId of a user, based on the email used in their LumApps account.
 
-Create an API Call named `get_snow_user_api` according the following template: [ServiceNow: get_snow_user_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#6e8d4544-68fc-41ed-9e5d-b26271e3568a)
+Create an API Call named `get_snow_user_api` according the following template: [ServiceNow: get_snow_user_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 ## Step 3: API Call to send the ticket creation data to ServiceNow
 
-Create an API Call named `ticket_creation_api` according the following template: [ServiceNow: ticket_creation_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#c195b32d-4a33-483e-ab03-a8c5298dd6e9)
+Create an API Call named `ticket_creation_api` according the following template: [ServiceNow: ticket_creation_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 > **Post-requisite:** In the LumApps administrator documentation linked to your extension, you must instruct LumApps administrators on how to update placeholder values. LumApps administrators must import the extension and replace `<snow-category>` used in the **API Call** body with their own value.
 
