@@ -3,14 +3,16 @@ import { FormattedMessage, IntlProvider} from 'react-intl';
 import { Switch } from '@lumx/react';
 import { PredefinedErrorBoundary, useExportProps, useLanguage } from 'lumapps-sdk-js';
 
-import messagesEn from '../translations/en.json'; // traduction EN // 
-import messagesFr from '../translations/fr.json'; // traduction FR // 
-import messagesDe from '../translations/de.json'; // traduction DE // 
-import messagesEs from '../translations/es.json'; // traduction ES // 
-import messagesJp from '../translations/jp.json'; // traduction JP // 
-import messagesIt from '../translations/it.json'; // traduction IT // 
-import messagesCh from '../translations/ch.json'; // traduction CH // 
-import messagesNl from '../translations/nl.json'; // traduction NL // 
+import messagesEn from '../translations/en.json';
+import messagesFr from '../translations/fr.json';
+import messagesDe from '../translations/de.json';
+import messagesEs from '../translations/es.json';
+import messagesJp from '../translations/jp.json';
+import messagesIt from '../translations/it.json';
+import messagesCh from '../translations/ch.json';
+import messagesNl from '../translations/nl.json'; 
+import messagesPt from '../translations/pt.json';
+import messagesPtBr from '../translations/pt-br.json';
 
 type WidgetSettings = import('lumapps-sdk-js').SettingsComponent<
     import('./types').SampleAppGlobalParams,
@@ -42,10 +44,13 @@ export const WidgetSettings: WidgetSettings = (props) => {
         jp: messagesJp,
         it: messagesIt,
         ch: messagesCh,
-        nl: messagesNl
-        
+        nl: messagesNl,
+        pt: messagesPt,
+        "pt-BR":messagesPtBr,
+        "pt-br":messagesPtBr,
     };
-    const lang = useMemo(() => (Object.keys(messages).includes(displayLanguage) ? displayLanguage : 'en'), [
+
+    const lang = useMemo(() => (Object.keys(messages).includes(displayLanguage.replace('_','-')) ? displayLanguage.replace('_','-') : 'en'), [
         displayLanguage,
         messages,
     ]);
