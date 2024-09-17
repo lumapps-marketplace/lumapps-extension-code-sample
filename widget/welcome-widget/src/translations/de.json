@@ -1,0 +1,8 @@
+{
+    "time_of_day": "Tageszeit",
+    "hello": "Guten tag", 
+    "welcome": "Willkommen", 
+    "good_morning": "Guten morgen",  
+    "good_afternoon": "Guten tag",  
+    "good_evening": "Guten abend"
+}
