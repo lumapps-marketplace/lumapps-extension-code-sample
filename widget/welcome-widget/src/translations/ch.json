@@ -1,5 +1,6 @@
 {
-    "time_of_day": "一天中的时间",
+    "settings.time_of_day": "一天中的时间",
+    "settings.font_size": "字体大小",
     "hello": "你好",    
     "welcome": "欢迎",
     "good_morning": "早上好",  

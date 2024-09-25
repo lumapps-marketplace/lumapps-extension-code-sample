@@ -1,5 +1,6 @@
 {
-    "time_of_day": "Hora do dia",
+    "settings.time_of_day": "Hora do dia",
+    "settings.font_size": "Tamanho da letra",
     "hello": "Olá", 
     "welcome":"Bem-vindo",
     "good_morning": "Bom dia",  

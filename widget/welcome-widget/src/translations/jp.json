@@ -1,5 +1,6 @@
 {
-    "time_of_day": "時間",
+    "settings.stime_of_day": "時間",
+    "settings.font_size": "文字サイズ",
     "hello": "こんにちは", 
     "welcome": "ようこそ", 
     "good_morning": "おはようございます",  

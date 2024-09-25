@@ -1,5 +1,6 @@
 {
-    "time_of_day": "Moment de la journée",
+    "settings.time_of_day": "Moment de la journée",
+    "settings.font_size": "Taille de la police",
     "hello": "Bonjour", 
     "welcome": "Bienvenue", 
     "good_morning": "Bonjour",  
