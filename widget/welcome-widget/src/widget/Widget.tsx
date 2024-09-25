@@ -21,7 +21,7 @@ type Widget = import('lumapps-sdk-js').ContentComponent<
     import('./types').SampleAppParams >;
 
 const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) => {
-    const { displayWelcome } = value;
+    const { displayWelcome, fontSize } = value;
     const { firstName } = useCurrentUser();
     const hour = new Date().getHours();
 
@@ -30,8 +30,15 @@ const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) =
     else if (hour < 18) welcomeId = 'good_afternoon';
     else welcomeId = 'good_evening';
 
+    const getStyle = () => {
+        return {
+            color: theme === Theme.dark ? 'wihte' : 'black',
+            fontSize: fontSize
+        }
+    }
+
     return (
-        <div className="widget-welcome" style={ theme === Theme.dark ? { color: 'white' } : { color: 'black' }}>
+        <div className="widget-welcome" style={getStyle()}>
             {displayWelcome ? <FormattedMessage id={welcomeId}></FormattedMessage> : <FormattedMessage id="welcome"></FormattedMessage>}
             <span>, {firstName} </span>
         </div>

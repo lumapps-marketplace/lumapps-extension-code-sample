@@ -1,5 +1,6 @@
 {
-    "time_of_day": "Tageszeit",
+    "settings.time_of_day": "Tageszeit",
+    "settings.font_size": "Schriftgröße",
     "hello": "Guten tag", 
     "welcome": "Willkommen", 
     "good_morning": "Guten morgen",  
