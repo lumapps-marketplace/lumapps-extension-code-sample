@@ -14,6 +14,7 @@ import messagesCh from '../translations/ch.json';
 import messagesNl from '../translations/nl.json'; 
 import messagesPt from '../translations/pt.json';
 import messagesPtBr from '../translations/pt-br.json';
+import messagesPl from '../translations/pl.json';
 
 type Widget = import('lumapps-sdk-js').ContentComponent<
     import('./types').SampleAppGlobalParams,
@@ -48,6 +49,7 @@ const NotificationAwareWidget: Widget = (props) => {
         it: messagesIt,
         ch: messagesCh,
         nl: messagesNl,
+        pl: messagesPl,
         pt: messagesPt,
         "pt-BR":messagesPtBr,
         "pt-br":messagesPtBr,

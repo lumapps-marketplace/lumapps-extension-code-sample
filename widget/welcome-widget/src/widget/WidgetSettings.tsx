@@ -13,6 +13,7 @@ import messagesCh from '../translations/ch.json';
 import messagesNl from '../translations/nl.json'; 
 import messagesPt from '../translations/pt.json';
 import messagesPtBr from '../translations/pt-br.json';
+import messagesPl from '../translations/pl.json';
 
 type WidgetSettings = import('lumapps-sdk-js').SettingsComponent<
     import('./types').SampleAppGlobalParams,
@@ -45,6 +46,7 @@ export const WidgetSettings: WidgetSettings = (props) => {
         it: messagesIt,
         ch: messagesCh,
         nl: messagesNl,
+        pl: messagesPl,
         pt: messagesPt,
         "pt-BR":messagesPtBr,
         "pt-br":messagesPtBr,
