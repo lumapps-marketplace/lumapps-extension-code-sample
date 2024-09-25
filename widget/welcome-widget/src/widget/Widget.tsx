@@ -33,7 +33,7 @@ const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) =
     const getStyle = () => {
         return {
             color: theme === Theme.dark ? 'wihte' : 'black',
-            fontSize: fontSize
+            fontSize: fontSize.value
         }
     }
 

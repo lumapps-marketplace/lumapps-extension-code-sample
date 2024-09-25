@@ -22,20 +22,28 @@ type WidgetSettings = import('lumapps-sdk-js').SettingsComponent<
 
 const WithIntlSettings: WidgetSettings = ({ properties = {}, exportProp }) => {
     const intl = useIntl();
-    const FONT_SIZES = ['16px', '18px', '24px', '32px'];
+    const FONT_SIZES = [{
+        label: '16px',
+        value: 16
+    },{
+        label: '18px',
+        value: 18
+    },{
+        label: '24px',
+        value: 24
+    },{
+        label: '32px',
+        value: 32
+    }];
 
     const [displayWelcome, setDisplayWelcome] = useState(properties.displayWelcome || false);
     const [isOpen, setOpen] = useState(false);
-    const [fontSize, setFontSize] = React.useState<string>(properties.fontSize || '16px');
+    const [fontSize, setFontSize] = React.useState<any>(properties.fontSize || FONT_SIZES[0]);
     
     const closeSelect = () => setOpen(false);
     const toggleSelect = () => setOpen(!isOpen);
-    const selectItem = (item: string) => () => {
-        if (fontSize === item) {
-            setFontSize('');
-        } else {
-            setFontSize(item);
-        }
+    const selectItem = (item: any) => () => {
+        setFontSize(item);
         closeSelect();
     };
 
@@ -52,28 +60,22 @@ const WithIntlSettings: WidgetSettings = ({ properties = {}, exportProp }) => {
                 className="lumx-spacing-margin-top-huge"
                 style={{ width: '100%' }}
                 isOpen={isOpen}
-                value={fontSize}
+                value={fontSize.label}
                 label={intl.formatMessage({ id: 'settings.font_size' })}
                 onInputClick={toggleSelect}
                 onDropdownClose={closeSelect}
             >
                 <List>
-                    {FONT_SIZES.length > 0
-                        ? FONT_SIZES.map((size, index) => (
+                    {FONT_SIZES.map((size, index) => (
                             <ListItem
-                                isSelected={fontSize === size}
+                                isSelected={fontSize.value === size.value}
                                 key={index}
                                 onItemSelected={selectItem(size)}
                                 size={Size.tiny}
                             >
-                                {size}
+                                {size.label}
                             </ListItem>
-                        ))
-                        : [
-                            <ListItem key={0} size={Size.tiny}>
-                                No data
-                            </ListItem>,
-                        ]}
+                        ))}
                 </List>
             </Select>
         </>
