@@ -1,9 +1,9 @@
 {
     "settings.time_of_day": "Tageszeit",
     "settings.font_size": "Schriftgröße",
-    "hello": "Guten tag", 
+    "hello": "Guten Tag", 
     "welcome": "Willkommen", 
     "good_morning": "Guten morgen",  
-    "good_afternoon": "Guten tag",  
+    "good_afternoon": "Guten Tag",  
     "good_evening": "Guten abend"
 }
