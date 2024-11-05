@@ -1,34 +1,25 @@
 {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "body": [
         {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "width": "auto",
-                    "items": [
-                        {
-                            "type": "Image",
-                            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Jira_Logo.svg/2560px-Jira_Logo.svg.png",
-                            "size": "Large"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "type": "Container",
-            "$data": "${actions.ticket_list_api.response.body.issues}",
+            "$data": "${actions.ticket_list_api.response.body.result}",
             "items": [
                 {
                     "size": "Medium",
-                    "text": "${fields.summary}",
+                    "text": "${short_description}",
                     "type": "TextBlock",
                     "wrap": true,
                     "weight": "Bolder"
                 },
                 {
-                    "text": "${fields.description}",
+                    "text": "${number}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "color": "Accent"
+                },
+                {
+                    "text": "${description}",
                     "type": "TextBlock",
                     "wrap": true
                 },
@@ -36,9 +27,10 @@
                     "type": "ActionSet",
                     "actions": [
                         {
+                            "url": "https://<your-instance>.service-now.com/incident.do?sysparm_query=number%3D${number}",
                             "type": "Action.OpenUrl",
-                            "title": "Open ticket",
-                            "url": "https://<your-instance>.atlassian.net/browse/${key}"
+                            "style": "positive",
+                            "title": "Open ticket"
                         }
                     ]
                 }
@@ -48,6 +40,5 @@
         }
     ],
     "type": "AdaptiveCard",
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.6"
 }
