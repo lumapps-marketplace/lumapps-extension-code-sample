@@ -10,7 +10,7 @@
 
 ## Step 1: Get the end user s
 
-Create an API Call named `getuser` according to the following endpoint as a GET Method:
+Create an API Call named `getuser` using the following endpoint, with the GET Method:
 `/api/now/table/sys_user?sysparm_query=email=${user.email}`
 
 ## Step 2: Get the list of tickets - API Call
