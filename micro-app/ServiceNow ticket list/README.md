@@ -8,7 +8,7 @@
 
 - Create a new micro-app according to [Declare your micro-app extension](https://developer.lumapps.com/portal/documentation/micro-app-steps/declare-your-microapp-extension.md). You can use the following icon url: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/ServiceNow_logo.svg/220px-ServiceNow_logo.svg.png`.
 
-## Step 1: Get the end user s
+## Step 1: Get the end user's email
 
 Create an API Call named `getuser` using the following endpoint, with the GET Method:
 `/api/now/table/sys_user?sysparm_query=email=${user.email}`
