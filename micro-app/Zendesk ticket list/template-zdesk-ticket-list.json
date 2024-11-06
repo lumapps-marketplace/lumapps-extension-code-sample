@@ -1,24 +1,24 @@
 {
     "body": [
         {
-                "type": "ColumnSet",
-                "columns": [
-                    {
-                        "type": "Column",
-                        "width": "auto",
-                        "items": [
-                            {
-                                "type": "Image",
-                                "url": "https://w7.pngwing.com/pngs/813/178/png-transparent-logo-brand-zendesk-scalable-graphics-business-text-people-logo-thumbnail.png",
-                                "size": "Large"
-                            }
-                        ]
-                    }
-                ]
-            },
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://cdn.icon-icons.com/icons2/2429/PNG/512/zendesk_logo_icon_147198.png",
+                            "size": "Small"
+                        }
+                    ]
+                }
+            ]
+        },
         {
             "type": "Container",
-            "$data": "${actions.ticket_list_api.response.body.tickets}",
+            "$data": "${actions.listtickets.response.body.results}",
             "items": [
                 {
                     "size": "Medium",
@@ -38,7 +38,8 @@
                         {
                             "type": "Action.OpenUrl",
                             "title": "Open ticket",
-                            "url": "https://lumapps.zendesk.com/agent/tickets/${id}"
+                            "url": "https://lumapps.zendesk.com/agent/tickets/${id}",
+                            "style": "positive"
                         }
                     ]
                 }
