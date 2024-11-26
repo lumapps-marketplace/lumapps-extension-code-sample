@@ -40,7 +40,7 @@ const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) =
     return (
         <div className="widget-welcome" style={getStyle()}>
             {displayWelcome ? <FormattedMessage id={welcomeId}></FormattedMessage> : <FormattedMessage id="welcome"></FormattedMessage>}
-            <span>, {firstName} </span>
+            <span> {firstName}, </span>
         </div>
     );
 };
