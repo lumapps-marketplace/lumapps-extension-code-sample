@@ -1,36 +1,124 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.6",
     "body": [
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "url": "https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/images/logos/servicenow-logo-square.png",
+                                    "size": "Small",
+                                    "width": "50px"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "ServiceNow Ticket Management",
+                                    "weight": "Bolder",
+                                    "size": "Large"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         {
             "type": "Container",
             "$data": "${actions.ticket_list_api.response.body.result}",
             "items": [
                 {
-                    "size": "Medium",
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${number}",
+                                    "weight": "Bolder",
+                                    "color": "Accent",
+                                    "size": "Medium"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Priority: ${priority}",
+                                    "color": "${if(priority == '1', 'Attention', if(priority == '2', 'Warning', 'Default'))}",
+                                    "spacing": "Small"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Status: ${if(state == '1', 'New', if(state == '2', 'In Progress', if(state == '3', 'On Hold', if(state == '4', 'Resolved', if(state == '5', 'Closed', if(state == '6', 'Canceled', 'Unknown')))))) }",
+                                    "color": "${if(state == '1', 'Accent', if(state == '2', 'Good', if(state == '3', 'Warning', if(state == '4', 'Good', if(state == '5', 'Dark', if(state == '6', 'Attention', 'Default'))))))}",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TextBlock",
                     "text": "${short_description}",
-                    "type": "TextBlock",
-                    "wrap": true,
-                    "weight": "Bolder"
-                },
-                {
-                    "text": "${number}",
-                    "type": "TextBlock",
-                    "wrap": true,
-                    "color": "Accent"
-                },
-                {
-                    "text": "${description}",
-                    "type": "TextBlock",
+                    "weight": "Bolder",
+                    "spacing": "Medium",
                     "wrap": true
                 },
                 {
-                    "type": "ActionSet",
-                    "actions": [
+                    "type": "ColumnSet",
+                    "spacing": "Medium",
+                    "columns": [
                         {
-                            "url": "https://<your-instance>.service-now.com/incident.do?sysparm_query=number%3D${number}",
-                            "type": "Action.OpenUrl",
-                            "style": "positive",
-                            "title": "Open ticket"
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**Created:** ${formatDateTime(sys_created_on, 'dd MMM yyyy HH:mm')}",
+                                    "size": "Small",
+                                    "color": "Dark"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "ActionSet",
+                                    "actions": [
+                                        {
+                                            "type": "Action.OpenUrl",
+                                            "title": "View Ticket",
+                                            "url": "https://<your-instance>.service-now.com/incident.do?sysparm_query=number%3D${number}",
+                                            "style": "positive"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }
@@ -38,7 +126,5 @@
             "spacing": "Large",
             "separator": true
         }
-    ],
-    "type": "AdaptiveCard",
-    "version": "1.6"
+    ]
 }
