@@ -1,16 +1,39 @@
 {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.6",
     "body": [
         {
-            "type": "ColumnSet",
-            "columns": [
+            "type": "Container",
+            "style": "emphasis",
+            "items": [
                 {
-                    "type": "Column",
-                    "width": "auto",
-                    "items": [
+                    "type": "ColumnSet",
+                    "columns": [
                         {
-                            "type": "Image",
-                            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Jira_Logo.svg/2560px-Jira_Logo.svg.png",
-                            "size": "Large"
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "url": "https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/images/logos/servicenow-logo-square.png",
+                                    "size": "Small",
+                                    "width": "50px"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "ServiceNow Ticket Management",
+                                    "weight": "Bolder",
+                                    "size": "Large"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -18,27 +41,84 @@
         },
         {
             "type": "Container",
-            "$data": "${actions.ticket_list_api.response.body.issues}",
+            "$data": "${actions.ticket_list_api.response.body.result}",
             "items": [
                 {
-                    "size": "Medium",
-                    "text": "${fields.summary}",
-                    "type": "TextBlock",
-                    "wrap": true,
-                    "weight": "Bolder"
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${number}",
+                                    "weight": "Bolder",
+                                    "color": "Accent",
+                                    "size": "Medium"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Priority: ${priority}",
+                                    "color": "${if(priority == '1', 'Attention', if(priority == '2', 'Warning', 'Default'))}",
+                                    "spacing": "Small"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Status: ${if(state == '1', 'New', if(state == '2', 'In Progress', if(state == '3', 'On Hold', if(state == '4', 'Resolved', if(state == '5', 'Closed', if(state == '6', 'Canceled', 'Unknown')))))) }",
+                                    "color": "${if(state == '1', 'Accent', if(state == '2', 'Good', if(state == '3', 'Warning', if(state == '4', 'Good', if(state == '5', 'Dark', if(state == '6', 'Attention', 'Default'))))))}",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
-                    "text": "${fields.description}",
                     "type": "TextBlock",
+                    "text": "${short_description}",
+                    "weight": "Bolder",
+                    "spacing": "Medium",
                     "wrap": true
                 },
                 {
-                    "type": "ActionSet",
-                    "actions": [
+                    "type": "ColumnSet",
+                    "spacing": "Medium",
+                    "columns": [
                         {
-                            "type": "Action.OpenUrl",
-                            "title": "Open ticket",
-                            "url": "https://<your-instance>.atlassian.net/browse/${key}"
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**Created:** ${formatDateTime(sys_created_on, 'dd MMM yyyy HH:mm')}",
+                                    "size": "Small",
+                                    "color": "Dark"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "ActionSet",
+                                    "actions": [
+                                        {
+                                            "type": "Action.OpenUrl",
+                                            "title": "View Ticket",
+                                            "url": "https://<your-instance>.service-now.com/incident.do?sysparm_query=number%3D${number}",
+                                            "style": "positive"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }
@@ -46,8 +126,5 @@
             "spacing": "Large",
             "separator": true
         }
-    ],
-    "type": "AdaptiveCard",
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.6"
+    ]
 }
