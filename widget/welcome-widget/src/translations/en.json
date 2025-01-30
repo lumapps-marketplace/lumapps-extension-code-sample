@@ -1,0 +1,9 @@
+{
+    "settings.time_of_day": "Time of the day",
+    "settings.font_size": "Font size",
+    "hello": "Hello", 
+    "welcome":"Welcome",
+    "good_morning": "Good Morning",  
+    "good_afternoon": "Good Afternoon",  
+    "good_evening": "Good Evening"
+}

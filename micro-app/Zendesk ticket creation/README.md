@@ -15,7 +15,7 @@ The workflow contains the following elements:
     - 1 branch for when the ticket creation fails
 4. An Adaptive Card for each branch, to display either an error or a success message.
 
-> **Prerequisite:** Create a new micro-app according to [Declare your micro-app extension](https://developer.lumapps.com/portal/documentation/micro-app-steps/declare-your-microapp-extension.md). You can use the following icon url: `https://help.brevo.com/hc/article_attachments/6450414165138`.
+> **Prerequisite:** Create a new micro-app according to [Declare your micro-app extension](https://documenter.getpostman.com/view/32450244/2sA3kYheXh). You can use the following icon url: `https://help.brevo.com/hc/article_attachments/6450414165138`.
 
 Create the elements of the workflow according to the steps in this page and the Developer Portal documentation.
 
@@ -25,7 +25,7 @@ Create an Adaptive Card named `ticket_form` using the following template: [1-tem
 
 ## Step 2: API Call to send the ticket creation data to Zendesk
 
-Create an API Call named `ticket_creation_api` according the following template: [Zendesk: ticket_creation_api](https://documenter.getpostman.com/view/32450244/2sA3kPq5Do#1146f788-60a3-4076-a916-8c18a9404ed5)
+Create an API Call named `ticket_creation_api` according the following template: [Zendesk: ticket_creation_api](https://documenter.getpostman.com/view/32450244/2sA3kYheXh)
 
 For more information about Zendesk APIs, refer to the [Zendesk API reference](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#create-ticket)
 

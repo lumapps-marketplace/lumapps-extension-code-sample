@@ -1,0 +1,560 @@
+{
+	"info": {
+		"_postman_id": "128d953d-3fdc-4d5b-9ec4-43d26c4328c1",
+		"name": "Micro-app API call templates",
+		"description": "**Prerequisites:**\n\n- Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n    \n- Create a connector for the service provider you will use according to [Extension connectors](https://docs.lumapps.com/docs/admin-l43084339674928007extensions).\n    \n\nThis collection can be used as a template for configuring API Calls in LumApps micro-apps.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the micro-app folder to consult the list of examples, each example contains instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32450244"
+	},
+	"item": [
+		{
+			"name": "Jira ticket creation",
+			"item": [
+				{
+					"name": "Jira: get_jira_user_api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jira_base_url}}/rest/api/3/user/search?query=${user.email}",
+							"host": [
+								"{{jira_base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "${user.email}"
+								}
+							]
+						},
+						"description": "In a micro-app API Call, enter `/rest/api/3/user/search` as the endpoint.\n\nIn the Query parameters, enter `query` as the Key and `${user.email}` as the Value."
+					},
+					"response": []
+				},
+				{
+					"name": "Jira: ticket_creation_api",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serviceDeskId\": \"<your-jira-serviceDeskId>\",\n    \"fields\": {\n        \"summary\": \"${actions.ticket_form.inputs.tickettitle}\",\n        \"project\": {\n            \"id\": \"<your-jira-projectId>\"\n        },\n        \"issuetype\": {\n            \"id\": \"<your-jira-issuetype>\"\n        },\n        \"reporter\": {\n            \"id\": \"${actions.get_jira_user_api.response.body.accountId}\"\n        },\n        \"description\": {\n            \"type\": \"${actions.ticket_form.inputs.tickettype}\",\n            \"version\": 1,\n            \"content\": [\n                {\n                    \"type\": \"paragraph\",\n                    \"content\": [\n                        {\n                            \"text\": \"${actions.ticket_form.inputs.ticketdescription}\",\n                            \"type\": \"text\"\n                        }\n                    ]\n                }\n            ]\n        },\n        \"labels\": []\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jira_base_url}}/rest/api/3/issue",
+							"host": [
+								"{{jira_base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"issue"
+							]
+						},
+						"description": "**Post-requisite**: In the LumApps administrator documentation linked to your extension, you must instruct LumApps administrators on how to update placeholder values. LumApps administrators must import the extension and replace , and used in the API Call body with their own values."
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/Jira ticket creation` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "Jira ticket list",
+			"item": [
+				{
+					"name": "Jira: get_jira_user_api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jira_base_url}}/rest/api/3/user/search?query=${user.email}",
+							"host": [
+								"{{jira_base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "${user.email}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jira: ticket_list_api",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jql\": \"reporter = ${actions.get_jira_user_api.response.body.accountId}\",\n    \"startAt\": 0,\n    \"maxResults\": 15,\n    \"fields\": [\n        \"id\",\n        \"key\",\n        \"status\",\n        \"description\",\n        \"summary\",\n        \"customfield_10010\",\n        \"reporter\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jira_base_url}}/rest/api/2/search",
+							"host": [
+								"{{jira_base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"2",
+								"search"
+							]
+						},
+						"description": "For more information on ticket fields and Jira APIs, refer to the Jira [API documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v3).\n"
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/Jira ticket list` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "SAP leave request",
+			"item": [
+				{
+					"name": "Public API: get_date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://timeapi.io/api/Time/current/coordinate?latitude=0&longitude=0",
+							"protocol": "https",
+							"host": [
+								"timeapi",
+								"io"
+							],
+							"path": [
+								"api",
+								"Time",
+								"current",
+								"coordinate"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "0",
+									"description": "You can update the value to change the time zone."
+								},
+								{
+									"key": "longitude",
+									"value": "0",
+									"description": "You can update the value to change the time zone."
+								}
+							]
+						},
+						"description": "To configure an API Call in a micro-app, select the provider type `Public API`.\n\nUse a public API like the one in this example to get the date."
+					},
+					"response": []
+				},
+				{
+					"name": "SAP: leave_balance_api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{sap_base_url}}/rest/timemanagement/absence/v1/timeAccountBalances?$at=${actions.get_date.response.body.year}-${actions.get_date.response.body.month}-${actions.get_date.response.body.day}",
+							"host": [
+								"{{sap_base_url}}"
+							],
+							"path": [
+								"rest",
+								"timemanagement",
+								"absence",
+								"v1",
+								"timeAccountBalances"
+							],
+							"query": [
+								{
+									"key": "$at",
+									"value": "${actions.get_date.response.body.year}-${actions.get_date.response.body.month}-${actions.get_date.response.body.day}",
+									"description": "Variables using data from the get_date API are used to provide the current date in the YYYY-MM-DD format."
+								}
+							]
+						},
+						"description": "Enter `/rest/timemanagement/absence/v1/timeAccountBalances` in the Endpoint field when configuring a micro-app API Call."
+					},
+					"response": []
+				},
+				{
+					"name": "SAP: leave_request_api",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"__metadata\": {\n        \"uri\": \"http://<hostname>/odata/v2/EmployeeTime\",\n        \"type\": \"SFOData.EmployeeTime\"\n    },\n    \"startDate\": \"/Date(${actions.leave_request_form.inputs.startDate})/\",\n    \"endDate\": \"/Date(${actions.leave_request_form.inputs.endDate})/\",\n    \"externalCode\": \"<a unique value>\",\n    \"userIdNav\": {\n        \"__metadata\": {\n            \"uri\": \"https://<hostname>/odata/v2/User('<userId>')\",\n            \"type\": \"SFOData.User\"\n        },\n        \"timeTypeNav\": {\n            \"__metadata\": {\n                \"uri\": \"https://<hostname>/odata/v2/TimeType('${actions.leave_request_form.inputs.typeofleave}')\",\n                \"type\": \"SFOData.TimeType\"\n            }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sap_base_url}}/odata/v2/EmployeeTime",
+							"host": [
+								"{{sap_base_url}}"
+							],
+							"path": [
+								"odata",
+								"v2",
+								"EmployeeTime"
+							]
+						},
+						"description": "**Post-requisite:** In the LumApps administrator documentation linked to your extension, you must instruct LumApps administrators on how to update required values.\n\nIn the body, configure the exetrnalCode and userIdNav."
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/SAP leave request` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "ServiceNow ticket creation",
+			"item": [
+				{
+					"name": "ServiceNow: get_snow_user_api",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						},
+						"followRedirects": false,
+						"disableUrlEncoding": true,
+						"disableCookies": true,
+						"followOriginalHttpMethod": false,
+						"removeRefererHeaderOnRedirect": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{servicenow_base_url}}/api/now/table/sys_user?sysparm_query=email=${email}",
+							"host": [
+								"{{servicenow_base_url}}"
+							],
+							"path": [
+								"api",
+								"now",
+								"table",
+								"sys_user"
+							],
+							"query": [
+								{
+									"key": "sysparm_query",
+									"value": "email=${email}",
+									"description": "Use the LumApps/ServiceNow email to return the sys_id.\nThe email value comes from the execution context of the current user."
+								}
+							]
+						},
+						"description": "In a micro-app API Call, enter `/api/now/table/sys_user` as the endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "ServiceNow: ticket_creation_api",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true,
+							"host": true,
+							"content-length": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"<snow-category>\",\n    \"short_description\": \"${actions.ticket_form.inputs.tickettitle}\",\n    \"description\": \"${actions.ticket_form.inputs.ticketdescription}\",\n    \"urgency\": \"${actions.ticket_form.inputs.tickettype}\",\n    \"caller_id\": \"${actions.account_get_api.response.result.sys_id}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{servicenow_base_url}}/api/now/table/incident",
+							"host": [
+								"{{servicenow_base_url}}"
+							],
+							"path": [
+								"api",
+								"now",
+								"table",
+								"incident"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/ServiceNow ticket creation` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "ServiceNow ticket list",
+			"item": [
+				{
+					"name": "ServiceNow: ticket_list_api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{servicenow_base_url}}/api/now/table/incident",
+							"host": [
+								"{{servicenow_base_url}}"
+							],
+							"path": [
+								"api",
+								"now",
+								"table",
+								"incident"
+							]
+						},
+						"description": "For more information about ServiceNow APIs, refer to the [Table API](https://docs.servicenow.com/bundle/washingtondc-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html#d228766e1289) reference."
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/ServiceNow ticket list` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "Workday leave request",
+			"item": [
+				{
+					"name": "LumApps: get_employee_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{lumapps_base_url}}/_ah/api/lumsites/v1/user/get?email=${user.email}",
+							"host": [
+								"{{lumapps_base_url}}"
+							],
+							"path": [
+								"_ah",
+								"api",
+								"lumsites",
+								"v1",
+								"user",
+								"get"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "${user.email}",
+									"description": "The ${user.email} variable has the value of the email of the current user, based on the LumApps profile of the user."
+								}
+							]
+						},
+						"description": "If the LumApps employee ID is the same as the Workday worker ID, you can use this API to get the worker ID for the current user.\n\nIf you are configuring a micro-app API Call, select LumApps as the provider and use the endpoint `/_ah/api/lumsites/v1/user/get`."
+					},
+					"response": []
+				},
+				{
+					"name": "Workday: leave_balance_api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{workday_base_url}}/balances?worker=${actions.get_employee_id.response.body.employeeId}",
+							"host": [
+								"{{workday_base_url}}"
+							],
+							"path": [
+								"balances"
+							],
+							"query": [
+								{
+									"key": "worker",
+									"value": "${actions.get_employee_id.response.body.employeeId}",
+									"description": "Users must have the same value for their LumApps employeeId as their Workday workerId."
+								}
+							]
+						},
+						"description": "If you are configuring a micro-app API Call, enter `/balances` as the endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Workday: leave_request_api",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"businessProcessParameters\": {\n        \"overallBusinessProcess\": {\n            \"id\": \"\"\n        },\n        \"action\": {\n            \"id\": \"d9e4223e446c11de98360015c5e6daf6\"\n        },\n        \"comment\": \"\",\n        \"transactionStatus\": {\n            \"id\": \"\"\n        }\n    },\n    \"days\": [\n        {\n            \"start\": \"${actions.leave_request_form.inputs.startDate}T${actions.leave_request_form.inputs.startDatePeriod}Z\",\n            \"date\": \"${actions.leave_request_form.inputs.startDate}T${actions.leave_request_form.inputs.startDatePeriod}Z\",\n            \"position\": {\n                \"descriptor\": \"\",\n                \"id\": \"string\"\n            },\n            \"reason\": {\n                \"id\": \"${actions.leave_request_form.inputs.typeofleave}\"\n            },\n            \"end\": \"${actions.leave_request_form.inputs.endDate}T${actions.leave_request_form.inputs.endDatePeriod}Z\",\n            \"dailyQuantity\": \"\",\n            \"timeOffType\": {\n                \"descriptor\": \"\",\n                \"id\": \"string\"\n            },\n            \"comment\": \"\",\n            \"id\": \"string\",\n            \"descriptor\": \"\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{workday_base_url}}/workers/${actions.leave_balance_api.response.data.worker.id}/requestTimeOff",
+							"host": [
+								"{{workday_base_url}}"
+							],
+							"path": [
+								"workers",
+								"${actions.leave_balance_api.response.data.worker.id}",
+								"requestTimeOff"
+							]
+						},
+						"description": "In the body, you can add information according to the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#absenceManagement/v1/post-/workers/-ID-/requestTimeOff), including ID patterns (`^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$`), number of hours for the daily quantity of type off and the kind of time off."
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/Workday leave request` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "Zendesk ticket creation",
+			"item": [
+				{
+					"name": "Zendesk: ticket_creation_api",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticket\": {\n        \"comment\": {\n            \"body\": \"${actions.ticket_form.inputs.ticketdescription}\"\n        },\n        \"priority\": \"${actions.ticket_form.inputs.tickettype}\",\n        \"subject\": \"${actions.ticket_form.inputs.tickettitle}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{zendesk_base_url}}/api/v2/tickets",
+							"host": [
+								"{{zendesk_base_url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"tickets"
+							]
+						},
+						"description": "If you are creating a micro-app, ensure the ticket form variables work in your workflow. In this example, the adaptive card used for the ticket form is named ticket_form. Replace ticket_form with the name of your Adaptive card if it is different."
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/Zendesk ticket creation` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		},
+		{
+			"name": "Zendesk ticket list",
+			"item": [
+				{
+					"name": "Zendesk: ticket_list_api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{zendesk_base_url}}/api/v2/tickets",
+							"host": [
+								"{{zendesk_base_url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "**Prerequisite:** Read the [Micro-app step-by-step guide](https://developer.lumapps.com/portal/documentation/micro-app-steps/micro_app_step_by_step.md) documentation.\n\nIn the [lumapps-extension-code-sample](https://github.com/lumapps-marketplace/lumapps-extension-code-sample) GitHub repository, go to the `micro-app/Zendesk ticket list` folder to consult instructions and Adaptive Card templates. Follow the links in the instructions to the APIs in this collection to configure the APIs you need, in the right order."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jira_base_url",
+			"value": "{jira_base_url}",
+			"type": "string"
+		},
+		{
+			"key": "sap_base_url",
+			"value": "{sap_base_url}",
+			"type": "string"
+		},
+		{
+			"key": "servicenow_base_url",
+			"value": "{servicenow_base_url}",
+			"type": "string"
+		},
+		{
+			"key": "workday_base_url",
+			"value": "{workday_base_url}",
+			"type": "string"
+		},
+		{
+			"key": "zendesk_base_url",
+			"value": "{zendesk_base_url}",
+			"type": "string"
+		},
+		{
+			"key": "lumapps_base_url",
+			"value": "{lumapps_base_url}",
+			"type": "string"
+		}
+	]
+}

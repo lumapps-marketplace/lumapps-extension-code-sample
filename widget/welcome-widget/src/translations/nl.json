@@ -1,0 +1,9 @@
+{
+    "settings.time_of_day": "Tijd van de dag",
+    "settings.font_size": "Lettergrootte",
+    "hello": "Hallo", 
+    "welcome": "welkom", 
+    "good_morning": "Goedemorgen",  
+    "good_afternoon": "Goedemiddag",  
+    "good_evening": "Goedenavond"
+}

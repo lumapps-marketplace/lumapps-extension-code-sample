@@ -38,7 +38,7 @@
                         {
                             "type": "Action.OpenUrl",
                             "title": "Open ticket",
-                            "url": "https://lumapps.zendesk.com/agent/tickets/${id}",
+                            "url": "https://<your-instance>.zendesk.com/agent/tickets/${id}",
                             "style": "positive"
                         }
                     ]
