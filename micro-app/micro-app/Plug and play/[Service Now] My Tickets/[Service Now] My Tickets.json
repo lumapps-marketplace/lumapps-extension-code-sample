@@ -1,0 +1,325 @@
+[
+  {
+    "id": "5499670c-8e2b-4482-be0b-5bf49d7585a9",
+    "name": "Get Snow Domain",
+    "code": "get_snow_domain",
+    "position": {
+      "x": 96,
+      "y": -168
+    },
+    "links": [
+      {
+        "targetId": "190f6355-3a02-418e-816c-3191b4a4da5d"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main (executionContext) {\n\n\tlet output = {};\n\n\tlet url = executionContext.actions.get_user.response.body.result[0].sys_domain.link;\n\tlet domain = url.split('//')[1].split('.')[0];\n\n\treturn domain;\n}"
+    }
+  },
+  {
+    "id": "91f9d8ee-c6b6-458a-9503-85bccc025b36",
+    "name": "failure",
+    "code": "failure",
+    "position": {
+      "x": 1200,
+      "y": 156
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "size": "Default",
+                "text": "❌ We had a technical issue trying to close your ticket. Please contact IT.",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Bolder",
+                "spacing": "Small"
+              }
+            ],
+            "style": "attention"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "5977d6d4-f402-43f8-97e4-887e188570c5",
+    "name": "success",
+    "code": "success",
+    "position": {
+      "x": 1152,
+      "y": -228
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "size": "Default",
+                "text": "✅ Your ticket has been closed.",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Bolder",
+                "spacing": "Small"
+              }
+            ],
+            "style": "good"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "6342ef59-6aa0-48f5-8def-8cb2122435a9",
+    "name": "Action 6342ef59-6aa0-48f5-8def-8cb2122435a9",
+    "code": "action_6342ef59_6aa0_48f5_8def_8cb2122435a9",
+    "position": {
+      "x": 1020,
+      "y": 34
+    },
+    "links": [
+      {
+        "targetId": "5977d6d4-f402-43f8-97e4-887e188570c5",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "908",
+              "rules": [
+                {
+                  "id": "909",
+                  "leftValue": "${actions.close_ticket.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "200"
+                },
+                {
+                  "id": "1006",
+                  "leftValue": "${actions.close_ticket.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "201"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "91f9d8ee-c6b6-458a-9503-85bccc025b36",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "f53cce3e-23ed-44e7-bfb5-e523c583e470",
+    "name": "closeTicket",
+    "code": "close_ticket",
+    "position": {
+      "x": 744,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "6342ef59-6aa0-48f5-8def-8cb2122435a9"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "PATCH",
+        "body": "{\"state\": \"7\", \"close_code\": \"Closed/Resolved by Caller\", \"close_notes\": \"Incident closed via API\"}",
+        "path": "/now/table/incident/${actions.displaytickets.inputs.ticketid}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "f6ab92dd-67d8-4553-8473-25dcb8c59eba",
+    "name": "getUser",
+    "code": "get_user",
+    "position": {
+      "x": -60,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "5499670c-8e2b-4482-be0b-5bf49d7585a9"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/sys_user?sysparm_query=email=${user.email}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "9b746598-2e85-43a6-81ad-0433ca824fb0",
+    "name": "displaytickets",
+    "code": "displaytickets",
+    "position": {
+      "x": 468,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "f53cce3e-23ed-44e7-bfb5-e523c583e470"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "$data": "${actions.get_tickets.response.body.result}",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Default",
+                    "text": "${short_description}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder",
+                    "spacing": "Small"
+                  },
+                  {
+                    "size": "Small",
+                    "text": "N° ${number} - ${toUpper(category)}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "color": "Accent",
+                    "spacing": "None",
+                    "isSubtle": true
+                  },
+                  {
+                    "text": "${description}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "spacing": "None"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "data": {
+                          "ticketid": "${sys_id}"
+                        },
+                        "type": "Action.Execute",
+                        "title": "Close"
+                      },
+                      {
+                        "url": "https://ven07623.service-now.com/incident.do?sysparm_query=number%3D${number}",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "Open"
+                      }
+                    ],
+                    "spacing": "Medium"
+                  }
+                ],
+                "width": "110px"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "190f6355-3a02-418e-816c-3191b4a4da5d",
+    "name": "get_tickets",
+    "code": "get_tickets",
+    "position": {
+      "x": 240,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "9b746598-2e85-43a6-81ad-0433ca824fb0"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/incident?sysparm_limit=5&sysparm_query=caller_id=${actions.get_user.response.body.result[0].sys_id}^stateNOT%20IN7",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "d15d3943-536d-46ea-a8d3-e8d8eb0cb8f8",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -288,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "f6ab92dd-67d8-4553-8473-25dcb8c59eba"
+      }
+    ],
+    "type": "trigger"
+  }
+]

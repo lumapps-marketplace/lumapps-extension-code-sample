@@ -1,0 +1,174 @@
+[
+  {
+    "id": "2ea20f96-621b-4103-9e03-edc527ac9d43",
+    "name": "displayleavebalances",
+    "code": "displayleavebalances",
+    "position": {
+      "x": 684,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Workday_logo.svg/2560px-Workday_logo.svg.png",
+            "size": "Large",
+            "type": "Image"
+          },
+          {
+            "type": "ColumnSet",
+            "style": "accent",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Type of leave",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": "stretch",
+                "backgroundImage": {
+                  "horizontalAlignment": "Center"
+                },
+                "horizontalAlignment": "Center"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Remaining amount",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": "stretch",
+                "backgroundImage": {
+                  "horizontalAlignment": "Center"
+                },
+                "horizontalAlignment": "Center"
+              }
+            ]
+          },
+          {
+            "type": "ColumnSet",
+            "$data": "${actions.getbalances.response.body.data}",
+            "style": "warning",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "${absencePlan.descriptor}",
+                    "type": "TextBlock",
+                    "wrap": true
+                  }
+                ],
+                "width": "stretch",
+                "horizontalAlignment": "Center"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "${quantity} ${unit.descriptor}",
+                    "type": "TextBlock",
+                    "wrap": true
+                  }
+                ],
+                "width": "stretch",
+                "horizontalAlignment": "Center"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "cf6870d3-dcef-4732-a3d3-2dcd0fcce2e9",
+    "name": "getbalances",
+    "code": "getbalances",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "2ea20f96-621b-4103-9e03-edc527ac9d43"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "workday"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/api/absenceManagement/v1/lumapps_dpt1/balances",
+        "queryParams": [
+          {
+            "key": "worker",
+            "value": "${actions.getworkerid.response.body.id}"
+          }
+        ],
+        "url": ""
+      },
+      "providerType": "workday"
+    }
+  },
+  {
+    "id": "e3726d81-7616-4d08-b91a-7b6a04d09d38",
+    "name": "getworkerid",
+    "code": "getworkerid",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "cf6870d3-dcef-4732-a3d3-2dcd0fcce2e9"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "workday"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/api/absenceManagement/v1/lumapps_dpt1/workers/me",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "workday"
+    }
+  },
+  {
+    "id": "a2402f9b-3ee8-4c79-9afb-e5f7a1343c98",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "e3726d81-7616-4d08-b91a-7b6a04d09d38"
+      }
+    ],
+    "type": "trigger"
+  }
+]

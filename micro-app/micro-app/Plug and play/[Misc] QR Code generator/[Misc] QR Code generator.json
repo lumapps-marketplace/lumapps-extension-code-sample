@@ -1,0 +1,152 @@
+[
+  {
+    "id": "4cee23fd-b544-4b2b-a0ce-ebc956e2cd4e",
+    "name": "formatUrl",
+    "code": "format_url",
+    "position": {
+      "x": 420,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "7006a2a2-c2f1-41eb-91f1-455c5fdb6ffa"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object}  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // In this function, you can build an output from the execution context.\n    // You can change the content of this function but do not rename it.\n    // The result of this function will be available in the next action.\n\n    // Declaration of the output variable.\n    let output = {};\n\n    // Extract the user input text and size from executionContext\n    const userInputText = executionContext.actions.user_input.inputs.text;\n    const userInputSize = executionContext.actions.user_input.inputs.size || '100'; // Default size is 100 if not provided\n\n    //const userInputText = \"www.google.com\"\n    //const userInputSize = \"200\"\n\n    // Construct the size string (format: 100x100 for a square)\n    const qrCodeSize = `${userInputSize}x${userInputSize}`;\n\n    // Construct the URL with the user input text and size\n    const qrCodeUrl = `http://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userInputText)}&size=${qrCodeSize}`;\n\n    // Set the qrCodeUrl in the output object\n    output = qrCodeUrl;\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "7006a2a2-c2f1-41eb-91f1-455c5fdb6ffa",
+    "name": "displayQrCode",
+    "code": "display_qr_code",
+    "position": {
+      "x": 612,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "extraLarge",
+            "text": "Here is your generated QR Code!",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "accent",
+            "weight": "bolder",
+            "spacing": "medium"
+          },
+          {
+            "size": "default",
+            "text": "Scan the code below with your mobile device to access the information.",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "default",
+            "spacing": "small"
+          },
+          {
+            "url": "${actions.format_url.output}",
+            "type": "Image"
+          },
+          {
+            "size": "small",
+            "text": "Right-click on the image to download it.",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "good",
+            "spacing": "medium"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "4d1af5f6-e588-4f93-96a6-5a4f378ba169",
+    "name": "userInput",
+    "code": "user_input",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "4cee23fd-b544-4b2b-a0ce-ebc956e2cd4e"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "size": "extraLarge",
+                "text": "QR Code Generator",
+                "type": "TextBlock",
+                "wrap": true,
+                "color": "accent",
+                "style": "heading"
+              },
+              {
+                "id": "text",
+                "type": "Input.Text",
+                "label": "Text to transform to QR code",
+                "style": "emphasis",
+                "isRequired": true,
+                "placeholder": "Enter text here..."
+              },
+              {
+                "id": "size",
+                "max": 500,
+                "min": 50,
+                "type": "Input.Number",
+                "label": "Size of the QR code in pixel",
+                "value": 100,
+                "placeholder": "default value 100x100"
+              }
+            ],
+            "style": "default",
+            "spacing": "medium"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Generate QR Code"
+              }
+            ],
+            "spacing": "large"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "f9445bba-a293-482e-9bba-bd604c95c738",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "4d1af5f6-e588-4f93-96a6-5a4f378ba169"
+      }
+    ],
+    "type": "trigger"
+  }
+]

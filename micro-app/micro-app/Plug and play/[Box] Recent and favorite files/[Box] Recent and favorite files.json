@@ -1,0 +1,240 @@
+[
+  {
+    "id": "f9711e12-8ddc-4900-8ee4-9125195e2a61",
+    "name": "getrecentitems",
+    "code": "getrecentitems",
+    "position": {
+      "x": 324,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "05b34840-dfb2-422e-983b-a12900e97255"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "box"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/2.0/recent_items?limit=5",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "box"
+    }
+  },
+  {
+    "id": "aad5764d-dd7e-4d26-9536-3b1519cb465f",
+    "name": "displayfiles",
+    "code": "displayfiles",
+    "position": {
+      "x": 1116,
+      "y": 48
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Medium",
+                    "text": "My Recent Files",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "[${item.name}](https://publicissandbox.ent.box.com/file/${item.id})",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$data": "${actions.getrecentitems.response.body.entries}",
+                    "spacing": "Small"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Medium",
+                    "text": "My Favorites",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "[${name}](https://publicissandbox.ent.box.com/file/${id})",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$data": "${actions.getfavorites.response.body.entries}"
+                  },
+                  {
+                    "text": "You currently have no favorite files in Lionbox",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${actions.getfavorites.response.body.total_count == 0}",
+                    "horizontalAlignment": "Center"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "url": "https://publicissandbox.ent.box.com/",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "More"
+                      }
+                    ]
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "fac73ab9-2e8a-4a84-a123-88085fefc1d4",
+    "name": "getfavorites",
+    "code": "getfavorites",
+    "position": {
+      "x": 840,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "aad5764d-dd7e-4d26-9536-3b1519cb465f"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "box"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/2.0/collections/${actions.getcollections.response.body.entries[0].id}/items?limit=5",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "box"
+    }
+  },
+  {
+    "id": "05b34840-dfb2-422e-983b-a12900e97255",
+    "name": "getcollections",
+    "code": "getcollections",
+    "position": {
+      "x": 576,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "fac73ab9-2e8a-4a84-a123-88085fefc1d4"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "box"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/2.0/collections",
+        "queryParams": [
+          {
+            "key": "collection_type",
+            "value": "favorites"
+          }
+        ],
+        "url": ""
+      },
+      "providerType": "box"
+    }
+  },
+  {
+    "id": "b0c1ce7c-6408-414a-9391-ea2d477eb48c",
+    "name": "getuser",
+    "code": "getuser",
+    "position": {
+      "x": 84,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "f9711e12-8ddc-4900-8ee4-9125195e2a61"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "box"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/2.0/users/me",
+        "queryParams": [
+          {
+            "key": "Authotization",
+            "value": "Bearer"
+          }
+        ],
+        "url": ""
+      },
+      "providerType": "box"
+    }
+  },
+  {
+    "id": "b5922448-ec22-46d4-96e1-98de238bbd1f",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -228,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "b0c1ce7c-6408-414a-9391-ea2d477eb48c"
+      }
+    ],
+    "type": "trigger"
+  }
+]

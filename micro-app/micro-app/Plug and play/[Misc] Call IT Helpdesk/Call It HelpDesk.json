@@ -1,0 +1,84 @@
+[
+  {
+    "id": "9f68d66d-d0a5-4877-a31d-f0b392c5246b",
+    "name": "Display IT Support button",
+    "code": "display_it_support_button",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "https://cdn.pixabay.com/photo/2021/10/29/21/40/phone-icon-6753051_960_720.png",
+                    "size": "Small",
+                    "type": "Image"
+                  }
+                ],
+                "width": "auto"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Click here to call your IT helpdesk",
+                    "type": "TextBlock",
+                    "wrap": true
+                  }
+                ],
+                "width": "stretch",
+                "verticalContentAlignment": "Center"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "actions": [
+          {
+            "url": "tel:${actions.start.inputVariables.itdesknumber}",
+            "type": "Action.OpenUrl",
+            "style": "positive",
+            "title": "Call now"
+          }
+        ],
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "fdbbcaad-87cc-4b75-92b6-f5998ac13e2f",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "9f68d66d-d0a5-4877-a31d-f0b392c5246b"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "itdesknumber",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "+3300000000"
+        }
+      ]
+    }
+  }
+]
