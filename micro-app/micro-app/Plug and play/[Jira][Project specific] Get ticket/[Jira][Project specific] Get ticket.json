@@ -1,0 +1,367 @@
+[
+  {
+    "id": "48c2ee56-ef46-40dc-be62-e0226477802b",
+    "name": "getuser",
+    "code": "getuser",
+    "position": {
+      "x": -120,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "535376b4-77b9-41df-8a66-aa7143210dc6"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/v2/organizations/${organization.id}/users/${user.id}/profile?includeOrgChart=false",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "lumapps",
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      }
+    }
+  },
+  {
+    "id": "99438abc-cfc6-43c7-a8d1-6a4072345f75",
+    "name": "Display User list",
+    "code": "display_user_list",
+    "position": {
+      "x": 792,
+      "y": 36
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "type": "ColumnSet",
+            "$when": "${actions.jira_get_user_ticket.response.body.total > 0}",
+            "bleed": true,
+            "style": "accent",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Issue",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": 150
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Status",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": 100
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Summary",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": 300
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Priority",
+                    "type": "TextBlock",
+                    "weight": "Bolder",
+                    "horizontalAlignment": "Center"
+                  }
+                ],
+                "width": 200
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Issue Type",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": 200
+              }
+            ],
+            "spacing": "None"
+          },
+          {
+            "type": "Container",
+            "$when": "${actions.jira_get_user_ticket.response.body.total > 0}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "$data": "${subArray(actions.jira_get_user_ticket.response.body.issues,0)}",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "${key}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "spacing": "Medium"
+                      }
+                    ],
+                    "width": 150
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "${fields.status.name}",
+                        "type": "TextBlock",
+                        "wrap": true
+                      }
+                    ],
+                    "width": 100
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "[${fields.summary}](https://publicissapient.atlassian.net/browse/${key})",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "maxLines": 2,
+                        "horizontalAlignment": "Left"
+                      }
+                    ],
+                    "width": 300
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "${substring(fields.priority.name,0,2)}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "horizontalAlignment": "Center"
+                      }
+                    ],
+                    "width": 200
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "${fields.issuetype.name}",
+                        "type": "TextBlock",
+                        "wrap": true
+                      }
+                    ],
+                    "width": 200
+                  }
+                ]
+              }
+            ],
+            "spacing": "Medium"
+          },
+          {
+            "type": "ColumnSet",
+            "$when": "${actions.jira_get_user_ticket.response.body.total > 0}",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "url": "https://publicissapient.atlassian.net/servicedesk/customer/portal/7",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "Log an Issue"
+                      }
+                    ]
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "url": "https://publicissapient.atlassian.net/jira/servicedesk/projects/DOJO/queues/custom/88",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "More"
+                      }
+                    ]
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "$when": "${actions.jira_get_user_ticket.response.body.total == 0}",
+            "items": [
+              {
+                "size": "Medium",
+                "text": "You currently have no open issues",
+                "type": "TextBlock",
+                "wrap": true,
+                "style": "default",
+                "weight": "Bolder",
+                "horizontalAlignment": "Center"
+              },
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "width": "stretch"
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "type": "ActionSet",
+                        "actions": [
+                          {
+                            "url": "https://publicissapient.atlassian.net/servicedesk/customer/portal/7",
+                            "type": "Action.OpenUrl",
+                            "style": "positive",
+                            "title": "Log an Issue"
+                          }
+                        ]
+                      }
+                    ],
+                    "width": "stretch"
+                  }
+                ],
+                "spacing": "Medium"
+              }
+            ],
+            "spacing": "Large"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "555ad7a0-32b9-4c9a-bc0f-c394b51009a2",
+    "name": "Jira Get User ticket",
+    "code": "jira_get_user_ticket",
+    "position": {
+      "x": 456,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "99438abc-cfc6-43c7-a8d1-6a4072345f75"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"jql\": \"reporter = ${actions.getaccid.response.body[0].accountId} AND project=${actions.start.inputVariables.projectname} AND status NOT IN (\\\"Resolved\\\", \\\"Closed\\\")\" ,\r\n  \"startAt\": 0,\r\n  \"maxResults\": 3,\r\n  \"fields\": [\r\n    \"id\",\r\n    \"key\",\r\n    \"status\",\r\n    \"description\",\r\n    \"summary\",\r\n    \"reporter\",\r\n    \"project\", \r\n    \"priority\",\r\n    \"duedate\",\r\n    \"issuetype\"\r\n  \r\n  ]\r\n}\r\n",
+        "path": "/rest/api/3/search",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "535376b4-77b9-41df-8a66-aa7143210dc6",
+    "name": "Getaccid",
+    "code": "getaccid",
+    "position": {
+      "x": 144,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "555ad7a0-32b9-4c9a-bc0f-c394b51009a2"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/3/user/search?query=${actions.getuser.response.body.contactFields[0].contactId}",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "10c81ab0-fa05-4fc2-b926-46ffce6b3c03",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -372,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "48c2ee56-ef46-40dc-be62-e0226477802b"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "projectname",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "DOJO"
+        }
+      ]
+    }
+  }
+]

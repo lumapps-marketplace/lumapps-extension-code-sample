@@ -1,0 +1,613 @@
+[
+  {
+    "id": "fd1ca254-7b3c-4ef7-88ca-301e52f36ec2",
+    "name": "Result-NOK",
+    "code": "result_n_o_k",
+    "position": {
+      "x": 1116,
+      "y": 144
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Zendesk_logo.svg/1280px-Zendesk_logo.svg.png",
+                    "size": "Medium",
+                    "type": "Image",
+                    "horizontalAlignment": "Center"
+                  }
+                ],
+                "width": "auto",
+                "height": "stretch",
+                "horizontalAlignment": "Center",
+                "verticalContentAlignment": "Center"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "❌ Il y a eu un problème lors de la création du ticket.",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${langTheHive == 'fr'}"
+                  },
+                  {
+                    "text": "❌ Es gab ein Problem bei der Erstellung des Tickets.",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${langTheHive == 'de'}"
+                  },
+                  {
+                    "text": "❌ Se ha producido un problema al crear el ticket.",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${langTheHive == 'es'}"
+                  },
+                  {
+                    "text": "❌ There has been a problem creating the ticket.",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${and(langTheHive != 'fr',langTheHive != 'de',langTheHive != 'es')}"
+                  }
+                ],
+                "width": "stretch",
+                "verticalContentAlignment": "Center"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "36c6853c-47ec-4857-b292-e22659f56eab",
+    "name": "Result-OK",
+    "code": "result_o_k",
+    "position": {
+      "x": 1104,
+      "y": -192
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Zendesk_logo.svg/1280px-Zendesk_logo.svg.png",
+                    "size": "Medium",
+                    "type": "Image",
+                    "horizontalAlignment": "Center"
+                  }
+                ],
+                "width": "auto",
+                "height": "stretch",
+                "horizontalAlignment": "Center",
+                "verticalContentAlignment": "Center"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "✅ Votre ticket a bien été créé sous le numéro [{{ticket_id}} ↗](https://support.lumapps.com/hc/en-us/requests/{{ticket_id}})",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${langTheHive == 'fr'}"
+                  },
+                  {
+                    "text": "✅ Ihr Ticket wurde tatsächlich unter der Nummer [{{ticket_id}} ↗](https://support.lumapps.com/hc/en-us/requests/{{ticket_id}})",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${langTheHive == 'de'}"
+                  },
+                  {
+                    "text": "✅ Su ticket se creó con el número [{{ticket_id}} ↗](https://support.lumapps.com/hc/en-us/requests/{{ticket_id}})",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${langTheHive == 'es'}"
+                  },
+                  {
+                    "text": "✅ Your ticket was created under number [{{ticket_id}} ↗](https://support.lumapps.com/hc/en-us/requests/{{ticket_id}})",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "$when": "${and(langTheHive != 'fr',langTheHive != 'de',langTheHive != 'es')}"
+                  }
+                ],
+                "width": "stretch",
+                "verticalContentAlignment": "Center"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "9e5f4cdd-4837-4d06-97d8-20a81bdac57f",
+    "name": "Action 9e5f4cdd-4837-4d06-97d8-20a81bdac57f",
+    "code": "action_9e5f4cdd_4837_4d06_97d8_20a81bdac57f",
+    "position": {
+      "x": 912,
+      "y": 46
+    },
+    "links": [
+      {
+        "targetId": "36c6853c-47ec-4857-b292-e22659f56eab",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "4017",
+              "rules": [
+                {
+                  "id": "4018",
+                  "leftValue": "${actions}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "200"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "fd1ca254-7b3c-4ef7-88ca-301e52f36ec2",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "4149",
+              "rules": [
+                {
+                  "id": "4150",
+                  "leftValue": "${actions}",
+                  "operator": {
+                    "operation": "notEquals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.NOT_EQUALS"
+                  },
+                  "rightValue": "200"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "5b9d9f1d-2855-4e7d-aa5b-c23e0291e64c",
+    "name": "API - Create ticket",
+    "code": "a_p_i_create_ticket",
+    "position": {
+      "x": 684,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "9e5f4cdd-4837-4d06-97d8-20a81bdac57f"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "zendesk"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\n  \"ticket\": {\n    \"ticket_form_id\": 360000990439,\n    \"comment\": {\n      \"body\": \"${actions.form_create_ticket.inputs.Description}\"\n    },\n    \"subject\": \"${actions.form_create_ticket.inputs.Subject}\",\n    \"requester\": {\n      \"email\": \"${user.email}\"\n    },\n    \"custom_fields\": [\n      {\n        \"id\": 360014353140,\n        \"value\": \"${actions.form_create_ticket.inputs.Feature}\"\n      },\n      {\n        \"id\": 360014470800,\n        \"value\": \"${actions.form_create_ticket.inputs.Type}\"\n      },\n      {\n        \"id\": 360014435439,\n        \"value\": \"${actions.form_create_ticket.inputs.Steps}\"\n      },\n      {\n        \"id\": 360014448219,\n        \"value\": \"${actions.form_create_ticket.inputs.URLs}\"\n      },\n      {\n        \"id\": 360014478720,\n        \"value\": \"${actions.form_create_ticket.inputs.ImpactedUsers}\"\n      },\n      {\n        \"id\": 360016785700,\n        \"value\": \"${actions.form_create_ticket.inputs.BusinessImpact}\"\n      }\n    ]\n  }\n}",
+        "path": "/tickets",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "zendesk"
+    }
+  },
+  {
+    "id": "37ec3019-55c1-4eba-9e6a-f1574743cc32",
+    "name": "Form - Create Ticket",
+    "code": "form_create_ticket",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "5b9d9f1d-2855-4e7d-aa5b-c23e0291e64c"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Ask questions in the LumApps Community. Create support tickets below.",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "None"
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Zendesk_logo.svg/1280px-Zendesk_logo.svg.png",
+                    "size": "Large",
+                    "type": "Image",
+                    "selectAction": {
+                      "url": "https://support.lumapps.com/hc/en-us/requests/",
+                      "role": "Link",
+                      "type": "Action.OpenUrl"
+                    }
+                  }
+                ],
+                "width": "auto",
+                "verticalContentAlignment": "Center"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Créer un ticket",
+                    "type": "TextBlock",
+                    "$when": "${langTheHive == 'fr'}",
+                    "color": "Accent",
+                    "style": "heading",
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "Ein Ticket erstellen",
+                    "type": "TextBlock",
+                    "$when": "${langTheHive == 'de'}",
+                    "color": "Accent",
+                    "style": "heading",
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "Crear un ticket",
+                    "type": "TextBlock",
+                    "$when": "${langTheHive == 'es'}",
+                    "color": "Accent",
+                    "style": "heading",
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "Create a ticket",
+                    "type": "TextBlock",
+                    "$when": "${and(langTheHive != 'fr',langTheHive != 'de',langTheHive != 'es')}",
+                    "color": "Accent",
+                    "style": "heading",
+                    "weight": "Bolder"
+                  },
+                  {
+                    "size": "Small",
+                    "text": "_Support technique et problèmes_",
+                    "type": "TextBlock",
+                    "$when": "${langTheHive == 'fr'}",
+                    "spacing": "Small",
+                    "isSubtle": true
+                  },
+                  {
+                    "size": "Small",
+                    "text": "_Technische Unterstützung und Probleme_",
+                    "type": "TextBlock",
+                    "$when": "${langTheHive == 'de'}",
+                    "spacing": "Small",
+                    "isSubtle": true
+                  },
+                  {
+                    "size": "Small",
+                    "text": "_Soporte técnico y problemas_",
+                    "type": "TextBlock",
+                    "$when": "${langTheHive == 'es'}",
+                    "spacing": "Small",
+                    "isSubtle": true
+                  },
+                  {
+                    "size": "Small",
+                    "text": "_Technical support and issues_",
+                    "type": "TextBlock",
+                    "$when": "${and(langTheHive != 'fr',langTheHive != 'de',langTheHive != 'es')}",
+                    "spacing": "Small",
+                    "isSubtle": true
+                  }
+                ],
+                "width": "stretch",
+                "horizontalAlignment": "Center",
+                "verticalContentAlignment": "Center"
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "id": "Feature",
+                "type": "Input.ChoiceSet",
+                "label": "${if(langTheHive == 'fr', 'Quelle est la fonctionnalité qui vous pose problème ?', if(langTheHive == 'de', 'Mit welcher Funktion haben Sie Probleme?', if(langTheHive == 'es', '¿Con qué funcionalidad tiene problemas?', 'What feature are you having trouble with ?')))}",
+                "choices": [
+                  {
+                    "title": "Accessibility",
+                    "value": "accessibility"
+                  },
+                  {
+                    "title": "Analytics",
+                    "value": "lumapps_analytics"
+                  },
+                  {
+                    "title": "Collaborative Suite Integration (Drive, Teams, Slack...)",
+                    "value": "collaborative_suite_integration"
+                  },
+                  {
+                    "title": "Communities",
+                    "value": "communities"
+                  },
+                  {
+                    "title": "Companion",
+                    "value": "companion"
+                  },
+                  {
+                    "title": "Content & Page design",
+                    "value": "content___page_design"
+                  },
+                  {
+                    "title": "Digital Assistant",
+                    "value": "digital_assistant"
+                  },
+                  {
+                    "title": "Employee Social Advocacy",
+                    "value": "employee_social_advocacy"
+                  },
+                  {
+                    "title": "Extensions",
+                    "value": "extensions"
+                  },
+                  {
+                    "title": "Installation",
+                    "value": "installation"
+                  },
+                  {
+                    "title": "Journeys",
+                    "value": "journeys"
+                  },
+                  {
+                    "title": "Login",
+                    "value": "login"
+                  },
+                  {
+                    "title": "LumApps API, Copy, Toolbox",
+                    "value": "api"
+                  },
+                  {
+                    "title": "LumApps Play",
+                    "value": "lumapps_play"
+                  },
+                  {
+                    "title": "LumWork",
+                    "value": "lumwork"
+                  },
+                  {
+                    "title": "Media",
+                    "value": "media"
+                  },
+                  {
+                    "title": "Mobile",
+                    "value": "mobile"
+                  },
+                  {
+                    "title": "Navigation",
+                    "value": "navigation"
+                  },
+                  {
+                    "title": "Notifications",
+                    "value": "notifications"
+                  },
+                  {
+                    "title": "Other",
+                    "value": "other"
+                  },
+                  {
+                    "title": "Pixel Perfect (mobile)",
+                    "value": "pixel_perfect__mobile_"
+                  },
+                  {
+                    "title": "Platform/Site administration",
+                    "value": "platform/site_administration"
+                  },
+                  {
+                    "title": "Search",
+                    "value": "lumapps_search"
+                  },
+                  {
+                    "title": "Spaces",
+                    "value": "spaces"
+                  },
+                  {
+                    "title": "Synchronisation (users/groups)",
+                    "value": "synchronisation__users/groups_"
+                  },
+                  {
+                    "title": "User Directory & User Profile",
+                    "value": "user_directory___user_profile_"
+                  }
+                ],
+                "placeholder": "-"
+              },
+              {
+                "id": "Type",
+                "type": "Input.ChoiceSet",
+                "label": "${if(langTheHive == 'fr', 'Quelle est la nature de votre requête ?', if(langTheHive == 'de', 'Was ist die Art Ihrer Anfrage?', if(langTheHive == 'es', '¿Cuál es la finalidad de su consulta?', 'What is the nature of your query ?')))}",
+                "choices": [
+                  {
+                    "title": "Product question",
+                    "value": "product_question"
+                  },
+                  {
+                    "title": "Bug report",
+                    "value": "bug_report"
+                  },
+                  {
+                    "title": "Other/Task",
+                    "value": "other_task"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "-"
+              },
+              {
+                "id": "BusinessImpact",
+                "type": "Input.ChoiceSet",
+                "label": "${if(langTheHive == 'fr', 'Impact sur l\\'entreprise', if(langTheHive == 'de', 'Geschäftliche Auswirkungen', if(langTheHive == 'es', 'Impacto en la empresa', 'Business impact')))}",
+                "choices": [
+                  {
+                    "title": "Critical - Severe outage/downtime",
+                    "value": "critical"
+                  },
+                  {
+                    "title": "Major - A major functionality has stopped working",
+                    "value": "major"
+                  },
+                  {
+                    "title": "Moderate - Functionality impaired/workaround available",
+                    "value": "moderate"
+                  },
+                  {
+                    "title": "Minor - Issue with the setup",
+                    "value": "minor"
+                  }
+                ],
+                "placeholder": "-"
+              },
+              {
+                "id": "Subject",
+                "type": "Input.Text",
+                "label": "${if(langTheHive == 'fr', 'Sujet', if(langTheHive == 'de', 'Thema', if(langTheHive == 'es', 'Asunto', 'Subject')))}",
+                "isRequired": true
+              },
+              {
+                "id": "Description",
+                "type": "Input.Text",
+                "label": "${if(langTheHive == 'fr', 'Description', if(langTheHive == 'de', 'Beschreibung', if(langTheHive == 'es', 'Descripción', 'Description')))}",
+                "isRequired": true,
+                "isMultiline": true
+              },
+              {
+                "id": "Steps",
+                "type": "Input.Text",
+                "label": "${if(langTheHive == 'fr', 'Etapes à suivre pour reproduire', if(langTheHive == 'de', 'Schritte zur Reproduktion', if(langTheHive == 'es', 'Pasos para reproducir', 'Steps to reproduce')))}",
+                "isRequired": true,
+                "isMultiline": true
+              },
+              {
+                "id": "URLs",
+                "type": "Input.Text",
+                "label": "${if(langTheHive == 'fr', 'URLs (informez au moins une URL avec https://)', if(langTheHive == 'de', 'URLs (informieren Sie mindestens eine URL mit https://)', if(langTheHive == 'es', 'URL (informe al menos de una URL con https://)', 'URLs (inform at least one URL with https://)')))}",
+                "isRequired": true
+              },
+              {
+                "text": "_${if(langTheHive == 'fr', 'Si le problème touche toutes les URLs : </br> 👉 copier/coller au moins une URL touchée par le problème.', if(langTheHive == 'de', 'Wenn das Problem alle URLs betrifft : </br> 👉 kopieren/einfügen Sie mindestens eine URL, die von dem Problem betroffen ist', if(langTheHive == 'es', 'Si el problema afecta a todas las URL : </br> 👉 copie y pegue al menos una URL afectada por el problema.', 'If the issue impacts all the URLs : </br> 👉 copy/paste at least one URL impacted by the issue')))}_",
+                "type": "TextBlock",
+                "wrap": true,
+                "spacing": "none"
+              },
+              {
+                "id": "ImpactedUsers",
+                "type": "Input.Text",
+                "label": "${if(langTheHive == 'fr', 'Utilisateurs concernés (indiquer au moins une adresse électronique)', if(langTheHive == 'de', 'Betroffene Benutzer (geben Sie mindestens eine E-Mail-Adresse an)', if(langTheHive == 'es', 'Usuarios afectados (indique al menos una dirección de correo electrónico)', 'Impacted users (inform at least one email address)')))}",
+                "isRequired": true,
+                "placeholder": "Impacted users (inform at least one email address)"
+              },
+              {
+                "type": "ActionSet",
+                "actions": [
+                  {
+                    "type": "Action.Execute",
+                    "title": "${if(langTheHive == 'fr', 'Valider', if(langTheHive == 'de', 'Bestätigen', if(langTheHive == 'es', 'Confirmar', 'Submit')))}"
+                  }
+                ]
+              }
+            ],
+            "spacing": "Medium",
+            "separator": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "441b044a-1938-44e3-84a7-474b977b4ee9",
+    "name": "Get Lumapps User Infos",
+    "code": "get_lumapps_user_infos",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "37ec3019-55c1-4eba-9e6a-f1574743cc32"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/user/list?email=${user.email}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "lumapps"
+    }
+  },
+  {
+    "id": "ccc72781-f045-40e1-8581-c09c82fbec27",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "441b044a-1938-44e3-84a7-474b977b4ee9"
+      }
+    ],
+    "type": "trigger"
+  }
+]

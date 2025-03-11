@@ -1,0 +1,167 @@
+[
+  {
+    "id": "8055439f-e662-4a3d-8ed1-e9e15b15b059",
+    "name": "Confirmation",
+    "code": "confirmation",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "🌴 Your request has been sent to your manager. You'll receive an email when validated (or refused).",
+                "type": "TextBlock",
+                "wrap": true
+              }
+            ],
+            "style": "good"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "6a126db0-ebfd-4b2a-a381-bfb0eb6e1497",
+    "name": "Display Request Form",
+    "code": "display_request_form",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "8055439f-e662-4a3d-8ed1-e9e15b15b059"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "Remaining days available",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "horizontalAlignment": "Center"
+                  },
+                  {
+                    "size": "Large",
+                    "text": "8",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "horizontalAlignment": "Center"
+                  }
+                ],
+                "style": "emphasis",
+                "width": "stretch",
+                "borderRadius": "8px"
+              }
+            ]
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "startDate",
+                    "type": "Input.Date",
+                    "label": "From"
+                  },
+                  {
+                    "id": "startDatePeriod",
+                    "type": "Input.ChoiceSet",
+                    "style": "expanded",
+                    "choices": [
+                      {
+                        "title": "Morning",
+                        "value": "morning"
+                      },
+                      {
+                        "title": "Afternoon",
+                        "value": "afternoon"
+                      }
+                    ],
+                    "placeholder": "Placeholder text"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "endDate",
+                    "type": "Input.Date",
+                    "label": "To"
+                  },
+                  {
+                    "id": "endDatePeriod",
+                    "type": "Input.ChoiceSet",
+                    "style": "expanded",
+                    "choices": [
+                      {
+                        "title": "Morning",
+                        "value": "morning"
+                      },
+                      {
+                        "title": "Afternoon",
+                        "value": "afternoon"
+                      }
+                    ],
+                    "placeholder": "Placeholder text"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Request"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "fe99cbbc-87a5-43a9-838e-39d9acc0dcf7",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6a126db0-ebfd-4b2a-a381-bfb0eb6e1497"
+      }
+    ],
+    "type": "trigger"
+  }
+]

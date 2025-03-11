@@ -1,0 +1,290 @@
+[
+  {
+    "id": "d5bda994-560b-47af-ba18-fc9eb13d19d9",
+    "name": "failure",
+    "code": "failure",
+    "position": {
+      "x": 972,
+      "y": 156
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "size": "Default",
+                "text": "❌ We had a technical issue trying to create your ticket. Please contact IT.",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Bolder",
+                "spacing": "Small"
+              }
+            ],
+            "style": "attention"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "0baec277-a903-4dfc-a88e-1a02d5cfcebd",
+    "name": "success",
+    "code": "success",
+    "position": {
+      "x": 948,
+      "y": -168
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "size": "Default",
+                "text": "✅ Your ticket has been created. Your ticket number is ${actions.create_ticket.response.body.result.number}.",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Bolder",
+                "spacing": "Small"
+              }
+            ],
+            "style": "good"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "e92530f4-7227-4104-808f-0e04f07470e0",
+    "name": "Action e92530f4-7227-4104-808f-0e04f07470e0",
+    "code": "action_e92530f4_7227_4104_808f_0e04f07470e0",
+    "position": {
+      "x": 804,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "0baec277-a903-4dfc-a88e-1a02d5cfcebd",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "1903",
+              "rules": [
+                {
+                  "id": "1904",
+                  "leftValue": "${actions.create_ticket.response.status}",
+                  "operator": {
+                    "operation": "contains",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.CONTAINS"
+                  },
+                  "rightValue": "201"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "d5bda994-560b-47af-ba18-fc9eb13d19d9",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "5af5c262-93d2-492b-8682-5e5dedd0b144",
+    "name": "getUser",
+    "code": "get_user",
+    "position": {
+      "x": 420,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "20877659-c1db-48f3-9ef4-7ecc2c985540"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/sys_user?sysparm_query=email=${user.email}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "20877659-c1db-48f3-9ef4-7ecc2c985540",
+    "name": "createTicket",
+    "code": "create_ticket",
+    "position": {
+      "x": 624,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "e92530f4-7227-4104-808f-0e04f07470e0"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"description\": \"${actions.ticket_form.inputs.ticketdescription}\",\r\n  \"short_description\": \"${actions.ticket_form.inputs.tickettitle}\",\r\n  \"urgency\" : \"${actions.ticket_form.inputs.urgency}\",\r\n  \"category\" : \"${actions.ticket_form.inputs.category}\",\r\n  \"caller_id\": \"${actions.get_user.response.body.result[0].sys_id}\"\r\n}",
+        "path": "/now/table/incident",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "0de206e5-b009-4a6a-bc35-16aaf91724b3",
+    "name": "ticketForm",
+    "code": "ticket_form",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "5af5c262-93d2-492b-8682-5e5dedd0b144"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "id": "tickettitle",
+                "type": "Input.Text",
+                "label": "Give a title to your ticket",
+                "isRequired": true,
+                "placeholder": "Type a brief description of the issue."
+              },
+              {
+                "id": "urgency",
+                "type": "Input.ChoiceSet",
+                "label": "Urgency",
+                "value": "2",
+                "choices": [
+                  {
+                    "title": "1 - High 🔴",
+                    "value": "1"
+                  },
+                  {
+                    "title": "2 - Medium 🟡",
+                    "value": "2"
+                  },
+                  {
+                    "title": "3 - Low 🟢",
+                    "value": "3"
+                  }
+                ],
+                "placeholder": "Placeholder text"
+              },
+              {
+                "id": "category",
+                "type": "Input.ChoiceSet",
+                "label": "Category",
+                "value": "inquiry",
+                "choices": [
+                  {
+                    "title": "Inquiry / Help 🤔",
+                    "value": "inquiry"
+                  },
+                  {
+                    "title": "Software 🧩",
+                    "value": "software"
+                  },
+                  {
+                    "title": "Hardware 💻",
+                    "value": "hardware"
+                  },
+                  {
+                    "title": "Network 🌐",
+                    "value": "network"
+                  },
+                  {
+                    "title": "Database 🗂️",
+                    "value": "database"
+                  }
+                ],
+                "placeholder": "Placeholder text"
+              },
+              {
+                "id": "ticketdescription",
+                "type": "Input.Text",
+                "label": "Describe your ticket",
+                "isRequired": true,
+                "isMultiline": true,
+                "placeholder": "Type a detailed description of the issue"
+              }
+            ],
+            "spacing": "ExtraLarge"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "role": "Button",
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Create",
+                "fallback": "Action.Submit"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "d15d3943-536d-46ea-a8d3-e8d8eb0cb8f8",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 24,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0de206e5-b009-4a6a-bc35-16aaf91724b3"
+      }
+    ],
+    "type": "trigger"
+  }
+]

@@ -1,0 +1,730 @@
+[
+  {
+    "id": "628b7ada-87c0-456c-8d87-808679dfdd0f",
+    "name": "splitIssueName",
+    "code": "split_issue_name",
+    "position": {
+      "x": 1356,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "32da6f24-643e-4b73-81be-02f46603a594"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Récupération de la valeur du champ depuis le contexte d'exécution.\n    let projectValue = executionContext?.actions?.choose_issue_type?.inputs?.issuetypes;\n    //let projectValue = \"10008 - placeholder issue type\";\n\n    // Vérification que la valeur existe et traitement.\n    if (projectValue) {\n        // Supposons que projectValue soit au format \"id - name\".\n        let [id, name] = projectValue.split(\" - \");\n        \n        // Assignation des valeurs à l'objet de sortie.\n        output.id = id ? id.trim() : null;\n        output.name = name ? name.trim() : null;\n    } else {\n        // Si la valeur n'existe pas, retourner un message d'erreur ou laisser vide.\n        output.error = \"The Project ID field is empty or cannot be found.\";\n    }\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "c1f4992a-c35d-44c9-ab35-3f24327eb5f9",
+    "name": "splitProjectNameId",
+    "code": "split_project_name_id",
+    "position": {
+      "x": 780,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "37f24f26-dcef-4394-9a60-d59759ea252b"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Récupération de la valeur du champ depuis le contexte d'exécution.\n    //let projectValue = executionContext?.actions?.chooseproject?.inputs?.projectid;\n    let projectValue = \"10214 - projectName\";\n\n    // Vérification que la valeur existe et traitement.\n    if (projectValue) {\n        // Supposons que projectValue soit au format \"id - name\".\n        let [id, name] = projectValue.split(\" - \");\n        \n        // Assignation des valeurs à l'objet de sortie.\n        output.id = id ? id.trim() : null;\n        output.name = name ? name.trim() : null;\n    } else {\n        // Si la valeur n'existe pas, retourner un message d'erreur ou laisser vide.\n        output.error = \"The project ID is empty or not discoverable.\";\n    }\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "9edcb49d-4b7d-408c-a89d-406383e55135",
+    "name": "parseError",
+    "code": "parse_error",
+    "position": {
+      "x": 2592,
+      "y": 132
+    },
+    "links": [
+      {
+        "targetId": "992bad4f-786c-45d4-a4e3-70113a2ebebf"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Extraction des erreurs depuis le contexte d'exécution\n    const errors = executionContext?.actions?.create_ticket?.response?.body?.errors || {};\n\tconst errorMessages = executionContext?.actions?.create_ticket?.response?.body?.errorMessages || [];\n\n    // Transformation des erreurs en un seul string\n    let logMessage = \"\";\n\n    // Ajout des messages d'erreurs simples\n    if (errorMessages.length > 0) {\n        logMessage += \"Error: \" + errorMessages.join(\", \") + \". \";\n    }\n\n    // Ajout des erreurs clés/valeurs\n    if (Object.keys(errors).length > 0) {\n        logMessage += \"Error Details : \";\n        for (const [key, value] of Object.entries(errors)) {\n            logMessage += `${key} - ${value}. `;\n        }\n    }\n\n    // Ajout du message final au output\n    output.log = logMessage.trim();\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "942d1a32-9b1c-4f1a-bfdf-bf806c42b88b",
+    "name": "Action 942d1a32-9b1c-4f1a-bfdf-bf806c42b88b",
+    "code": "action_942_d_1_a_32_9_b_1_c_4_f_1_a_bfdf_bf_806_c_42_b_88_b",
+    "position": {
+      "x": 2424,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "a588432d-08df-44e2-896e-2ddd0074db8b",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "3221",
+              "rules": [
+                {
+                  "id": "3222",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.create_ticket.response.status}",
+                  "rightValue": "200"
+                },
+                {
+                  "id": "3384",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.create_ticket.response.status}",
+                  "rightValue": "201"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "9edcb49d-4b7d-408c-a89d-406383e55135",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "992bad4f-786c-45d4-a4e3-70113a2ebebf",
+    "name": "error",
+    "code": "error",
+    "position": {
+      "x": 2808,
+      "y": 132
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "An error occurred during the request.",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "Attention",
+            "weight": "Bolder"
+          },
+          {
+            "text": "Error Details:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.parse_error.output.log}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "text": "Request Body Sent:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.prepare_post.output.log}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "a588432d-08df-44e2-896e-2ddd0074db8b",
+    "name": "Succes",
+    "code": "succes",
+    "position": {
+      "x": 2592,
+      "y": -132
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "\nTicket created: [${actions.create_ticket.response.body.key}](https://publicissapient.atlassian.net/browse/${actions.create_ticket.response.body.key}) \n\n\n",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder",
+            "spacing": "Medium"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Create another ticket"
+              }
+            ],
+            "spacing": "Large"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "69c001a1-0995-4135-a14b-66be1d972925",
+    "name": "log",
+    "code": "log",
+    "position": {
+      "x": 2076,
+      "y": -192
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "LOG",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.prepare_post.output.log}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Action.Execute"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "f917e8b5-e68c-4c76-a734-7192a84ca998",
+    "name": "preparePostOldWorking",
+    "code": "prepare_post_old_working",
+    "position": {
+      "x": 1932,
+      "y": 156
+    },
+    "links": [],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Transform user input data into Jira-compatible format\n * @param {Object} executionContext The execution context containing the form inputs\n * @returns {Object} Jira-formatted ticket data\n */\nfunction main(executionContext) {\n    // Vérification de l'existence du contexte d'exécution\n    if (!executionContext || typeof executionContext !== 'object') {\n        return {\n            json: {},\n            log: 'Invalid or missing execution context'\n        };\n    }\n\n    // Récupération des inputs du formulaire et du contexte\n    const ticketInputs = executionContext?.actions?.ticket_form?.inputs;\n    const fields = executionContext?.actions?.itmf?.response?.body?.projects?.[0]?.issuetypes?.[0]?.fields;\n\n    if (!ticketInputs) {\n        return {\n            json: {},\n            log: 'No ticket inputs found in execution context'\n        };\n    }\n\n    if (!fields) {\n        return {\n            json: {},\n            log: 'No fields metadata found in execution context'\n        };\n    }\n\n    // Initialisation de la structure de base\n    const output = {\n        json: {\n            fields: {},\n            update: {}\n        },\n        log: ''\n    };\n\n    // Fonction helper pour créer un champ de type document\n    const createDocField = (text) => ({\n        content: [\n            {\n                content: [\n                    {\n                        text: text,\n                        type: \"text\"\n                    }\n                ],\n                type: \"paragraph\"\n            }\n        ],\n        type: \"doc\",\n        version: 1\n    });\n\n    // Fonction helper pour convertir la valeur selon le type\n    const convertValue = (value, schema) => {\n        if (value == null) return null;\n\n        switch (schema?.type) {\n            case 'number':\n            case 'integer':\n                return parseInt(value, 10);\n            case 'array':\n                if (!Array.isArray(value)) {\n                    value = [value];\n                }\n                if (schema.items === 'component' || schema.items === 'version') {\n                    return value.map(v => ({ id: v }));\n                }\n                return value;\n            default:\n                return value;\n        }\n    };\n\n    // Ajout des champs projet et issuetype avec les IDs spécifiés\n    output.json.fields[\"issuetype\"] = { id: executionContext?.actions?.split_issue_name?.output?.id };\n    output.json.fields[\"project\"] = { id: executionContext?.actions?.split_project_name_id?.output?.id };\n\n    // Mapping des champs d'entrée vers la structure Jira\n    Object.entries(ticketInputs).forEach(([key, value]) => {\n        // Si la valeur est null ou undefined, on skip\n        if (value == null) return;\n\n        // Récupération du schéma du champ depuis le contexte\n        const fieldMetadata = fields[key];\n        const schema = fieldMetadata?.schema;\n\n        switch (key) {\n            // Champs avec structure document\n            case 'description':\n            case 'environment':\n                output.json.fields[key] = createDocField(value);\n                break;\n\n            // Champs avec ID simple\n            case 'priority':\n            case 'security':\n            case 'assignee':\n            case 'reporter':\n                output.json.fields[key] = { id: value };\n                break;\n\n            // Champs avec ID dans un tableau\n            case 'components':\n            case 'fixVersions':\n            case 'versions':\n                output.json.fields[key] = value ? [{ id: value }] : [];\n                break;\n\n            // Champs personnalisés\n            default:\n                if (key.startsWith('customfield_')) {\n                    if (schema?.type === 'option') {\n                        output.json.fields[key] = { id: value };\n                    } else if (schema?.type === 'array' && schema.items === 'option') {\n                        output.json.fields[key] = Array.isArray(value) ? value.map(v => ({ id: v })) : [{ id: value }];\n                    } else {\n                        output.json.fields[key] = convertValue(value, schema);\n                    }\n                } else {\n                    output.json.fields[key] = convertValue(value, schema);\n                }\n        }\n    });\n\n    // Ajout du log formaté\n    output.log = JSON.stringify(output.json, null, 2);\n\n    return output;\n}"
+    }
+  },
+  {
+    "id": "abb390cc-9fe9-4d04-9a0b-cd5fa7563a95",
+    "name": "whoAmI",
+    "code": "who_am_i",
+    "position": {
+      "x": 180,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "04ff3721-058a-42ca-af45-c8976b1fb5ed"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/2/myself",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "16ac795b-581d-4d59-96aa-dfff2402ce69",
+    "name": "chooseIssueType",
+    "code": "choose_issue_type",
+    "position": {
+      "x": 1176,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "628b7ada-87c0-456c-8d87-808679dfdd0f"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "id": "issuetypes",
+                "type": "Input.ChoiceSet",
+                "label": "Issue Type",
+                "choices": [
+                  {
+                    "$data": "${actions.itmf.response.body.projects[0].issuetypes}",
+                    "$when": "${hierarchyLevel > -1}",
+                    "title": "${name}",
+                    "value": "${id} - ${name}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Select an issue type",
+                "errorMessage": "Please select an issue type"
+              }
+            ],
+            "spacing": "ExtraLarge"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "32da6f24-643e-4b73-81be-02f46603a594",
+    "name": "parseData",
+    "code": "parse_data",
+    "position": {
+      "x": 1572,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "3c03d766-de22-4690-834e-b7f2017b6afd"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n    let output = {};\n\n    // Fonction pour normaliser les noms (remplacer espaces, retirer accents, convertir en minuscule)\n    const normalizeName = (name) => {\n        return name\n            .toLowerCase()\n            .replace(/\\s+/g, '_') // Remplace les espaces par des underscores\n            .normalize(\"NFD\") // Décompose les caractères accentués en caractères simples\n            .replace(/[\\u0300-\\u036f]/g, ''); // Supprime les accents\n    };\n\n    // Récupérer l'ID du type de ticket sélectionné\n    const selectedIssueTypeId = executionContext?.actions?.split_issue_name?.output?.id;\n\n    // Accéder à la liste des projets et vérifier leur présence\n    const projects = executionContext?.actions?.itmf?.response?.body?.projects || [];\n\n    // Parcourir chaque projet\n    projects.forEach(project => {\n        const issueTypes = project?.issuetypes || [];\n\n        // Parcourir chaque type de ticket\n        issueTypes.forEach(issueType => {\n            if (issueType.id === selectedIssueTypeId) {\n                const fields = issueType?.fields || {};\n\n                // Normaliser le nom du type de ticket\n                const issueTypeName = normalizeName(issueType.name);\n\n                // Extraire les champs principaux (résumé, description, priorité)\n                const primaryFields = [\n                    \"summary\",\n                    \"description\",\n                    \"priority\"\n                ].map(key => ({\n                    key,\n                    name: fields[key]?.name || \"Name not specified\",\n                    required: fields[key]?.required || false,\n                    description: fields[key]?.description || \"Description not specified\",\n                    type: fields[key]?.schema?.type || \"Type not specified\",\n                    system: fields[key]?.schema?.system || false,\n                    custom: fields[key]?.schema?.custom || false,\n                    allowedValues: fields[key]?.allowedValues || []\n                }));\n\n                // Extraire les autres champs\n                const otherFields = Object.keys(fields)\n                    .filter(fieldKey => ![\"summary\", \"description\", \"priority\"].includes(fieldKey))\n                    .map(fieldKey => ({\n                        key: fieldKey,\n                        name: fields[fieldKey]?.name || \"Name not specified\",\n                        required: fields[fieldKey]?.required || false,\n                        description: fields[fieldKey]?.description || \"Description not specified\",\n                        type: fields[fieldKey]?.schema?.type || \"Type not specified\",\n                        system: fields[fieldKey]?.schema?.system || false,\n                        custom: fields[fieldKey]?.schema?.custom || false,\n                        allowedValues: fields[fieldKey]?.allowedValues || []\n                    }));\n\n                // Ajouter tous les champs dans l'ordre désiré\n                output.fields = [...primaryFields, ...otherFields];\n                output.selectedIssueTypeId = selectedIssueTypeId;\n            }\n        });\n    });\n\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "0cd49ad0-a161-4345-b347-2fb6c31aeba3",
+    "name": "create ticket",
+    "code": "create_ticket",
+    "position": {
+      "x": 2220,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "942d1a32-9b1c-4f1a-bfdf-bf806c42b88b"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "${actions.prepare_post.output.log}",
+        "path": "/rest/api/3/issue",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "3c03d766-de22-4690-834e-b7f2017b6afd",
+    "name": "ticketForm",
+    "code": "ticket_form",
+    "position": {
+      "x": 1752,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Project: ${actions.split_project_name_id.output.name}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "Issue type: ${actions.split_issue_name.output.name}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "id": "requiredContainer",
+            "type": "Container",
+            "$data": "${actions.parse_data.output.fields}",
+            "items": [
+              {
+                "id": "${key}",
+                "type": "Input.Number",
+                "$when": "${(type =='number' && required == true)}",
+                "label": "${name}",
+                "isRequired": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.Text",
+                "$when": "${type == 'string' && required == true}",
+                "label": "${name}",
+                "maxLength": 255,
+                "isRequired": true,
+                "isMultiline": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.Text",
+                "$when": "${key == 'description'}",
+                "label": "${name}",
+                "isRequired": true,
+                "isMultiline": true,
+                "placeholder": "Add a short description",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.ChoiceSet",
+                "$when": "${type == 'array' && required == true}",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${allowedValues}",
+                    "title": "${name}",
+                    "value": "${id}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.ChoiceSet",
+                "$when": "${key == 'priority' && required == true}",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${allowedValues}",
+                    "title": "${name}",
+                    "value": "${id}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Select your priority",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.ChoiceSet",
+                "$when": "${(type == 'option') && required == true}",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${allowedValues}",
+                    "title": "${value}",
+                    "value": "${id}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              }
+            ],
+            "style": "emphasis",
+            "minHeight": "0px"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Create"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "37f24f26-dcef-4394-9a60-d59759ea252b",
+    "name": "itmf",
+    "code": "itmf",
+    "position": {
+      "x": 984,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "16ac795b-581d-4d59-96aa-dfff2402ce69"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/3/issue/createmeta",
+        "httpMethod": "GET",
+        "queryParams": [
+          {
+            "key": "projectIds",
+            "value": "${actions.split_project_name_id.output.id}"
+          },
+          {
+            "key": "expand",
+            "value": "projects.issuetypes.fields"
+          }
+        ]
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "11b4adc2-7a0b-45e1-996b-773605e43712",
+    "name": "chooseproject",
+    "code": "chooseproject",
+    "position": {
+      "x": 564,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "c1f4992a-c35d-44c9-ab35-3f24327eb5f9"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "id": "projectid",
+            "type": "Input.ChoiceSet",
+            "choices": [
+              {
+                "$data": "${actions.getproject.response.body.values}",
+                "title": "${name}",
+                "value": "${id} - ${name}"
+              }
+            ],
+            "isRequired": true,
+            "placeholder": "Choose your project",
+            "errorMessage": "You must choose a project"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "04ff3721-058a-42ca-af45-c8976b1fb5ed",
+    "name": "getproject",
+    "code": "getproject",
+    "position": {
+      "x": 372,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "11b4adc2-7a0b-45e1-996b-773605e43712"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/2/project/search",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "c67659b4-f3ad-4baa-bdee-b71b2028d295",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "abb390cc-9fe9-4d04-9a0b-cd5fa7563a95"
+      }
+    ],
+    "type": "trigger"
+  },
+  {
+    "id": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214",
+    "name": "preparePost",
+    "code": "prepare_post",
+    "position": {
+      "x": 1932,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0cd49ad0-a161-4345-b347-2fb6c31aeba3"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Transform user input data into Jira-compatible format\n * @param {Object} executionContext The execution context containing the form inputs\n * @returns {Object} Jira-formatted ticket data\n */\nfunction main(executionContext) {\n    // Vérification de l'existence du contexte d'exécution\n    if (!executionContext || typeof executionContext !== 'object') {\n        return {\n            json: {},\n            log: 'Invalid or missing execution context'\n        };\n    }\n\n    // Récupération des inputs du formulaire et du contexte\n    const ticketInputs = executionContext?.actions?.ticket_form?.inputs;\n    const fields = executionContext?.actions?.itmf?.response?.body?.projects?.[0]?.issuetypes?.[0]?.fields;\n\n    if (!ticketInputs) {\n        return {\n            json: {},\n            log: 'No ticket inputs found in execution context'\n        };\n    }\n\n    if (!fields) {\n        return {\n            json: {},\n            log: 'No fields metadata found in execution context'\n        };\n    }\n\n    // Initialisation de la structure de base\n    const output = {\n        json: {\n            fields: {},\n            update: {}\n        },\n        log: ''\n    };\n\n    // Fonction helper pour créer un champ de type document\n    const createDocField = (text) => ({\n        content: [\n            {\n                content: [\n                    {\n                        text: text,\n                        type: \"text\"\n                    }\n                ],\n                type: \"paragraph\"\n            }\n        ],\n        type: \"doc\",\n        version: 1\n    });\n\n    // Fonction helper pour convertir la valeur selon le type\n    const convertValue = (value, schema) => {\n        if (value == null) return null;\n\n        switch (schema?.type) {\n            case 'number':\n            case 'integer':\n                return parseInt(value, 10);\n            case 'array':\n                if (!Array.isArray(value)) {\n                    value = [value];\n                }\n                if (schema.items === 'component' || schema.items === 'version') {\n                    return value.map(v => ({ id: v }));\n                }\n                return value;\n            default:\n                return value;\n        }\n    };\n\n    // Ajout des champs projet et issuetype avec les IDs spécifiés\n    output.json.fields[\"issuetype\"] = { id: executionContext?.actions?.split_issue_name?.output?.id };\n    output.json.fields[\"project\"] = { id: executionContext?.actions?.split_project_name_id?.output?.id };\n\n    // Mapping des champs d'entrée vers la structure Jira\n    Object.entries(ticketInputs).forEach(([key, value]) => {\n        // Si la valeur est null ou undefined, on skip\n        if (value == null) return;\n\n        // Récupération du schéma du champ depuis le contexte\n        const fieldMetadata = fields[key];\n        const schema = fieldMetadata?.schema;\n\n        switch (key) {\n            // Champs avec structure document\n            case 'description':\n            case 'environment':\n                output.json.fields[key] = createDocField(value);\n                break;\n\n            // Champs avec ID simple\n            case 'priority':\n            case 'security':\n            case 'assignee':\n            case 'reporter':\n                output.json.fields[key] = { id: value };\n                break;\n\n            // Champs avec ID dans un tableau\n            case 'components':\n            case 'fixVersions':\n            case 'versions':\n                output.json.fields[key] = value ? [{ id: value }] : [];\n                break;\n\n            // Champs personnalisés\n            default:\n                if (key.startsWith('customfield_')) {\n                    if (schema?.type === 'option' || key.startsWith('customfield_')) {\n                        output.json.fields[key] = { id: value };\n                    }\n                    else if (schema?.type === 'array' && schema.items === 'option') {\n                        output.json.fields[key] = Array.isArray(value) ? value.map(v => ({ id: v })) : [{ id: value }];\n                    } else {\n                        output.json.fields[key] = convertValue(value, schema);\n                    }\n                } else {\n                    if (key !== \"submittedActionId\") {\n                        output.json.fields[key] = convertValue(value, schema);\n                    }\n\n                }\n        }\n    });\n\n    // Ajout du log formaté\n    output.log = JSON.stringify(output.json, null, 2);\n\n    return output;\n}"
+    }
+  },
+  {
+    "id": "a588432d-08df-44e2-896e-2ddd0074db8b-1734553866597",
+    "name": "Success - Original",
+    "code": "success_original",
+    "position": {
+      "x": 2592,
+      "y": -288
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Your ticket has been successfully created!",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "Ticket ID:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.create_ticket.response.body.id}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "text": "Ticket Key:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.create_ticket.response.body.key}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "text": "Ticket URL:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "[${actions.create_ticket.response.body.self}](${actions.create_ticket.response.body.self})",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "Accent",
+            "spacing": "Small"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  }
+]

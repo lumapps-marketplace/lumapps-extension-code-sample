@@ -1,0 +1,278 @@
+[
+  {
+    "id": "f6fd1d7a-4bdd-458e-823d-587391c4830e",
+    "name": "parseData",
+    "code": "parse_data",
+    "position": {
+      "x": 648,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "d26fdf3e-990e-4d7e-8bfc-f702e5a44b82"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main (executionContext) {\n    let output = {};\n    \n    // Vérification de l'existence des données\n    if (!executionContext?.actions?.getenrollments?.response?.body?.items) {\n        return output;\n    }\n    \n    // Récupération et tri des inscriptions par globalProgress décroissant\n    let sortedItems = executionContext.actions.getenrollments.response.body.items.sort((a, b) => b.globalProgress - a.globalProgress);\n    \n    // Stockage du résultat trié dans l'output\n    output.sortedEnrollments = sortedItems;\n    \n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "d26fdf3e-990e-4d7e-8bfc-f702e5a44b82",
+    "name": "display content",
+    "code": "display_content",
+    "position": {
+      "x": 840,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "$when": "${greater(count(actions.getenrollments.response.body.items), 0)}",
+            "items": [
+              {
+                "type": "Container",
+                "items": [
+                  {
+                    "type": "ColumnSet",
+                    "columns": [
+                      {
+                        "type": "Column",
+                        "items": [
+                          {
+                            "size": "Medium",
+                            "text": "Journeys",
+                            "type": "TextBlock",
+                            "wrap": true,
+                            "style": "columnHeader",
+                            "weight": "Bolder"
+                          }
+                        ],
+                        "width": "stretch"
+                      },
+                      {
+                        "type": "Column",
+                        "items": [
+                          {
+                            "size": "Medium",
+                            "text": "Completion",
+                            "type": "TextBlock",
+                            "wrap": true,
+                            "style": "columnHeader",
+                            "weight": "Bolder",
+                            "horizontalAlignment": "Center"
+                          }
+                        ],
+                        "width": "stretch"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "Container",
+                "$data": "${actions.parse_data.output.sortedEnrollments}",
+                "items": [
+                  {
+                    "type": "Container",
+                    "$when": "${globalProgress != 100}",
+                    "items": [
+                      {
+                        "type": "ColumnSet",
+                        "columns": [
+                          {
+                            "type": "Column",
+                            "items": [
+                              {
+                                "text": "[${journeyPreview.title.value}](https://vox-sandbox.app.lumapps.com/vox-sandbox/ls/journeys/${id})",
+                                "type": "TextBlock",
+                                "wrap": true
+                              }
+                            ],
+                            "width": "stretch"
+                          },
+                          {
+                            "type": "Column",
+                            "items": [
+                              {
+                                "text": "${globalProgress}%",
+                                "type": "TextBlock",
+                                "wrap": true,
+                                "horizontalAlignment": "Center"
+                              }
+                            ],
+                            "width": "stretch"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ColumnSet",
+            "$when": "${greater(count(actions.getenrollments.response.body.items), 0)}",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "url": "https://vox-sandbox.app.lumapps.com/vox-sandbox/ls/journeys/list",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "All Journeys"
+                      }
+                    ]
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "$when": "${equals(count(actions.getenrollments.response.body.items), 0)}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "size": "Medium",
+                        "text": "You are not enrolled to any journey",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "weight": "Bolder",
+                        "horizontalAlignment": "Center"
+                      },
+                      {
+                        "type": "ColumnSet",
+                        "columns": [
+                          {
+                            "type": "Column",
+                            "width": "stretch"
+                          },
+                          {
+                            "type": "Column",
+                            "items": [
+                              {
+                                "type": "ActionSet",
+                                "actions": [
+                                  {
+                                    "url": "https://vox-sandbox.app.lumapps.com/vox-sandbox/ls/journeys/list",
+                                    "type": "Action.OpenUrl",
+                                    "style": "positive",
+                                    "title": "All Journeys"
+                                  }
+                                ]
+                              }
+                            ],
+                            "width": "stretch"
+                          }
+                        ]
+                      }
+                    ],
+                    "width": "stretch"
+                  }
+                ]
+              }
+            ],
+            "spacing": "Large"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "e0c67b28-ab31-43f9-a6b4-dc481dcf1a2f",
+    "name": "getenrollments",
+    "code": "getenrollments",
+    "position": {
+      "x": 336,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "f6fd1d7a-4bdd-458e-823d-587391c4830e"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/v2/organizations/${organization.id}/my-enrollments",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "lumapps"
+    }
+  },
+  {
+    "id": "07545d51-5f38-435d-be1d-b1c6e3035492",
+    "name": "getjourneys",
+    "code": "getjourneys",
+    "position": {
+      "x": 84,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "e0c67b28-ab31-43f9-a6b4-dc481dcf1a2f"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/v2/organizations/${organization.id}/my-enrollment-items?recipientType=participant&maxResults=10&sort=-notificationActivity&isDone=False",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "lumapps"
+    }
+  },
+  {
+    "id": "f8ad6376-4a19-4b20-bcb8-fbd40f389cc1",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -228,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "07545d51-5f38-435d-be1d-b1c6e3035492"
+      }
+    ],
+    "type": "trigger"
+  }
+]
