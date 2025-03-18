@@ -3,8 +3,6 @@
 ## Description
 This template provides a focused view of Jira tickets for a specific project, displaying them in an organized and easily readable format.
 
-<img src="[Jira][Project specific] Get ticket.png" width="50%"></img>
-
 ## Features
 - Project-specific ticket display
 - Comprehensive ticket information:
