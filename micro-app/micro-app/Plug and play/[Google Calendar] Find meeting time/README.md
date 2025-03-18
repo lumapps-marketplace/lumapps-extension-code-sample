@@ -3,9 +3,6 @@
 ## Description
 This template helps you schedule meetings with other users by finding available time slots and creating calendar events.
 
-
-<img src="[Google%20Calendar]%20Find%20meeting%20time.png" width="49%"></img> <img src="[Google%20Calendar]%20Find%20meeting%20time2.png" width="49%"></img> 
-
 ## Features
 - Select a meeting participant from provided LumApps users
 - Choose meeting duration
