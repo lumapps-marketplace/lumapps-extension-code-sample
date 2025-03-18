@@ -3,8 +3,6 @@
 ## Description
 This template helps users find suitable meeting times by checking availability across multiple participants' calendars using Outlook.
 
-<img src="[Outlook]%20Find%20meeting%20time2.png" width="49%"></img> <img src="[Outlook]%20Find%20meeting%20time.png" width="49%"></img> 
-
 ## Features
 - Select a meeting participant from provided LumApps users
 - Find available time slots based on participants' calendars
