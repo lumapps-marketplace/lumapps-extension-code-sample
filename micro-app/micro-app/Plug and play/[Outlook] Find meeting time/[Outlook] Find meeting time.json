@@ -211,7 +211,7 @@
         "body": [
           {
             "size": "Large",
-            "text": "🎉 ✅ Votre rendez-vous a été créé avec succès !",
+            "text": "🎉 ✅ Your appointment has been successfully created!",
             "type": "TextBlock",
             "wrap": true,
             "color": "Good",
@@ -219,19 +219,19 @@
             "spacing": "Medium"
           },
           {
-            "text": "Retrouvez les détails ci-dessous :",
+            "text": "Find the details below:",
             "type": "TextBlock",
             "wrap": true,
             "spacing": "Small"
           },
           {
-            "text": "📅 Date et heure : ${formatDateTime(actions.post_meet.response.body.start.dateTime, 'dd/MM/yy HH:mm')}",
+            "text": "📅 Date and time:\n${formatDateTime(actions.post_meet.response.body.start.dateTime, 'dd/MM/yy HH:mm')}",
             "type": "TextBlock",
             "wrap": true,
             "spacing": "Small"
           },
           {
-            "text": "👤 Avec : ${actions.post_meet.response.body.attendees[0].emailAddress.name}",
+            "text": "👤 With: ${actions.post_meet.response.body.attendees[0].emailAddress.name}",
             "type": "TextBlock",
             "wrap": true,
             "weight": "Bolder",
@@ -244,7 +244,7 @@
                 "url": "${actions.post_meet.response.body.webLink}",
                 "type": "Action.OpenUrl",
                 "style": "positive",
-                "title": "🔗 Accéder au rendez-vous"
+                "title": "🔗 Link to the appointment"
               }
             ],
             "spacing": "Medium"
@@ -323,7 +323,7 @@
         "body": [
           {
             "size": "Medium",
-            "text": "Créneaux disponibles :",
+            "text": "Available time slots:",
             "type": "TextBlock",
             "wrap": true,
             "weight": "Bolder",
@@ -340,7 +340,7 @@
               }
             ],
             "spacing": "Small",
-            "placeholder": "Sélectionnez un créneau"
+            "placeholder": "Select time slot"
           },
           {
             "type": "ActionSet",
@@ -348,7 +348,7 @@
               {
                 "type": "Action.Execute",
                 "style": "positive",
-                "title": "Valider ce créneau"
+                "title": "Validate"
               }
             ],
             "spacing": "Medium"
@@ -427,7 +427,7 @@
         "body": [
           {
             "size": "Medium",
-            "text": "Sélectionnez l'utilisateur avec lequel vous souhaitez prendre un rdv.",
+            "text": "Select the user with whom you want to schedule an appointment.",
             "type": "TextBlock",
             "wrap": true,
             "weight": "Bolder",
@@ -444,11 +444,11 @@
               }
             ],
             "spacing": "Small",
-            "placeholder": "Sélectionnez l'utilisateur ici"
+            "placeholder": "Select user here"
           },
           {
             "size": "Medium",
-            "text": "Sélectionnez le créneau sur lequel vous souhaitez trouver un créneau de rdv",
+            "text": "Select the time slot in which you want to find an appointment slot.",
             "type": "TextBlock",
             "wrap": true,
             "weight": "Bolder",
@@ -463,13 +463,13 @@
                   {
                     "id": "startDate",
                     "type": "Input.Date",
-                    "label": "Du",
+                    "label": "From",
                     "spacing": "Small"
                   },
                   {
                     "id": "startHour",
                     "type": "Input.Time",
-                    "label": "A",
+                    "label": "At",
                     "spacing": "Small"
                   }
                 ],
@@ -481,13 +481,13 @@
                   {
                     "id": "endDate",
                     "type": "Input.Date",
-                    "label": "Au",
+                    "label": "To",
                     "spacing": "Small"
                   },
                   {
                     "id": "endHour",
                     "type": "Input.Time",
-                    "label": "A",
+                    "label": "At",
                     "spacing": "Small"
                   }
                 ],
@@ -502,7 +502,7 @@
               {
                 "type": "Action.Execute",
                 "style": "positive",
-                "title": "Confirmer"
+                "title": "Confirm"
               }
             ],
             "spacing": "Medium"
