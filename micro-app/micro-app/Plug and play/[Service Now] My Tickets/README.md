@@ -2,7 +2,6 @@
 
 ## Description
 This template provides a user-friendly interface for viewing and managing ServiceNow tickets.
-<img src="[Service%20Now]%20My%20Tickets.png" width="50%"></img>
 
 ## Features
 - Simple ticket management interface
