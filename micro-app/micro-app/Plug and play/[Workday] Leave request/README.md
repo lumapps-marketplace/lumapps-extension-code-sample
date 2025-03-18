@@ -3,8 +3,6 @@
 ## Description
 This template provides a user-friendly interface for submitting leave requests through Workday, with automatic balance checking and date handling.
 
-<img src="[Workday]%20Leave%20request.png" width="50%"></img>
-
 ## Features
 - Leave type selection
 - Date range selection
