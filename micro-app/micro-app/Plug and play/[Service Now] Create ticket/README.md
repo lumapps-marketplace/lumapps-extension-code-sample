@@ -3,8 +3,6 @@
 ## Description
 This template provides a user-friendly interface for creating ServiceNow incident tickets with essential information.
 
-<img src="[Service%20Now]%20Create%20ticket.png" width="50%"></img>
-
 ## Features
 - Simple ticket creation form
 - Required fields:
