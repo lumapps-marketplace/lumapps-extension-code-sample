@@ -1,0 +1,249 @@
+[
+  {
+    "id": "10ab3b12-5592-4723-bb5a-c6ed9ac8d2f3",
+    "name": "Ask Answer Summary",
+    "code": "ask_answer_summary",
+    "position": {
+      "x": 1812,
+      "y": -108
+    },
+    "links": [],
+    "type": "lumapps_component",
+    "settings": {
+      "componentSettings": {
+        "answer": "${actions.generate_summary_open_ai.response.body.choices[0].message.content}",
+        "sources": {
+          "url": "${canonicalUrl}",
+          "$data": "${actions.prepare_resources.output}",
+          "title": "${title}"
+        }
+      },
+      "type": "ai_augmented_search",
+      "inputVariables": []
+    }
+  },
+  {
+    "id": "d28fe5b4-52d5-4b96-9e20-3d58112d8527",
+    "name": "Generate summary OpenAI",
+    "code": "generate_summary_open_ai",
+    "position": {
+      "x": 1440,
+      "y": -108
+    },
+    "links": [
+      {
+        "targetId": "10ab3b12-5592-4723-bb5a-c6ed9ac8d2f3"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "azure_open_ai"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"${actions.prepare_prompt.output}\"\n        }\n      ]\n    },\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"${actions.consolidated_text.output}\" \n        }\n      ]\n    }\n    \n  ],\n  \"temperature\": 0.7,\n  \"top_p\": 0.95,\n  \"max_tokens\": 800\n}",
+        "path": "/openai/deployments/gpt-4/chat/completions?api-version=2024-02-15-preview",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "6ed3f8bd-0f71-4692-b258-11bda783fe47",
+    "name": "Get news",
+    "code": "get_news",
+    "position": {
+      "x": -36,
+      "y": -144
+    },
+    "links": [
+      {
+        "targetId": "88fae0d2-816f-4f2b-8fe9-7df5def733ac-1740730320437"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\n    \"excludeType\" : [\"post\",\"community\",\"custom_list\",\"directory\",\"menu\",\"news_list\",\"page\",\"tutorial\",\"user_directory\",\"image_gallery\"],\n    \"excludeStatus\": [\"DRAFT\",\"ARCHIVE\",\"REFUSED\",\"TO_VALIDATE\"],\n    \"maxResults\": 3,\n    \"sortOrder\": [\"-createdAt\"]\n}",
+        "path": "/_ah/api/lumsites/v1/content/list",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "lumapps"
+    }
+  },
+  {
+    "id": "f9445bba-a293-482e-9bba-bd604c95c738",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -336,
+      "y": -144
+    },
+    "links": [
+      {
+        "targetId": "6ed3f8bd-0f71-4692-b258-11bda783fe47"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "query",
+          "type": "string",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "ceae9689-aec3-4eb5-a417-ba68cfc51bc8-1740697261721",
+    "name": "Consolidated text",
+    "code": "consolidated_text",
+    "position": {
+      "x": 792,
+      "y": -312
+    },
+    "links": [
+      {
+        "targetId": "6b2cdc01-3922-4580-a390-2d983234bf50-1741072666671"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\n\t// Declaration of the output variable.\n\tlet output = {};\n\n\tlet text_1 = executionContext.actions.extract_content_news_1.response.body.body.en;\n\tlet text_2 = executionContext.actions.extract_content_news_2.response.body.body.en;\n\tlet text_3 = executionContext.actions.extract_content_news_3.response.body.body.en;\n\n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\n\tlet final_text = text_1 + \" * \" + text_2 + \" * \" + text_3;\n\tfinal_text = final_text.replace(/[^a-zA-Z0-9\\s]/g, '');\n\tfinal_text = final_text.replace(/\\n/g, \" \");\n\t//final_text = final_text.replace(/\\\\/g, '');\n\n\t// Mandatory: return your output.\n\t\n\treturn final_text;\n}"
+    }
+  },
+  {
+    "id": "88fae0d2-816f-4f2b-8fe9-7df5def733ac-1740730320437",
+    "name": "Extract Content News 1",
+    "code": "extract_content_news_1",
+    "position": {
+      "x": 192,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "88fae0d2-816f-4f2b-8fe9-7df5def733ac-1740730320437-1740730353196"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/content/body?uid=${actions.get_news.response.body.items[0].uid}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "88fae0d2-816f-4f2b-8fe9-7df5def733ac-1740730320437-1740730353196",
+    "name": "Extract Content News 2",
+    "code": "extract_content_news_2",
+    "position": {
+      "x": 384,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "88fae0d2-816f-4f2b-8fe9-7df5def733ac-1740730320437-1740730354498"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/content/body?uid=${actions.get_news.response.body.items[1].uid}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "88fae0d2-816f-4f2b-8fe9-7df5def733ac-1740730320437-1740730354498",
+    "name": "Extract Content News 3",
+    "code": "extract_content_news_3",
+    "position": {
+      "x": 600,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "ceae9689-aec3-4eb5-a417-ba68cfc51bc8-1740697261721"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/content/body?uid=${actions.get_news.response.body.items[2].uid}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "380190d0-7032-4ca9-8bd3-8debdefd0338-1740753296462",
+    "name": "Prepare Prompt",
+    "code": "prepare_prompt",
+    "position": {
+      "x": 1212,
+      "y": -108
+    },
+    "links": [
+      {
+        "targetId": "d28fe5b4-52d5-4b96-9e20-3d58112d8527"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n\tlet prompt = \"\";\n\tlet lang_user = executionContext.user.preferredLanguage;\n\tif\n\t\t(lang_user == \"fr\") {\n\t\tprompt = \"Vous êtes un expert en communication interne et vous devez rédiger au format markdown un résumé engageant selon cet input avec trois phrases par news. Débute par un message d'introduction expliquant d'une manière positive que tu vas résumer les dernières actualités. Il y a 3 nouvelles donc j'ai besoin d'une entrée par nouvelle, séparée par *.  La première phrase est en gras et commence par un emoji. Les deuxième et troisième phrases sont à la ligne suivante, mais pas en gras. La réponse doit être rédigée en français\"\n\t} else {\n\t\tprompt = \"You are a internal communication expert and you need to write in markdown format an engaging summary according to this input with three sentences per news. Start with a first introduction message explaining in a positive way that you are going to summarize the latest news. Then, there are 3 news so I need an entry per news, separated by *. The first sentence is formatted in bold and starts with an emoji. The second and third sentences are in the next line, not in bold.\"\n\n\t\t}\n\treturn prompt;\n}"
+    }
+  },
+  {
+    "id": "6b2cdc01-3922-4580-a390-2d983234bf50-1741072666671",
+    "name": "Prepare resources",
+    "code": "prepare_resources",
+    "position": {
+      "x": 1008,
+      "y": -312
+    },
+    "links": [
+      {
+        "targetId": "380190d0-7032-4ca9-8bd3-8debdefd0338-1740753296462"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n\tlet initial_resources = executionContext.actions.get_news.response.body.items;\n\tlet userLanguage = executionContext.user.preferredLanguage;\n\toutput = initial_resources.map(item => ({\n    //canonicalUrl: userLanguage === \"fr\" ? item.canonicalUrl.fr || item.canonicalUrl.en : item.canonicalUrl.en,\n    //title: userLanguage === \"fr\" ? item.title.fr || item.title.en : item.title.en\n\t    canonicalUrl: item.canonicalUrl.en && item.canonicalUrl.en.trim() !== \"\" \n        ? item.canonicalUrl.en \n        : item.canonicalUrl.fr || item.canonicalUrl.en,\n    \n    title: item.title.en && item.title.en.trim() !== \"\" \n        ? item.title.en \n        : item.title.fr || item.title.en\n}));\n\n\n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  }
+]

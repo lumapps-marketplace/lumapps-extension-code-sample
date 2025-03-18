@@ -1,0 +1,220 @@
+[
+  {
+    "id": "bc31bdfd-ce07-407e-91f5-4de13d36fe59",
+    "name": "clean answer",
+    "code": "clean_answer",
+    "position": {
+      "x": 1632,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "9fff7f9a-7ae9-4b01-abb6-aaa86a2a6dec"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Main function to clean the chat response content.\n * @param {Object} executionContext - The context object containing the response.\n * @returns {Object} - An object containing the cleaned content.\n */\nfunction main(executionContext) {\n    let output = {};\n    // Extract the content from the execution context\n    const content = executionContext.actions.chat_completion.response.body.choices[0].message.content;\n\n    // Regular expression to match patterns like [doc1], [doc2], etc.\n    const cleanedContent = content.replace(/\\[doc\\d+\\]/g, '');\n    //const cleanedContent = content\n    // Return the cleaned content in an output object\n    output.cleanedResponse = cleanedContent;\n\n    return output;\n}"
+    }
+  },
+  {
+    "id": "9fff7f9a-7ae9-4b01-abb6-aaa86a2a6dec",
+    "name": "AI answer",
+    "code": "ai_answer",
+    "position": {
+      "x": 1896,
+      "y": 0
+    },
+    "links": [],
+    "type": "lumapps_component",
+    "settings": {
+      "componentSettings": {
+        "answer": "${actions.clean_answer.output.cleanedResponse}",
+        "sources": {
+          "url": "${fullUrl}",
+          "$data": "${actions.create_final_sources_array.output}",
+          "title": "${filePath}"
+        }
+      },
+      "type": "ai_augmented_search",
+      "inputVariables": []
+    }
+  },
+  {
+    "id": "b47523f2-5639-40af-b930-b67ac67649ad",
+    "name": "create final sources array",
+    "code": "create_final_sources_array",
+    "position": {
+      "x": 1404,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "bc31bdfd-ce07-407e-91f5-4de13d36fe59"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Create a final array of drive items with full URLs.\n * @param {Object} executionContext The execution context as a frozen object, you cannot update it directly.\n * @returns {Array} An array containing up to 3 items with full URLs.\n */\nfunction main(executionContext) {\n\t// Declaration of the output variable.\n\tlet output = [];\n\tconst driveIds = executionContext.actions.extract_drive_ids.output;\n\n\t// Assuming webUrls are available in the responses\n\tconst webUrls = [\n\t\texecutionContext.actions.getdrive_1.response.body.webUrl,\n\t\texecutionContext.actions.getdrive_2.response.body.webUrl,\n\t\texecutionContext.actions.getdrive_3.response.body.webUrl\n\t];\n\n\tfor (let i = 0; i < driveIds.length && i < 3; i++) {\n\t\tconst { endUrl } = driveIds[i];\n\t\tconst fullUrl = webUrls[i] + endUrl; // Concatenating webUrl and endUrl\n\t\toutput.push({ ...driveIds[i], fullUrl }); // Adding fullUrl to the item\n\t}\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "cc0e15d4-35a3-4e81-801d-d081bc50ebd6",
+    "name": "extract drive ids",
+    "code": "extract_drive_ids",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Extract drive IDs and file paths from the execution context citations.\n * @param {Object} executionContext The execution context as a frozen object, you cannot update it directly.\n * @returns {Array} An array containing up to 3 unique objects with drive ID, file path, and endUrl.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = [];\n    const citations = executionContext.actions.chat_completion.response.body.choices[0].message.context.citations;\n    const seenFilePaths = new Set();\n\n    for (const citation of citations) {\n        const url = citation.url; // Assuming citation has a url field\n        const match = url.match(/\\/drives\\/(.*?)\\/root:\\//);\n        if (match) {\n            const driveId = match[1];\n            const filePath = citation.filepath; // Assuming citation has a filePath field\n            const endUrl = url.split('/root:')[1] || ''; // Extracting the part after \"/root:/\"\n\n            // Check if the filePath is already seen\n            if (!seenFilePaths.has(filePath)) {\n                seenFilePaths.add(filePath);\n                output.push({ driveId, filePath, endUrl });\n            }\n\n            // Limit to 3 objects\n            if (output.length >= 3) {\n                break;\n            }\n        }\n    }\n\n    // Mandatory: return your output.\n    return output;\n}"
+    }
+  },
+  {
+    "id": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f",
+    "name": "getdrive1",
+    "code": "getdrive_1",
+    "position": {
+      "x": 720,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "microsoft"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/v1.0/drives/${actions.extract_drive_ids.output[0].driveId}?select=name,webUrl",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "1c837bce-89e8-4e3b-9425-b394fa72c4b7",
+    "name": "chat completion",
+    "code": "chat_completion",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "cc0e15d4-35a3-4e81-801d-d081bc50ebd6"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "azure_open_ai"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"messages\": [\r\n    {\r\n      \"role\": \"system\",\r\n      \"content\": \"You are an AI assistant that helps people find information.\"\r\n    },\r\n    {\r\n        \"role\":\"user\",\r\n        \"content\":\"${actions.start.inputVariables.query}\"\r\n    }\r\n  ],\r\n  \"past_messages\": 10,\r\n  \"temperature\": 0.7,\r\n  \"top_p\": 0.95,\r\n  \"frequency_penalty\": 0,\r\n  \"presence_penalty\": 0,\r\n  \"max_tokens\": 800,\r\n  \"stop\": null,\r\n  \"azureSearchEndpoint\": \"https://ai-search-kluedo.search.windows.net\",\r\n  \"azureSearchKey\": \"HkV6CSo54S05kHnjRoD4bUD0d9e71YRR7rCxiSr4t4AzSeBwH3BH\",\r\n  \"azureSearchIndexName\": \"sharepoint-digitalworkplace-index\",\r\n  \"data_sources\": [\r\n    {\r\n      \"type\": \"azure_search\",\r\n      \"parameters\": {\r\n        \"endpoint\": \"https://ai-search-kluedo.search.windows.net\",\r\n        \"index_name\": \"sharepoint-digitalworkplace-index\",\r\n        \"semantic_configuration\": \"kluedo-digital-workplace\",\r\n        \"query_type\": \"semantic\",\r\n        \"fields_mapping\": {\r\n\r\n              \"content_fields_separator\": \"\\n\",\r\n\r\n              \"content_fields\": [\r\n\r\n                \"content\"\r\n\r\n              ],\r\n\r\n              \"filepath_field\": \"metadata_spo_item_name\",\r\n\r\n              \"title_field\": null,\r\n\r\n              \"url_field\": \"metadata_spo_item_path\",\r\n\r\n              \"vector_fields\": []\r\n\r\n            },\r\n\r\n \r\n        \"in_scope\": true,\r\n        \"role_information\": \"You are an AI assistant that helps people find information.\",\r\n        \"filter\": null,\r\n        \"strictness\": 3,\r\n        \"top_n_documents\": 5,\r\n        \"authentication\": {\r\n          \"type\": \"api_key\",\r\n          \"key\": \"HkV6CSo54S05kHnjRoD4bUD0d9e71YRR7rCxiSr4t4AzSeBwH3BH\"\r\n        },\r\n        \"key\": \"HkV6CSo54S05kHnjRoD4bUD0d9e71YRR7rCxiSr4t4AzSeBwH3BH\",\r\n        \"indexName\": \"sharepoint-digitalworkplace-index\"\r\n      }\r\n    }\r\n  ]\r\n}",
+        "path": "/openai/deployments/kolibri-ia-4o/chat/completions?api-version=2024-02-15-preview",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "e7fbaaab-61c7-4a29-9535-26e02bc65791",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "1c837bce-89e8-4e3b-9425-b394fa72c4b7"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "query",
+          "type": "string",
+          "defaultValue": "quels goodies je peux commander?",
+          "multiValues": false,
+          "required": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719",
+    "name": "getdrive2",
+    "code": "getdrive_2",
+    "position": {
+      "x": 948,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719-1741680845680"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "microsoft"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/v1.0/drives/${actions.extract_drive_ids.output[1].driveId}?select=name,webUrl",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719-1741680845680",
+    "name": "getdrive3",
+    "code": "getdrive_3",
+    "position": {
+      "x": 1176,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "b47523f2-5639-40af-b930-b67ac67649ad"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "microsoft"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/v1.0/drives/${actions.extract_drive_ids.output[2].driveId}?select=name,webUrl",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  }
+]

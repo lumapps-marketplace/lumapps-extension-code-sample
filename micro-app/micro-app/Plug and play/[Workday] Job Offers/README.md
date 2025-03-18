@@ -1,0 +1,33 @@
+# Workday Job Offers Micro-app
+
+## Description
+This micro-app displays and filters job offers from Workday, allowing users to browse available positions based on job titles and locations.
+
+## Features
+- Real-time job posting retrieval from Workday
+- Multi-select filtering capabilities
+- Filter by job title and location
+- Direct links to job details
+- Dynamic filter options based on available positions
+- Responsive card layout for job listings
+- Interactive filtering interface
+
+## Connector Documentation
+[Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+
+## Inputs / Variables to Set
+- department: You can find the value in your workday url when you are on the home page, you'll have something like <domain>/<department>/d/home.htmld
+
+## Comments on Functioning
+- The microapp starts by fetching all available job postings from Workday
+- It automatically extracts unique job titles and locations for filtering
+- Users can select multiple job titles and locations as filters
+- The display updates dynamically based on selected filters
+- Each job posting shows:
+  - Job title
+  - Location
+  - Link to detailed job description
+- Empty filter selections show all available positions
+
+## Link to Microapp Import Documentation
+[Microapp Import Documentation](#)

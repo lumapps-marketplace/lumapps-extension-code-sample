@@ -1,0 +1,528 @@
+[
+  {
+    "id": "b6aa466a-9600-460c-a3ab-94d48a04e1a3",
+    "name": "Get SNOW Domain",
+    "code": "get_snow_domain",
+    "position": {
+      "x": 2100,
+      "y": -240
+    },
+    "links": [
+      {
+        "targetId": "fb5db501-60fb-438b-b8de-92dda05aeed5"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "\nfunction main (executionContext) {\n\n\tlet output = {};\n\n\tlet url = executionContext.actions.getuserid.response.body.result[0].sys_domain.link;\n\tlet domain = url.split('//')[1].split('.')[0];\n\n\treturn domain;\n}"
+    }
+  },
+  {
+    "id": "79b44edd-d537-40c2-b6f5-b8958fcde3f8",
+    "name": "result",
+    "code": "result",
+    "position": {
+      "x": 2616,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Large",
+            "text": "Your Mobile Order Has Been Confirmed!",
+            "type": "TextBlock",
+            "weight": "Bolder"
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "Thank you for your purchase. Your order has been successfully placed and is being processed.",
+                "type": "TextBlock",
+                "wrap": true
+              }
+            ],
+            "style": "good"
+          },
+          {
+            "text": "Order Details:",
+            "type": "TextBlock",
+            "weight": "Bolder",
+            "spacing": "Medium"
+          },
+          {
+            "type": "FactSet",
+            "facts": [
+              {
+                "title": "Order Number:",
+                "value": "${actions.createrequest.response.body.result.request_number}"
+              },
+              {
+                "title": "Product:",
+                "value": "${actions.choosemobile.inputs.mobilename}"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5",
+        "actions": [
+          {
+            "url": "https://${actions.get_snow_domain.output}.service-now.com/now/nav/ui/classic/params/target/sc_request.do%3Fsys_id%3D${actions.createrequest.response.body.result.request_id}&sysparm_view=my_request&sysparm_record_target=task&sysparm_record_row=4&sysparm_record_rows=4&sysparm_record_list=sys_idINjavascript%3AgetMyRequestIDs%28%29%5EORDERBYnumber",
+            "type": "Action.OpenUrl",
+            "style": "positive",
+            "title": "View Order"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "f6e0eb5f-0374-423a-b4f2-56985b3e5455",
+    "name": "createrequest",
+    "code": "createrequest",
+    "position": {
+      "x": 2412,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "79b44edd-d537-40c2-b6f5-b8958fcde3f8"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"short_description\": \"Service Request based on micro-app cart from Lumapps\",\r\n  \"state\": 1,\r\n  \"requested_for\": \"${actions.getuserid.response.body.result[0].sys_id}\",\r\n  \"sc_cart\": \"${actions.createcart.response.body.result.sys_id}\"\r\n}",
+        "path": "/sn_sc/servicecatalog/cart/submit_order",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "6d624631-7ab4-404c-b388-2b10887668e3",
+    "name": "getuserid",
+    "code": "getuserid",
+    "position": {
+      "x": 2004,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "b6aa466a-9600-460c-a3ab-94d48a04e1a3"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/sys_user?sysparm_query=email=${user.email}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "fb5db501-60fb-438b-b8de-92dda05aeed5",
+    "name": "createcart",
+    "code": "createcart",
+    "position": {
+      "x": 2208,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "f6e0eb5f-0374-423a-b4f2-56985b3e5455"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n    \"sysparm_quantity\": 1,\r\n    \"requested_for\": \"${actions.getuserid.response.body.result[0].sys_id}\",\r\n    \"variables\": ${jsonStringify(actions.form.inputs)}\r\n}",
+        "path": "/sn_sc/servicecatalog/items/${actions.choosemobile.inputs.mobileid}/add_to_cart",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "245b902a-3ed8-4a03-9210-1feb370d7811",
+    "name": "form",
+    "code": "form",
+    "position": {
+      "x": 1776,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6d624631-7ab4-404c-b388-2b10887668e3"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Default",
+            "text": "Please fill the following form",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "type": "Container",
+            "$data": "${actions.createanwsersarray.output}",
+            "items": [
+              {
+                "id": "${name}",
+                "type": "Input.ChoiceSet",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${possibleAnswers}",
+                    "title": "${texte}",
+                    "value": "${value}"
+                  }
+                ],
+                "placeholder": "Select an option"
+              }
+            ]
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Confirm"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "69aeb7d0-c9d1-43d5-8821-eae9bb79c3eb",
+    "name": "createanwsersarray",
+    "code": "createanwsersarray",
+    "position": {
+      "x": 1548,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "245b902a-3ed8-4a03-9210-1feb370d7811"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context to create a list of answer objects.\n * @param {Object} executionContext The execution context as a frozen object, you cannot update it directly.\n * @returns {Array}                 An array of answer objects.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = [];\n\n    // Extracting necessary data from execution context\n    let questions = executionContext.actions.getquestions.response.body.result || [];\n    let possibleAnswers = executionContext.actions.getpossibleanswers.response.body.result || [];\n\n    // Creating the answer objects\n    questions.forEach(question => {\n        let filteredAnswers = possibleAnswers\n            .filter(answer => answer.question.value === question.sys_id)\n            .map(answer => ({\n                texte: answer.text,\n                value: answer.value\n            }));\n        \n        let answer = {\n            name: question.name,\n            possibleAnswers: filteredAnswers\n        };\n        output.push(answer);\n    });\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "d93b216d-9335-4b7a-877a-07bc1ebcb936",
+    "name": "createidlist",
+    "code": "createidlist",
+    "position": {
+      "x": 1104,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "2bfb9649-d45a-40bc-95e7-ae532459207c"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Retrieve the result array from the execution context.\n    let items = executionContext.actions.getquestions.response.body.result;\n\n    // Extract sys_id from each item and join them with a comma.\n    let sysIds = items.map(item => item.sys_id).join(',');\n\n    // Assign the formatted sysIds to the output.\n    output.sysIds = sysIds;\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "2bfb9649-d45a-40bc-95e7-ae532459207c",
+    "name": "getpossibleanswers",
+    "code": "getpossibleanswers",
+    "position": {
+      "x": 1320,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "69aeb7d0-c9d1-43d5-8821-eae9bb79c3eb"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/question_choice?sysparm_query=question IN ${actions.createidlist.output.sysIds}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "71acd3e7-09e6-437c-a7b2-721c081ef6c9",
+    "name": "getquestions",
+    "code": "getquestions",
+    "position": {
+      "x": 888,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "d93b216d-9335-4b7a-877a-07bc1ebcb936"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/item_option_new?sysparm_query=cat_item=${actions.choosemobile.inputs.mobileid}",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "39490247-9362-4c98-ba21-837dd4625b43",
+    "name": "mappingimage",
+    "code": "mappingimage",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0ccf52d9-5037-4e63-bc30-1fba0d22ffe9"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object}  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Extract data from executionContext\n    const devices = executionContext.actions.getcat.response.body.result;\n    const urlMapping = [\n        {\n            \"sys_id\": \"07d8173e9756cd1021983d1e6253af1d\",\n            \"url\": \"https://cdn.lesnumeriques.com/optim/product/55/55439/9349db61-pixel-4a__450_400.jpeg\"\n        },\n        {\n            \"sys_id\": \"26c5d7b29756cd1021983d1e6253af9e\",\n            \"url\": \"https://www.backmarket.fr/cdn-cgi/image/format%3Dauto%2Cquality%3D75%2Cwidth%3D640/https://d2e6ccujb3mkqf.cloudfront.net/f2bfa94a-d644-462c-b2fd-446b94fda7eb-1_631bdb8e-0c98-4b28-afe0-23ac957ae5dd.jpg\"\n        },\n        {\n            \"sys_id\": \"73b1bafa9752cd1021983d1e6253afb5\",\n            \"url\": \"https://www.cdiscount.com/pdt2/0/2/7/1/700x700/sam8806092879027/rw/samsung-galaxy-s22-ultra-256go-5g-noir.jpg\"\n        },\n        {\n            \"sys_id\": \"aa9dd773774211105e3db2a07b5a998a\",\n            \"url\": \"https://www.backmarket.fr/cdn-cgi/image/format%3Dauto%2Cquality%3D75%2Cwidth%3D640/https://d2e6ccujb3mkqf.cloudfront.net/23011c7e-5396-4453-a726-d689e095aa5c-1_44366d67-af59-4030-9538-865c6fe694a9.jpg\"\n        },\n        {\n            \"sys_id\": \"ec80c13297968d1021983d1e6253af32\",\n            \"url\":\"https://fr.shopping.rakuten.com/photo/smartphone-apple-iphone-13-minuit-128go-22302257505_L_NOPAD.jpg\"\n        }\n    ];\n\n    // Remap each device with its corresponding URL\n    let mappedDevices = [];\n    for (let i = 0; i < devices.length; i++) {\n        let device = devices[i];\n        let pictureUrl = null;\n\n        for (let j = 0; j < urlMapping.length; j++) {\n            if (device.sys_id === urlMapping[j].sys_id) {\n                pictureUrl = urlMapping[j].url;\n                break;\n            }\n        }\n\n        mappedDevices.push({\n            sys_id: device.sys_id,\n            name: device.name,\n            short_description: device.short_description,\n            price: device.price,\n            description: device.description,\n            picture_url: pictureUrl\n        });\n    }\n\n    output= mappedDevices;\n\n    // Mandatory: return your output.\n    return output;\n}"
+    }
+  },
+  {
+    "id": "0ccf52d9-5037-4e63-bc30-1fba0d22ffe9",
+    "name": "choosemobile",
+    "code": "choosemobile",
+    "position": {
+      "x": 672,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "71acd3e7-09e6-437c-a7b2-721c081ef6c9"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Select a mobile phone",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "type": "ColumnSet",
+            "$data": "${actions.mappingimage.output}",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "${picture_url}",
+                    "type": "Image"
+                  },
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "data": {
+                          "mobileid": "${sys_id}",
+                          "mobilename": "${name}"
+                        },
+                        "type": "Action.Execute",
+                        "style": "positive",
+                        "title": "Order"
+                      }
+                    ]
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Large",
+                    "text": "${name}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  },
+                  {
+                    "type": "Container",
+                    "items": [
+                      {
+                        "text": "${price} $",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "color": "Accent"
+                      }
+                    ],
+                    "style": "accent"
+                  },
+                  {
+                    "id": "description1-${sys_id}",
+                    "type": "Container",
+                    "items": [
+                      {
+                        "text": "${description}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "maxLines": 4
+                      }
+                    ],
+                    "selectAction": {
+                      "type": "Action.ToggleVisibility",
+                      "targetElements": [
+                        "description2-${sys_id}",
+                        "description1-${sys_id}"
+                      ]
+                    }
+                  },
+                  {
+                    "id": "description2-${sys_id}",
+                    "type": "Container",
+                    "items": [
+                      {
+                        "text": "${description}",
+                        "type": "TextBlock",
+                        "wrap": true
+                      }
+                    ],
+                    "isVisible": false,
+                    "selectAction": {
+                      "type": "Action.ToggleVisibility",
+                      "targetElements": [
+                        "description2-${sys_id}",
+                        "description1-${sys_id}"
+                      ]
+                    }
+                  }
+                ],
+                "width": "stretch"
+              }
+            ],
+            "separator": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "01cdadb3-34be-4a6e-95e6-a2c38a53ef66",
+    "name": "getcat",
+    "code": "getcat",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "39490247-9362-4c98-ba21-837dd4625b43"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/sc_cat_item",
+        "queryParams": [
+          {
+            "key": "sysparm_query",
+            "value": "category=d68eb4d637b1300054b6a3549dbe5db2^active=true"
+          },
+          {
+            "key": "sysparm_fields",
+            "value": "sys_id,name,short_description,price,picture,description"
+          },
+          {
+            "key": "sysparm_limit",
+            "value": "100"
+          }
+        ],
+        "url": ""
+      },
+      "providerType": "service_now"
+    }
+  },
+  {
+    "id": "0e454001-5688-4e1f-a4f3-e693af33d972",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "01cdadb3-34be-4a6e-95e6-a2c38a53ef66"
+      }
+    ],
+    "type": "trigger"
+  }
+]

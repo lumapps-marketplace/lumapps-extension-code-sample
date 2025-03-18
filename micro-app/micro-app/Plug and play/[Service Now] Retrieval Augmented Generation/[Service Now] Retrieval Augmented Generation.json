@@ -1,0 +1,236 @@
+[
+  {
+    "id": "fbdd5176-bf9d-4d7e-bf11-efdb724dc79d",
+    "name": "gettopresults",
+    "code": "gettopresults",
+    "position": {
+      "x": 48,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "5ad2e229-4d2a-4ecd-8e03-e59b877c5256"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object}  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The result of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n    \n    // Extract the result array from the execution context\n    let articles = executionContext.actions.getarticles.response.body.result.results;\n    \n    // Filter articles to include only those with type = \"kb\"\n    let kbArticles = articles.filter(article => article.type === \"kb\");\n    \n    // Take the first three kb articles, if available\n    output.result = kbArticles.slice(0, 3);\n    \n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "e02fdfc8-784b-4391-b3ce-e5a780993032",
+    "name": "jsfunction",
+    "code": "jsfunction",
+    "position": {
+      "x": 936,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "a86a6ea1-669d-4c31-b484-2eeef6d32b48"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context to create a clean prompt for AI processing.\n * @param {Object} executionContext  The execution context containing action data.\n * @returns {Object}                 An object with the processed prompt.\n */\nfunction main(executionContext) {\n    // Collect text from specific getcontentfile actions with nested structure\n    const textContents = [\n      executionContext.actions.getcontentfile_1?.response?.body?.result?.[0]?.text || '',\n      executionContext.actions.getcontentfile_2?.response?.body?.result?.[0]?.text || '',\n      executionContext.actions.getcontentfile_3?.response?.body?.result?.[0]?.text || ''\n    ];\n    \n    // Remove HTML tags, HTML entities, and extra whitespace\n    const cleanedTexts = textContents.map(text => \n      text\n        .replace(/<[^>]*>/g, '')  // Remove all HTML tags\n        .replace(/&[^;]+;/g, '')  // Remove HTML entities\n        .replace(/[\\n\\r\\t]+/g, ' ')  // Replace newlines/tabs with space\n        .replace(/\\s+/g, ' ')  // Collapse multiple spaces\n        .trim()  // Remove leading/trailing whitespace\n    );\n    \n    // Create the final prompt\n    const prompt = `Based on the following content extract, please answer the end user query: ${executionContext.actions.start.inputVariables.query} Here are the content extracts: ${cleanedTexts.join(' ')}`;\n    \n    // Return the processed prompt\n    return { prompt };\n}"
+    }
+  },
+  {
+    "id": "c14b99bf-a48c-4788-9fcd-23402cbba510",
+    "name": "getcontent_file3",
+    "code": "getcontent_file_3",
+    "position": {
+      "x": 708,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "e02fdfc8-784b-4391-b3ce-e5a780993032"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/kb_knowledge?sysparm_query=sys_id=${actions.gettopresults.output.result[2].sys_id}&sysparm_display_value=true\"",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "564385a3-b488-4c1d-9f1c-ebaaafc87ce6",
+    "name": "getcontentfile_2",
+    "code": "getcontentfile_2",
+    "position": {
+      "x": 492,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "c14b99bf-a48c-4788-9fcd-23402cbba510"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/kb_knowledge?sysparm_query=sys_id=${actions.gettopresults.output.result[1].sys_id}&sysparm_display_value=true\"",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "5ad2e229-4d2a-4ecd-8e03-e59b877c5256",
+    "name": "getcontentfile_1",
+    "code": "getcontentfile_1",
+    "position": {
+      "x": 276,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "564385a3-b488-4c1d-9f1c-ebaaafc87ce6"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/now/table/kb_knowledge?sysparm_query=sys_id=${actions.gettopresults.output.result[0].sys_id}&sysparm_display_value=true\"",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "a130f5b9-fc20-4c10-b1ae-4ae79c322b85",
+    "name": "Show Response",
+    "code": "show_response",
+    "position": {
+      "x": 1428,
+      "y": 12
+    },
+    "links": [],
+    "type": "lumapps_component",
+    "settings": {
+      "componentSettings": {
+        "answer": "${actions.genanswers.response.body.completions}",
+        "sources": {
+          "url": "https://ven07623.service-now.com/now/nav/ui/classic/params/target/kb_view.do%3Fsysparm_article%3D${number}",
+          "$data": "${actions.gettopresults.output.result}",
+          "title": "${short_description}"
+        }
+      },
+      "type": "ai_augmented_search",
+      "inputVariables": []
+    }
+  },
+  {
+    "id": "a86a6ea1-669d-4c31-b484-2eeef6d32b48",
+    "name": "genanswers",
+    "code": "genanswers",
+    "position": {
+      "x": 1188,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "a130f5b9-fc20-4c10-b1ae-4ae79c322b85"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n    \"prompt\": \"${actions.jsfunction.output.prompt}\"\r\n}",
+        "path": "/v2/organizations/${organization.id}/text-completions",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "6d993876-15f7-4889-983e-7189d89d7567",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -336,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "001c9469-d7c6-404b-83bc-14a3b5636681-1740757338574"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "query",
+          "type": "string",
+          "defaultValue": "VPN",
+          "helper": {
+            "lang": "en",
+            "value": "",
+            "translations": {
+              "en": ""
+            }
+          },
+          "multiValues": false,
+          "required": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "001c9469-d7c6-404b-83bc-14a3b5636681-1740757338574",
+    "name": "getarticles",
+    "code": "getarticles",
+    "position": {
+      "x": -156,
+      "y": 12
+    },
+    "links": [
+      {
+        "targetId": "fbdd5176-bf9d-4d7e-bf11-efdb724dc79d"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "service_now"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n    \"query\":\"${actions.start.inputVariables.query}\",\r\n    \"table\": \"kb_knowledge\",\r\n    \"fields\": [\r\n        \"title\",\r\n        \"short_description\",\r\n        \"article_number\",\r\n        \"sys_id\"\r\n    ]\r\n}",
+        "path": "/now/sp/search",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  }
+]

@@ -1,0 +1,211 @@
+[
+  {
+    "id": "3cb353ad-eb67-422d-b68f-dd750152ab8d",
+    "name": "showtickets",
+    "code": "showtickets",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "$when": "${actions.gettickets.response.body.count != 0}",
+            "style": "accent",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Medium",
+                    "text": "Issue",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder",
+                    "spacing": "None"
+                  }
+                ],
+                "width": "300px"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Medium",
+                    "text": "Status",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder",
+                    "spacing": "None"
+                  }
+                ],
+                "width": "stretch",
+                "spacing": "None"
+              }
+            ],
+            "spacing": "Small"
+          },
+          {
+            "type": "Container",
+            "$when": "${actions.gettickets.response.body.count != 0}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "$data": "${actions.gettickets.response.body.requests}",
+                "style": "emphasis",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "[${id} - ${subject}](https://support.lumapps.com/hc/en-us/requests/${id})",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "spacing": "None"
+                      }
+                    ],
+                    "width": "300px"
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "${status}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "spacing": "None"
+                      }
+                    ],
+                    "width": "stretch",
+                    "spacing": "None"
+                  }
+                ],
+                "spacing": "None"
+              }
+            ],
+            "spacing": "Small"
+          },
+          {
+            "type": "ColumnSet",
+            "$when": "${actions.gettickets.response.body.count != 0}",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "url": "https://support.lumapps.com/hc/en-us/requests",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "My requests"
+                      }
+                    ]
+                  }
+                ],
+                "width": "stretch"
+              }
+            ],
+            "spacing": "None"
+          },
+          {
+            "type": "Container",
+            "$when": "${actions.gettickets.response.body.count == 0}",
+            "items": [
+              {
+                "size": "Medium",
+                "text": "You currently don't have any open requests",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Default",
+                "horizontalAlignment": "Center"
+              },
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "width": "stretch"
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "type": "ActionSet",
+                        "actions": [
+                          {
+                            "url": "https://support.lumapps.com/hc/en-us/requests",
+                            "type": "Action.OpenUrl",
+                            "style": "positive",
+                            "title": "My requests"
+                          }
+                        ]
+                      }
+                    ],
+                    "width": "stretch"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "d89b72b8-1780-4eed-8437-6143724074ea",
+    "name": "gettickets",
+    "code": "gettickets",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "3cb353ad-eb67-422d-b68f-dd750152ab8d"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "zendesk"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/api/v2/requests.json?requester_id=${user.email}&sort_order=desc&per_page=5&status=new,open,pending,in progress,on-hold",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "zendesk"
+    }
+  },
+  {
+    "id": "5cbdced8-c367-4c54-a959-20aad1039a21",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "d89b72b8-1780-4eed-8437-6143724074ea"
+      }
+    ],
+    "type": "trigger"
+  }
+]
