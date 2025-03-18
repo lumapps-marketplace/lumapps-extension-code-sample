@@ -2,7 +2,6 @@
 
 ## Description
 This template provides a user-friendly interface for viewing and managing Workday leave balances.
-<img src="[Workday]%20Leave%20balance%20tracker.png" width="50%"></img>
 
 ## Features
 - Simple leave balance management interface
