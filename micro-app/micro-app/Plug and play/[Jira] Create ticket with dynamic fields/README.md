@@ -3,8 +3,6 @@
 ## Description
 This template provides a dynamic form interface for creating Jira tickets with dynamic fields based on project and issue type.
 
-<img src="[Jira]%20Create%20ticket%20with%20dynamic%20fields.png" width="50%"></img>
-
 ## Features
 - Dynamic form generation based on:
   - Project selection
