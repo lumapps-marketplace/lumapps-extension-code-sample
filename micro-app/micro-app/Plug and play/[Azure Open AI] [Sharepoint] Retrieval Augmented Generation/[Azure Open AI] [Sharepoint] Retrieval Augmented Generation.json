@@ -128,8 +128,8 @@
       },
       "endpoint": {
         "httpMethod": "POST",
-        "body": "{\r\n  \"messages\": [\r\n    {\r\n      \"role\": \"system\",\r\n      \"content\": \"You are an AI assistant that helps people find information.\"\r\n    },\r\n    {\r\n        \"role\":\"user\",\r\n        \"content\":\"${actions.start.inputVariables.query}\"\r\n    }\r\n  ],\r\n  \"past_messages\": 10,\r\n  \"temperature\": 0.7,\r\n  \"top_p\": 0.95,\r\n  \"frequency_penalty\": 0,\r\n  \"presence_penalty\": 0,\r\n  \"max_tokens\": 800,\r\n  \"stop\": null,\r\n  \"azureSearchEndpoint\": \"https://ai-search-kluedo.search.windows.net\",\r\n  \"azureSearchKey\": \"HkV6CSo54S05kHnjRoD4bUD0d9e71YRR7rCxiSr4t4AzSeBwH3BH\",\r\n  \"azureSearchIndexName\": \"sharepoint-digitalworkplace-index\",\r\n  \"data_sources\": [\r\n    {\r\n      \"type\": \"azure_search\",\r\n      \"parameters\": {\r\n        \"endpoint\": \"https://ai-search-kluedo.search.windows.net\",\r\n        \"index_name\": \"sharepoint-digitalworkplace-index\",\r\n        \"semantic_configuration\": \"kluedo-digital-workplace\",\r\n        \"query_type\": \"semantic\",\r\n        \"fields_mapping\": {\r\n\r\n              \"content_fields_separator\": \"\\n\",\r\n\r\n              \"content_fields\": [\r\n\r\n                \"content\"\r\n\r\n              ],\r\n\r\n              \"filepath_field\": \"metadata_spo_item_name\",\r\n\r\n              \"title_field\": null,\r\n\r\n              \"url_field\": \"metadata_spo_item_path\",\r\n\r\n              \"vector_fields\": []\r\n\r\n            },\r\n\r\n \r\n        \"in_scope\": true,\r\n        \"role_information\": \"You are an AI assistant that helps people find information.\",\r\n        \"filter\": null,\r\n        \"strictness\": 3,\r\n        \"top_n_documents\": 5,\r\n        \"authentication\": {\r\n          \"type\": \"api_key\",\r\n          \"key\": \"HkV6CSo54S05kHnjRoD4bUD0d9e71YRR7rCxiSr4t4AzSeBwH3BH\"\r\n        },\r\n        \"key\": \"HkV6CSo54S05kHnjRoD4bUD0d9e71YRR7rCxiSr4t4AzSeBwH3BH\",\r\n        \"indexName\": \"sharepoint-digitalworkplace-index\"\r\n      }\r\n    }\r\n  ]\r\n}",
-        "path": "/openai/deployments/kolibri-ia-4o/chat/completions?api-version=2024-02-15-preview",
+        "body": "{\r\n  \"messages\": [\r\n    {\r\n      \"role\": \"system\",\r\n      \"content\": \"You are an AI assistant that helps people find information.\"\r\n    },\r\n    {\r\n        \"role\":\"user\",\r\n        \"content\":\"${actions.start.inputVariables.query}\"\r\n    }\r\n  ],\r\n  \"past_messages\": 10,\r\n  \"temperature\": 0.7,\r\n  \"top_p\": 0.95,\r\n  \"frequency_penalty\": 0,\r\n  \"presence_penalty\": 0,\r\n  \"max_tokens\": 800,\r\n  \"stop\": null,\r\n  \"azureSearchEndpoint\": \"${actions.start.inputVariables.azure_search_endpoint}\",\r\n  \"azureSearchKey\": \"${actions.start.inputVariables.azure_search_key}\",\r\n  \"azureSearchIndexName\": \"${actions.start.inputVariables.azure_search_index_name}\",\r\n  \"data_sources\": [\r\n    {\r\n      \"type\": \"azure_search\",\r\n      \"parameters\": {\r\n        \"endpoint\": \"${actions.start.inputVariables.azure_search_endpoint}\",\r\n        \"index_name\": \"${actions.start.inputVariables.azure_search_index_name}\",\r\n        \"semantic_configuration\": \"${actions.start.inputVariables.semantic_configuration}\",\r\n        \"query_type\": \"semantic\",\r\n        \"fields_mapping\": {\r\n\r\n              \"content_fields_separator\": \"\\n\",\r\n\r\n              \"content_fields\": [\r\n\r\n                \"content\"\r\n\r\n              ],\r\n\r\n              \"filepath_field\": \"metadata_spo_item_name\",\r\n\r\n              \"title_field\": null,\r\n\r\n              \"url_field\": \"metadata_spo_item_path\",\r\n\r\n              \"vector_fields\": []\r\n\r\n            },\r\n\r\n \r\n        \"in_scope\": true,\r\n        \"role_information\": \"You are an AI assistant that helps people find information.\",\r\n        \"filter\": null,\r\n        \"strictness\": 3,\r\n        \"top_n_documents\": 5,\r\n        \"authentication\": {\r\n          \"type\": \"api_key\",\r\n          \"key\": \"${actions.start.inputVariables.azure_search_key}\"\r\n        },\r\n        \"key\": \"${actions.start.inputVariables.azure_search_key}\",\r\n        \"indexName\": \"${actions.start.inputVariables.azure_search_index_name}\"\r\n      }\r\n    }\r\n  ]\r\n}",
+        "path": "/openai/deployments/${actions.start.inputVariables.deployment}/chat/completions?api-version=${actions.start.inputVariables.api_version}",
         "queryParams": [],
         "url": ""
       }
@@ -154,7 +154,49 @@
         {
           "id": "query",
           "type": "string",
-          "defaultValue": "quels goodies je peux commander?",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        },
+        {
+          "id": "deployment",
+          "type": "string",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        },
+        {
+          "id": "api_version",
+          "type": "string",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        },
+        {
+          "id": "azure_search_endpoint",
+          "type": "string",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        },
+        {
+          "id": "azure_search_key",
+          "type": "string",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        },
+        {
+          "id": "azure_search_index_name",
+          "type": "string",
+          "defaultValue": "",
+          "multiValues": false,
+          "required": false
+        },
+        {
+          "id": "semantic_configuration",
+          "type": "string",
+          "defaultValue": "",
           "multiValues": false,
           "required": false
         }
