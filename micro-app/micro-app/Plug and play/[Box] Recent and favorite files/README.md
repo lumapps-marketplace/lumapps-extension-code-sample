@@ -2,7 +2,6 @@
 
 ## Description
 This template provides a quick view of your recent and favorite files from Box.
-![Box Recent and Favorite Files Preview]([Box]%20Recent%20and%20favorite%20files.png)
 
 ## Features
 - Displays your 5 most recent files
