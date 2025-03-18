@@ -13,7 +13,9 @@ This microapp enables AI-powered search capabilities within ServiceNow knowledge
 - Source attribution with article titles and links
 
 ## Connector Documentation
-[Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+- [Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+- [ServiceNow connector documentation](https://docs.lumapps.com/docs/ls/content/4743652518001693/docs/admin-administration-landing/admin-l6088963918247602/admin-l9650191038731043extensions/admin-l43084339674928007extensions/admin-l709725510492807extensions)
+- [ServiceNow API documentation](https://www.servicenow.com/docs/bundle/yokohama-api-reference/page/build/applications/concept/api-rest.html)
 
 ## Inputs / Variables to Set
 - query: Search query string for knowledge base articles (string)

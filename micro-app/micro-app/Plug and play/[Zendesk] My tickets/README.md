@@ -14,7 +14,9 @@ This microapp displays a user's recent Zendesk support tickets in a clean, organ
 - Link to full Zendesk portal
 
 ## Connector Documentation
-[Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+- [Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+- [Zendesk Connector](https://docs.lumapps.com/docs/docs/admin-administration-landing/admin-l6088963918247602/admin-l9650191038731043extensions/admin-l43084339674928007extensions/admin-l21425652206965984extensions)
+- [Zendesk API Documentation](https://developer.zendesk.com/api-reference/)
 
 ## Display Components
 - Ticket List Header

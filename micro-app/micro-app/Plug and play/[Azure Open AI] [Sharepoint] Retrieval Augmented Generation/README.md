@@ -14,8 +14,8 @@ This microapp enables intelligent document search and question answering using A
 - Configurable AI parameters (temperature, tokens, etc.)
 
 ## Required Connectors
-- Azure OpenAI
-- Microsoft Graph for SharePoint
+- [Azure OpenAI => API Key connector](https://docs.lumapps.com/docs/docs/admin-administration-landing/admin-l6088963918247602/admin-l9650191038731043extensions/admin-l43084339674928007extensions/admin-l7993326440200267extensions)
+- [Microsoft Graph for SharePoint](https://docs.lumapps.com/docs/docs/admin-administration-landing/admin-l6088963918247602/admin-l9650191038731043extensions/admin-l43084339674928007extensions/admin-l7795612209312086extensions)
 
 ## Input Variables
 - query: The user's search query

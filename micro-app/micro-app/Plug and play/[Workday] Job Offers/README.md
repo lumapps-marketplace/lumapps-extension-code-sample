@@ -13,7 +13,9 @@ This micro-app displays and filters job offers from Workday, allowing users to b
 - Interactive filtering interface
 
 ## Connector Documentation
-[Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+- [Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
+- [Workday Connector Documentation](http://docs.lumapps.com/docs/docs/admin-administration-landing/admin-l6088963918247602/admin-l9650191038731043extensions/admin-l43084339674928007extensions/admin-l4754802368470471extensions)
+- [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/)
 
 ## Inputs / Variables to Set
 - department: You can find the value in your workday url when you are on the home page, you'll have something like <domain>/<department>/d/home.htmld

@@ -12,9 +12,6 @@ This microapp automatically retrieves the latest news from LumApps and generates
 - Automatic content consolidation and cleaning
 - Dynamic language adaptation based on user preferences
 
-## Connector Documentation
-[Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
-
 ## Inputs / Variables to Set
 - query: Optional input string that can be used to customize the summary request (default: empty string)
 
