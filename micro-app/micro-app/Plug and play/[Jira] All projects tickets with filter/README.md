@@ -3,7 +3,6 @@
 ## Description
 This template provides a comprehensive view of Jira tickets across all projects with advanced filtering capabilities.
 
-<img src="[Jira] All projects tickets with filter.png" width="100%"></img>
 ## Features
 - View all tickets across multiple projects
 - Filter tickets by project
