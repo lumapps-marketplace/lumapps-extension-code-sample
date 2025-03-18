@@ -145,7 +145,7 @@
                     "type": "Column",
                     "items": [
                       {
-                        "text": "[${fields.summary}](https://publicissapient.atlassian.net/browse/${key})",
+                        "text": "[${fields.summary}](${actions.start.inputVariables.atlassian_url}browse/${key})",
                         "type": "TextBlock",
                         "wrap": true,
                         "maxLines": 2,
@@ -201,7 +201,7 @@
                     "type": "ActionSet",
                     "actions": [
                       {
-                        "url": "https://publicissapient.atlassian.net/servicedesk/customer/portal/7",
+                        "url": "${actions.start.inputVariables.atlassian_url}servicedesk/customer/portal/7",
                         "type": "Action.OpenUrl",
                         "style": "positive",
                         "title": "Log an Issue"
@@ -218,7 +218,7 @@
                     "type": "ActionSet",
                     "actions": [
                       {
-                        "url": "https://publicissapient.atlassian.net/jira/servicedesk/projects/DOJO/queues/custom/88",
+                        "url": "${actions.start.inputVariables.atlassian_url}jira/servicedesk/projects/DOJO/queues/custom/88",
                         "type": "Action.OpenUrl",
                         "style": "positive",
                         "title": "More"
@@ -257,7 +257,7 @@
                         "type": "ActionSet",
                         "actions": [
                           {
-                            "url": "https://publicissapient.atlassian.net/servicedesk/customer/portal/7",
+                            "url": "${actions.start.inputVariables.atlassian_url}servicedesk/customer/portal/7",
                             "type": "Action.OpenUrl",
                             "style": "positive",
                             "title": "Log an Issue"
@@ -359,7 +359,18 @@
           "type": "string",
           "required": false,
           "multiValues": false,
-          "defaultValue": "DOJO"
+          "defaultValue": "your_project_name_in_jira"
+        },
+        {
+          "id": "atlassian_url",
+          "defaultValue": "https://domain.atlassian.net/",
+          "helper": {
+            "lang": "en",
+            "value": "Your Atlassian domain ex : https://domain.atlassian.net/",
+            "translations": {
+              "en": "Your Atlassian domain ex : https://domain.atlassian.net/"
+            }
+          }
         }
       ]
     }

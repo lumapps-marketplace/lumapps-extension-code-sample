@@ -22,8 +22,7 @@ This template provides a dynamic form interface for creating Jira tickets with d
 - [Jira API Documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
 
 ## Inputs / Variables to Set
-None
-
+- **atlassian_url**: Atlassian URL (ex : https://domain.atlassian.net/)
 ## Comments on Functioning
 1. **whoAmI**: Gets Atlassian userId from LumApps email
 2. **getproject**: Gets available projects from userId
@@ -39,6 +38,8 @@ None
       - A. **Success**: Displays ticket link
       - B1. **parseError**: Formats data from error message
       - B2. **error**: Displays error message
+
+- This app need a little bit of custom css for removing empty fields from the form
 
 ## Link to Microapp Import Documentation
 [Microapp Import Documentation](https://docs.lumapps.com/docs/ls/content/6236515079535869/devportal-l48909819228353757)

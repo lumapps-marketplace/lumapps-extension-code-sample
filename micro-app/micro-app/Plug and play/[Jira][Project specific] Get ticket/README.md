@@ -1,7 +1,7 @@
 # Jira Template
 
 ## Description
-This template provides a focused view of Jira tickets for a specific project, displaying them in an organized and easily readable format.
+This template provides a focused view of Jira tickets for current user for a specific project, displaying them in an organized and easily readable format.
 
 ## Features
 - Project-specific ticket display
@@ -21,6 +21,7 @@ This template provides a focused view of Jira tickets for a specific project, di
 
 ## Inputs / Variables to Set
 - **projectname**: Project name to filter tickets
+- **atlassian_url**: Atlassian URL (ex : https://domain.atlassian.net/)
 
 ## Comments on Functioning
 1. **getuser**: Gets information about the current user

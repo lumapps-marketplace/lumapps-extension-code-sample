@@ -21,7 +21,7 @@ This template provides a comprehensive view of Jira tickets across all projects 
 - [Jira API Documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
 
 ## Inputs / Variables to Set
-None
+- **atlassian_url**: Atlassian URL (ex : https://domain.atlassian.net/)
 
 ## Comments on Functioning
 1. **Getaccid**: Gets Atlassian userId from LumApps email

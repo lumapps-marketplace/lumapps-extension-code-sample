@@ -16,7 +16,7 @@ This template provides a focused view of active learning journeys, displaying th
 [Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
 
 ## Inputs / Variables to Set
-None
+- **list_journey_url**: Url to your platform ex : https://lumapps.com/training/
 
 ## Comments on Functioning
 1. **getjourneys**: Gets journeys information for the current user

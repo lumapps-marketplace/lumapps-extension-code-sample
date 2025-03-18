@@ -15,7 +15,7 @@ This template provides a user-friendly interface for viewing and managing Servic
 - [ServiceNow API documentation](https://www.servicenow.com/docs/bundle/yokohama-api-reference/page/build/applications/concept/api-rest.html)
 
 ## Inputs / Variables to Set
-None
+- **service_now_url**: Your serviceNow URL ex : https://ven0000.service-now.com/ 
 
 ## Comments on Functioning
 1. **getUser**: Gets user information from email

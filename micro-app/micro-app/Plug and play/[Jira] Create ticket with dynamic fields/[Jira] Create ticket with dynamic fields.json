@@ -173,7 +173,7 @@
         "body": [
           {
             "size": "Medium",
-            "text": "\nTicket created: [${actions.create_ticket.response.body.key}](https://publicissapient.atlassian.net/browse/${actions.create_ticket.response.body.key}) \n\n\n",
+            "text": "\nTicket created: [${actions.create_ticket.response.body.key}](${actions.start.inputVariables.atlassian_url}browse/${actions.create_ticket.response.body.key}) \n\n\n",
             "type": "TextBlock",
             "wrap": true,
             "weight": "Bolder",
@@ -642,7 +642,22 @@
         "targetId": "abb390cc-9fe9-4d04-9a0b-cd5fa7563a95"
       }
     ],
-    "type": "trigger"
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "atlassian_url",
+          "defaultValue": "https://domain.atlassian.net/",
+          "helper": {
+            "lang": "en",
+            "value": "Your Atlassian domain ex : https://domain.atlassian.net/",
+            "translations": {
+              "en": "Your Atlassian domain ex : https://domain.atlassian.net/"
+            }
+          }
+        }
+      ]
+    }
   },
   {
     "id": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214",

@@ -115,7 +115,7 @@
       "endpoint": {
         "httpMethod": "GET",
         "body": "",
-        "path": "/api/absenceManagement/v1/lumapps_dpt1/balances",
+        "path": "/api/absenceManagement/v1/${actions.start.inputVariables.department}/balances",
         "queryParams": [
           {
             "key": "worker",
@@ -149,7 +149,7 @@
       "endpoint": {
         "httpMethod": "GET",
         "body": "",
-        "path": "/api/absenceManagement/v1/lumapps_dpt1/workers/me",
+        "path": "/api/absenceManagement/v1/${actions.start.inputVariables.department}/workers/me",
         "queryParams": [],
         "url": ""
       },
@@ -169,6 +169,14 @@
         "targetId": "e3726d81-7616-4d08-b91a-7b6a04d09d38"
       }
     ],
-    "type": "trigger"
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "department",
+          "defaultValue": "your_department_name_in_workday"
+        }
+      ]
+    }
   }
 ]

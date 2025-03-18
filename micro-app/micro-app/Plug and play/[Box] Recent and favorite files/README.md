@@ -14,7 +14,7 @@ This template provides a quick view of your recent and favorite files from Box.
 - [Box API Documentation](https://developer.box.com/reference/)
 
 ## Inputs / Variables to Set
-None
+- **box_url**: Your environment box URL 
 
 ## Comments on Functioning
 1. **getuser**: Retrieves user information

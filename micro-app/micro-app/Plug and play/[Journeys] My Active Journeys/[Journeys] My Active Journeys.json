@@ -90,7 +90,7 @@
                             "type": "Column",
                             "items": [
                               {
-                                "text": "[${journeyPreview.title.value}](https://vox-sandbox.app.lumapps.com/vox-sandbox/ls/journeys/${id})",
+                                "text": "[${journeyPreview.title.value}](${actions.start.inputVariables.list_journey_url}ls/journeys/${id})",
                                 "type": "TextBlock",
                                 "wrap": true
                               }
@@ -132,7 +132,7 @@
                     "type": "ActionSet",
                     "actions": [
                       {
-                        "url": "https://vox-sandbox.app.lumapps.com/vox-sandbox/ls/journeys/list",
+                        "url": "${actions.start.inputVariables.list_journey_url}ls/journeys/list",
                         "type": "Action.OpenUrl",
                         "style": "positive",
                         "title": "All Journeys"
@@ -176,7 +176,7 @@
                                 "type": "ActionSet",
                                 "actions": [
                                   {
-                                    "url": "https://vox-sandbox.app.lumapps.com/vox-sandbox/ls/journeys/list",
+                                    "url": "${actions.start.inputVariables.list_journey_url}ls/journeys/list",
                                     "type": "Action.OpenUrl",
                                     "style": "positive",
                                     "title": "All Journeys"
@@ -273,6 +273,21 @@
         "targetId": "07545d51-5f38-435d-be1d-b1c6e3035492"
       }
     ],
-    "type": "trigger"
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "list_journey_url",
+          "defaultValue": "url_to_your_platform",
+          "helper": {
+            "lang": "en",
+            "value": "Url to your platform ex : https://lumapps.com/training/",
+            "translations": {
+              "en": "Url to your platform ex : https://lumapps.com/training/"
+            }
+          }
+        }
+      ]
+    }
   }
 ]

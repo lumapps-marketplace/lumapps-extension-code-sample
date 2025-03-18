@@ -1,286 +1,636 @@
 [
   {
-    "id": "1e1c3208-b549-47b1-b1e5-fb8ace7b45ca",
-    "name": "getActionSet",
-    "code": "get_action_set",
+    "id": "628b7ada-87c0-456c-8d87-808679dfdd0f",
+    "name": "splitIssueName",
+    "code": "split_issue_name",
     "position": {
-      "x": 708,
-      "y": -252
-    },
-    "links": [
-      {
-        "targetId": "99438abc-cfc6-43c7-a8d1-6a4072345f75-1734538913166"
-      }
-    ],
-    "type": "function",
-    "settings": {
-      "language": "javascript",
-      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object}  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Récupération de la liste des projets.\n    const projectsList = executionContext?.actions?.parse_data?.output?.projectsList || [];\n    \n    // Initialisation du tableau final.\n    let result = [];\n\n    // Ajout de l'élément \"All Tickets\" au début de la liste.\n    result.push({\n        project: \"All Tickets\",\n        targetElements: [\n            {\n                elementId: \"allTickets\",\n                isVisible: true\n            },\n            {\n                elementId: \"filteredTickets\",\n                isVisible: false\n            },\n            {\n                \"elementId\": \"filtersContainer\",\n                \"isVisible\": false\n            }\n        ]\n    });\n\n    // Parcours de la liste des projets pour générer le tableau souhaité.\n    projectsList.forEach(currentProject => {\n        const projectName = currentProject.projectName;\n\n        // Création d'un tableau pour le projet en cours.\n        let targetElements = [];\n\n        // Ajout d'un élément \"allTickets\" toujours avec isVisible: false.\n        targetElements.push({\n            elementId: \"allTickets\",\n            isVisible: false\n        });\n\n        // Ajout de l'élément \"filteredTickets\" avec isVisible: true.\n        targetElements.push({\n            elementId: \"filteredTickets\",\n            isVisible: true\n        });\n\n        targetElements.push({\n            \"elementId\": \"filtersContainer\",\n            \"isVisible\": false\n        });\n\n        // Ajout des éléments pour tous les projets.\n        projectsList.forEach(otherProject => {\n            const otherProjectName = otherProject.projectName;\n\n            targetElements.push({\n                elementId: otherProjectName,\n                isVisible: otherProjectName === projectName // true uniquement pour le projet en cours.\n            });\n        });\n\n        // Ajout du tableau généré pour ce projet dans le résultat final.\n        result.push({\n            project: projectName,\n            targetElements: targetElements\n        });\n    });\n\n    // Assignation des données générées à la sortie.\n    output.projectsVisibility = result;\n\n    // Mandatory: return your output.\n    return output;\n}\n"
-    }
-  },
-  {
-    "id": "14ea43b3-7a80-4e25-92bf-c9ed473edef7",
-    "name": "parseData",
-    "code": "parse_data",
-    "position": {
-      "x": 528,
-      "y": -252
-    },
-    "links": [
-      {
-        "targetId": "1e1c3208-b549-47b1-b1e5-fb8ace7b45ca"
-      }
-    ],
-    "type": "function",
-    "settings": {
-      "language": "javascript",
-      "source": "function main(executionContext) {\n    let output = {};\n\n    try {\n        // Extract issues from the execution context\n        let issues = executionContext?.actions?.get_user_tickets?.response?.body?.issues;\n\n        if (!issues) {\n            throw new Error('Issues not found in the execution context.');\n        }\n\n        // Flatten list of issues with basic details\n        let allIssues = issues.map(issue => ({\n            id: issue.id || null,\n            key: issue.key || 'N/A',\n            summary: issue.fields?.summary || 'No summary',\n            project: issue.fields?.project?.name || 'No project',\n            issueType: issue.fields?.issuetype?.name || 'No issue type',\n            status: issue.fields?.status?.name || 'No status',\n            priority: issue.fields?.priority?.name || 'No priority',\n            duedate: issue.fields?.priority?.duedate || 'No duedate',\n        }))\n\n        // Group issues by project\n        let issuesByProject = allIssues.reduce((acc, issue) => {\n            if (!acc[issue.project]) {\n                acc[issue.project] = {\n                    issues: [],\n                    detailedIssues: {}\n                };\n            }\n            acc[issue.project].issues.push(issue);\n\n            // Group issues by issue type within each project\n            acc[issue.project].detailedIssues[issue.issueType] = acc[issue.project].detailedIssues[issue.issueType] || [];\n            acc[issue.project].detailedIssues[issue.issueType].push(issue);\n\n            return acc;\n        }, {});\n\n        // Extract only the list of projects with their issues\n        let projectsList = Object.keys(issuesByProject).map(project => ({\n            projectName: project,\n            issues: issuesByProject[project].issues\n        }));\n\n        // Populate output\n        output.allIssues = allIssues;\n        output.projectsList = projectsList;\n        output.issuesByProject = issuesByProject;\n\n    } catch (error) {\n        output.error = error.message;\n    }\n\n    // Fallback values\n    if (!output.allIssues) {\n        output.allIssues = [];\n    }\n    if (!output.projectsList) {\n        output.projectsList = [];\n    }\n    if (!output.issuesByProject) {\n        output.issuesByProject = {};\n    }\n    if (output.error && !output.logs) {\n        output.logs = [{ type: 'error', message: output.error }];\n    }\n\n    return output;\n}\n"
-    }
-  },
-  {
-    "id": "99438abc-cfc6-43c7-a8d1-6a4072345f75",
-    "name": "Display User list",
-    "code": "display_user_list",
-    "position": {
-      "x": 876,
+      "x": 1356,
       "y": 0
+    },
+    "links": [
+      {
+        "targetId": "32da6f24-643e-4b73-81be-02f46603a594"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Récupération de la valeur du champ depuis le contexte d'exécution.\n    let projectValue = executionContext?.actions?.choose_issue_type?.inputs?.issuetypes;\n    //let projectValue = \"10008 - placeholder issue type\";\n\n    // Vérification que la valeur existe et traitement.\n    if (projectValue) {\n        // Supposons que projectValue soit au format \"id - name\".\n        let [id, name] = projectValue.split(\" - \");\n        \n        // Assignation des valeurs à l'objet de sortie.\n        output.id = id ? id.trim() : null;\n        output.name = name ? name.trim() : null;\n    } else {\n        // Si la valeur n'existe pas, retourner un message d'erreur ou laisser vide.\n        output.error = \"The Project ID field is empty or cannot be found.\";\n    }\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "c1f4992a-c35d-44c9-ab35-3f24327eb5f9",
+    "name": "splitProjectNameId",
+    "code": "split_project_name_id",
+    "position": {
+      "x": 780,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "37f24f26-dcef-4394-9a60-d59759ea252b"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Récupération de la valeur du champ depuis le contexte d'exécution.\n    //let projectValue = executionContext?.actions?.chooseproject?.inputs?.projectid;\n    let projectValue = \"10214 - projectName\";\n\n    // Vérification que la valeur existe et traitement.\n    if (projectValue) {\n        // Supposons que projectValue soit au format \"id - name\".\n        let [id, name] = projectValue.split(\" - \");\n        \n        // Assignation des valeurs à l'objet de sortie.\n        output.id = id ? id.trim() : null;\n        output.name = name ? name.trim() : null;\n    } else {\n        // Si la valeur n'existe pas, retourner un message d'erreur ou laisser vide.\n        output.error = \"The project ID is empty or not discoverable.\";\n    }\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "9edcb49d-4b7d-408c-a89d-406383e55135",
+    "name": "parseError",
+    "code": "parse_error",
+    "position": {
+      "x": 2592,
+      "y": 132
+    },
+    "links": [
+      {
+        "targetId": "992bad4f-786c-45d4-a4e3-70113a2ebebf"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n\n    // Extraction des erreurs depuis le contexte d'exécution\n    const errors = executionContext?.actions?.create_ticket?.response?.body?.errors || {};\n\tconst errorMessages = executionContext?.actions?.create_ticket?.response?.body?.errorMessages || [];\n\n    // Transformation des erreurs en un seul string\n    let logMessage = \"\";\n\n    // Ajout des messages d'erreurs simples\n    if (errorMessages.length > 0) {\n        logMessage += \"Error: \" + errorMessages.join(\", \") + \". \";\n    }\n\n    // Ajout des erreurs clés/valeurs\n    if (Object.keys(errors).length > 0) {\n        logMessage += \"Error Details : \";\n        for (const [key, value] of Object.entries(errors)) {\n            logMessage += `${key} - ${value}. `;\n        }\n    }\n\n    // Ajout du message final au output\n    output.log = logMessage.trim();\n\n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "942d1a32-9b1c-4f1a-bfdf-bf806c42b88b",
+    "name": "Action 942d1a32-9b1c-4f1a-bfdf-bf806c42b88b",
+    "code": "action_942_d_1_a_32_9_b_1_c_4_f_1_a_bfdf_bf_806_c_42_b_88_b",
+    "position": {
+      "x": 2424,
+      "y": 48
+    },
+    "links": [
+      {
+        "targetId": "a588432d-08df-44e2-896e-2ddd0074db8b",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "3221",
+              "rules": [
+                {
+                  "id": "3222",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.create_ticket.response.status}",
+                  "rightValue": "200"
+                },
+                {
+                  "id": "3384",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.create_ticket.response.status}",
+                  "rightValue": "201"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "9edcb49d-4b7d-408c-a89d-406383e55135",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "992bad4f-786c-45d4-a4e3-70113a2ebebf",
+    "name": "error",
+    "code": "error",
+    "position": {
+      "x": 2808,
+      "y": 132
     },
     "links": [],
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
-            "type": "Container",
-            "$when": "${actions.jira_get_user_ticket.response.body.issues != []}",
-            "items": [
-              {
-                "type": "ColumnSet",
-                "bleed": true,
-                "style": "accent",
-                "columns": [
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Ticket",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 100
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Status",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 100
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Summary",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 400
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Priority",
-                        "type": "TextBlock",
-                        "weight": "Bolder",
-                        "horizontalAlignment": "Center"
-                      }
-                    ],
-                    "width": 200
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Due Date",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 200
-                  }
-                ],
-                "spacing": "None"
-              },
-              {
-                "type": "Container",
-                "items": [
-                  {
-                    "type": "ColumnSet",
-                    "$data": "${subArray(actions.jira_get_user_ticket.response.body.issues,0)}",
-                    "columns": [
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${key}",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "spacing": "Medium"
-                          }
-                        ],
-                        "width": 100
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${fields.status.name}",
-                            "type": "TextBlock",
-                            "wrap": true
-                          }
-                        ],
-                        "width": 100
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "[${fields.summary}](https://publicissapient.atlassian.net/browse/${key})",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "maxLines": 2,
-                            "horizontalAlignment": "Left"
-                          }
-                        ],
-                        "width": 400
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${substring(fields.priority.name,0,2)}",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "horizontalAlignment": "Center"
-                          }
-                        ],
-                        "width": 200
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${formatDateTime(fields.duedate, 'dd MMM yyyy')}",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "$when": "${contains(fields.duedate,\"20\")}"
-                          }
-                        ],
-                        "width": 200
-                      }
-                    ]
-                  }
-                ],
-                "spacing": "Medium"
-              },
-              {
-                "type": "ActionSet",
-                "actions": [
-                  {
-                    "url": "https://publicissapient.atlassian.net/browse",
-                    "role": "Link",
-                    "type": "Action.OpenUrl",
-                    "title": "More"
-                  }
-                ]
-              }
-            ]
+            "size": "Medium",
+            "text": "An error occurred during the request.",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "Attention",
+            "weight": "Bolder"
           },
           {
-            "type": "Container",
-            "$when": "${actions.jira_get_user_ticket.response.body.issues == []}",
-            "items": [
-              {
-                "text": "You currently have no open issues in JIRA.",
-                "type": "TextBlock",
-                "wrap": true
-              }
-            ]
+            "text": "Error Details:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.parse_error.output.log}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "text": "Request Body Sent:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.prepare_post.output.log}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
           }
         ],
         "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.6"
       }
     }
   },
   {
-    "id": "555ad7a0-32b9-4c9a-bc0f-c394b51009a2",
-    "name": "Jira Get User ticket",
-    "code": "jira_get_user_ticket",
+    "id": "a588432d-08df-44e2-896e-2ddd0074db8b",
+    "name": "Succes",
+    "code": "succes",
     "position": {
-      "x": 456,
-      "y": 0
+      "x": 2592,
+      "y": -132
     },
     "links": [],
-    "type": "api_call",
+    "type": "adaptive_card",
     "settings": {
-      "authentication": {
-        "method": "connector",
-        "providerType": "jira"
-      },
-      "endpoint": {
-        "httpMethod": "POST",
-        "body": "{\r\n  \"jql\": \"reporter = ${actions.getaccid.response.body[0].accountId}\",\r\n  \"startAt\": 0,\r\n  \"maxResults\": 10,\r\n  \"fields\": [\r\n    \"id\",\r\n    \"key\",\r\n    \"status\",\r\n    \"description\",\r\n    \"summary\",\r\n    \"reporter\",\r\n    \"project\", \r\n    \"priority\",\r\n    \"duedate\"\r\n  \r\n  ]\r\n}\r\n",
-        "path": "/rest/api/2/search",
-        "queryParams": [],
-        "url": ""
-      },
-      "providerType": "jira"
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "\nTicket created: [${actions.create_ticket.response.body.key}](${actions.start.inputVariables.atlassian_url}browse/${actions.create_ticket.response.body.key}) \n\n\n",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder",
+            "spacing": "Medium"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Create another ticket"
+              }
+            ],
+            "spacing": "Large"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
     }
   },
   {
-    "id": "535376b4-77b9-41df-8a66-aa7143210dc6",
-    "name": "Getaccid",
-    "code": "getaccid",
+    "id": "69c001a1-0995-4135-a14b-66be1d972925",
+    "name": "log",
+    "code": "log",
     "position": {
-      "x": 228,
+      "x": 2076,
+      "y": -192
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "LOG",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.prepare_post.output.log}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Action.Execute"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "f917e8b5-e68c-4c76-a734-7192a84ca998",
+    "name": "preparePostOldWorking",
+    "code": "prepare_post_old_working",
+    "position": {
+      "x": 1932,
+      "y": 156
+    },
+    "links": [],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Transform user input data into Jira-compatible format\n * @param {Object} executionContext The execution context containing the form inputs\n * @returns {Object} Jira-formatted ticket data\n */\nfunction main(executionContext) {\n    // Vérification de l'existence du contexte d'exécution\n    if (!executionContext || typeof executionContext !== 'object') {\n        return {\n            json: {},\n            log: 'Invalid or missing execution context'\n        };\n    }\n\n    // Récupération des inputs du formulaire et du contexte\n    const ticketInputs = executionContext?.actions?.ticket_form?.inputs;\n    const fields = executionContext?.actions?.itmf?.response?.body?.projects?.[0]?.issuetypes?.[0]?.fields;\n\n    if (!ticketInputs) {\n        return {\n            json: {},\n            log: 'No ticket inputs found in execution context'\n        };\n    }\n\n    if (!fields) {\n        return {\n            json: {},\n            log: 'No fields metadata found in execution context'\n        };\n    }\n\n    // Initialisation de la structure de base\n    const output = {\n        json: {\n            fields: {},\n            update: {}\n        },\n        log: ''\n    };\n\n    // Fonction helper pour créer un champ de type document\n    const createDocField = (text) => ({\n        content: [\n            {\n                content: [\n                    {\n                        text: text,\n                        type: \"text\"\n                    }\n                ],\n                type: \"paragraph\"\n            }\n        ],\n        type: \"doc\",\n        version: 1\n    });\n\n    // Fonction helper pour convertir la valeur selon le type\n    const convertValue = (value, schema) => {\n        if (value == null) return null;\n\n        switch (schema?.type) {\n            case 'number':\n            case 'integer':\n                return parseInt(value, 10);\n            case 'array':\n                if (!Array.isArray(value)) {\n                    value = [value];\n                }\n                if (schema.items === 'component' || schema.items === 'version') {\n                    return value.map(v => ({ id: v }));\n                }\n                return value;\n            default:\n                return value;\n        }\n    };\n\n    // Ajout des champs projet et issuetype avec les IDs spécifiés\n    output.json.fields[\"issuetype\"] = { id: executionContext?.actions?.split_issue_name?.output?.id };\n    output.json.fields[\"project\"] = { id: executionContext?.actions?.split_project_name_id?.output?.id };\n\n    // Mapping des champs d'entrée vers la structure Jira\n    Object.entries(ticketInputs).forEach(([key, value]) => {\n        // Si la valeur est null ou undefined, on skip\n        if (value == null) return;\n\n        // Récupération du schéma du champ depuis le contexte\n        const fieldMetadata = fields[key];\n        const schema = fieldMetadata?.schema;\n\n        switch (key) {\n            // Champs avec structure document\n            case 'description':\n            case 'environment':\n                output.json.fields[key] = createDocField(value);\n                break;\n\n            // Champs avec ID simple\n            case 'priority':\n            case 'security':\n            case 'assignee':\n            case 'reporter':\n                output.json.fields[key] = { id: value };\n                break;\n\n            // Champs avec ID dans un tableau\n            case 'components':\n            case 'fixVersions':\n            case 'versions':\n                output.json.fields[key] = value ? [{ id: value }] : [];\n                break;\n\n            // Champs personnalisés\n            default:\n                if (key.startsWith('customfield_')) {\n                    if (schema?.type === 'option') {\n                        output.json.fields[key] = { id: value };\n                    } else if (schema?.type === 'array' && schema.items === 'option') {\n                        output.json.fields[key] = Array.isArray(value) ? value.map(v => ({ id: v })) : [{ id: value }];\n                    } else {\n                        output.json.fields[key] = convertValue(value, schema);\n                    }\n                } else {\n                    output.json.fields[key] = convertValue(value, schema);\n                }\n        }\n    });\n\n    // Ajout du log formaté\n    output.log = JSON.stringify(output.json, null, 2);\n\n    return output;\n}"
+    }
+  },
+  {
+    "id": "abb390cc-9fe9-4d04-9a0b-cd5fa7563a95",
+    "name": "whoAmI",
+    "code": "who_am_i",
+    "position": {
+      "x": 180,
       "y": 0
     },
     "links": [
       {
-        "targetId": "555ad7a0-32b9-4c9a-bc0f-c394b51009a2-1734538774167"
+        "targetId": "04ff3721-058a-42ca-af45-c8976b1fb5ed"
       }
     ],
     "type": "api_call",
     "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/2/myself",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
       "authentication": {
         "method": "connector",
         "providerType": "jira"
-      },
-      "endpoint": {
-        "httpMethod": "GET",
-        "body": "",
-        "path": "/rest/api/3/user/search?query=${user.email}",
-        "queryParams": [],
-        "url": ""
-      },
-      "providerType": "jira"
+      }
     }
   },
   {
-    "id": "10c81ab0-fa05-4fc2-b926-46ffce6b3c03",
+    "id": "16ac795b-581d-4d59-96aa-dfff2402ce69",
+    "name": "chooseIssueType",
+    "code": "choose_issue_type",
+    "position": {
+      "x": 1176,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "628b7ada-87c0-456c-8d87-808679dfdd0f"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "id": "issuetypes",
+                "type": "Input.ChoiceSet",
+                "label": "Issue Type",
+                "choices": [
+                  {
+                    "$data": "${actions.itmf.response.body.projects[0].issuetypes}",
+                    "$when": "${hierarchyLevel > -1}",
+                    "title": "${name}",
+                    "value": "${id} - ${name}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Select an issue type",
+                "errorMessage": "Please select an issue type"
+              }
+            ],
+            "spacing": "ExtraLarge"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "32da6f24-643e-4b73-81be-02f46603a594",
+    "name": "parseData",
+    "code": "parse_data",
+    "position": {
+      "x": 1572,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "3c03d766-de22-4690-834e-b7f2017b6afd"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n    let output = {};\n\n    // Fonction pour normaliser les noms (remplacer espaces, retirer accents, convertir en minuscule)\n    const normalizeName = (name) => {\n        return name\n            .toLowerCase()\n            .replace(/\\s+/g, '_') // Remplace les espaces par des underscores\n            .normalize(\"NFD\") // Décompose les caractères accentués en caractères simples\n            .replace(/[\\u0300-\\u036f]/g, ''); // Supprime les accents\n    };\n\n    // Récupérer l'ID du type de ticket sélectionné\n    const selectedIssueTypeId = executionContext?.actions?.split_issue_name?.output?.id;\n\n    // Accéder à la liste des projets et vérifier leur présence\n    const projects = executionContext?.actions?.itmf?.response?.body?.projects || [];\n\n    // Parcourir chaque projet\n    projects.forEach(project => {\n        const issueTypes = project?.issuetypes || [];\n\n        // Parcourir chaque type de ticket\n        issueTypes.forEach(issueType => {\n            if (issueType.id === selectedIssueTypeId) {\n                const fields = issueType?.fields || {};\n\n                // Normaliser le nom du type de ticket\n                const issueTypeName = normalizeName(issueType.name);\n\n                // Extraire les champs principaux (résumé, description, priorité)\n                const primaryFields = [\n                    \"summary\",\n                    \"description\",\n                    \"priority\"\n                ].map(key => ({\n                    key,\n                    name: fields[key]?.name || \"Name not specified\",\n                    required: fields[key]?.required || false,\n                    description: fields[key]?.description || \"Description not specified\",\n                    type: fields[key]?.schema?.type || \"Type not specified\",\n                    system: fields[key]?.schema?.system || false,\n                    custom: fields[key]?.schema?.custom || false,\n                    allowedValues: fields[key]?.allowedValues || []\n                }));\n\n                // Extraire les autres champs\n                const otherFields = Object.keys(fields)\n                    .filter(fieldKey => ![\"summary\", \"description\", \"priority\"].includes(fieldKey))\n                    .map(fieldKey => ({\n                        key: fieldKey,\n                        name: fields[fieldKey]?.name || \"Name not specified\",\n                        required: fields[fieldKey]?.required || false,\n                        description: fields[fieldKey]?.description || \"Description not specified\",\n                        type: fields[fieldKey]?.schema?.type || \"Type not specified\",\n                        system: fields[fieldKey]?.schema?.system || false,\n                        custom: fields[fieldKey]?.schema?.custom || false,\n                        allowedValues: fields[fieldKey]?.allowedValues || []\n                    }));\n\n                // Ajouter tous les champs dans l'ordre désiré\n                output.fields = [...primaryFields, ...otherFields];\n                output.selectedIssueTypeId = selectedIssueTypeId;\n            }\n        });\n    });\n\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "0cd49ad0-a161-4345-b347-2fb6c31aeba3",
+    "name": "create ticket",
+    "code": "create_ticket",
+    "position": {
+      "x": 2220,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "942d1a32-9b1c-4f1a-bfdf-bf806c42b88b"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "${actions.prepare_post.output.log}",
+        "path": "/rest/api/3/issue",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "3c03d766-de22-4690-834e-b7f2017b6afd",
+    "name": "ticketForm",
+    "code": "ticket_form",
+    "position": {
+      "x": 1752,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Project: ${actions.split_project_name_id.output.name}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "Issue type: ${actions.split_issue_name.output.name}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "id": "requiredContainer",
+            "type": "Container",
+            "$data": "${actions.parse_data.output.fields}",
+            "items": [
+              {
+                "id": "${key}",
+                "type": "Input.Number",
+                "$when": "${(type =='number' && required == true)}",
+                "label": "${name}",
+                "isRequired": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.Text",
+                "$when": "${type == 'string' && required == true}",
+                "label": "${name}",
+                "maxLength": 255,
+                "isRequired": true,
+                "isMultiline": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.Text",
+                "$when": "${key == 'description'}",
+                "label": "${name}",
+                "isRequired": true,
+                "isMultiline": true,
+                "placeholder": "Add a short description",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.ChoiceSet",
+                "$when": "${type == 'array' && required == true}",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${allowedValues}",
+                    "title": "${name}",
+                    "value": "${id}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.ChoiceSet",
+                "$when": "${key == 'priority' && required == true}",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${allowedValues}",
+                    "title": "${name}",
+                    "value": "${id}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Select your priority",
+                "errorMessage": "Please add your response"
+              },
+              {
+                "id": "${key}",
+                "type": "Input.ChoiceSet",
+                "$when": "${(type == 'option') && required == true}",
+                "label": "${name}",
+                "choices": [
+                  {
+                    "$data": "${allowedValues}",
+                    "title": "${value}",
+                    "value": "${id}"
+                  }
+                ],
+                "isRequired": true,
+                "placeholder": "Add your response here",
+                "errorMessage": "Please add your response"
+              }
+            ],
+            "style": "emphasis",
+            "minHeight": "0px"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Create"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "37f24f26-dcef-4394-9a60-d59759ea252b",
+    "name": "itmf",
+    "code": "itmf",
+    "position": {
+      "x": 984,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "16ac795b-581d-4d59-96aa-dfff2402ce69"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/3/issue/createmeta",
+        "httpMethod": "GET",
+        "queryParams": [
+          {
+            "key": "projectIds",
+            "value": "${actions.split_project_name_id.output.id}"
+          },
+          {
+            "key": "expand",
+            "value": "projects.issuetypes.fields"
+          }
+        ]
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "11b4adc2-7a0b-45e1-996b-773605e43712",
+    "name": "chooseproject",
+    "code": "chooseproject",
+    "position": {
+      "x": 564,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "c1f4992a-c35d-44c9-ab35-3f24327eb5f9"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "id": "projectid",
+            "type": "Input.ChoiceSet",
+            "choices": [
+              {
+                "$data": "${actions.getproject.response.body.values}",
+                "title": "${name}",
+                "value": "${id} - ${name}"
+              }
+            ],
+            "isRequired": true,
+            "placeholder": "Choose your project",
+            "errorMessage": "You must choose a project"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "04ff3721-058a-42ca-af45-c8976b1fb5ed",
+    "name": "getproject",
+    "code": "getproject",
+    "position": {
+      "x": 372,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "11b4adc2-7a0b-45e1-996b-773605e43712"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/2/project/search",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "c67659b4-f3ad-4baa-bdee-b71b2028d295",
     "name": "Start",
     "code": "start",
     "position": {
@@ -289,379 +639,105 @@
     },
     "links": [
       {
-        "targetId": "535376b4-77b9-41df-8a66-aa7143210dc6"
+        "targetId": "abb390cc-9fe9-4d04-9a0b-cd5fa7563a95"
       }
     ],
-    "type": "trigger"
-  },
-  {
-    "id": "555ad7a0-32b9-4c9a-bc0f-c394b51009a2-1734538774167",
-    "name": "getUserTickets",
-    "code": "get_user_tickets",
-    "position": {
-      "x": 324,
-      "y": -252
-    },
-    "links": [
-      {
-        "targetId": "14ea43b3-7a80-4e25-92bf-c9ed473edef7"
-      }
-    ],
-    "type": "api_call",
+    "type": "trigger",
     "settings": {
-      "authentication": {
-        "method": "connector",
-        "providerType": "jira"
-      },
-      "endpoint": {
-        "httpMethod": "POST",
-        "body": "{\r\n  \"jql\": \"assignee = ${actions.getaccid.response.body[0].accountId} AND resolution = Unresolved ORDER BY priority DESC\",\r\n  \"startAt\": 0,\r\n  \"fields\": [\r\n    \"id\",\r\n    \"key\",\r\n    \"status\",\r\n    \"description\",\r\n    \"summary\",\r\n    \"reporter\",\r\n    \"project\", \r\n    \"priority\",\r\n    \"duedate\",\r\n    \"issuetype\"\r\n  \r\n  ]\r\n}\r\n",
-        "path": "/rest/api/2/search",
-        "queryParams": [],
-        "url": ""
-      },
-      "providerType": "jira"
+      "inputVariables": [
+        {
+          "id": "atlassian_url",
+          "defaultValue": "https://domain.atlassian.net/",
+          "helper": {
+            "lang": "en",
+            "value": "Your Atlassian domain ex : https://domain.atlassian.net/",
+            "translations": {
+              "en": "Your Atlassian domain ex : https://domain.atlassian.net/"
+            }
+          }
+        }
+      ]
     }
   },
   {
-    "id": "99438abc-cfc6-43c7-a8d1-6a4072345f75-1734538913166",
-    "name": "displayWithFilters",
-    "code": "display_with_filters",
+    "id": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214",
+    "name": "preparePost",
+    "code": "prepare_post",
     "position": {
-      "x": 864,
-      "y": -252
+      "x": 1932,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0cd49ad0-a161-4345-b347-2fb6c31aeba3"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Transform user input data into Jira-compatible format\n * @param {Object} executionContext The execution context containing the form inputs\n * @returns {Object} Jira-formatted ticket data\n */\nfunction main(executionContext) {\n    // Vérification de l'existence du contexte d'exécution\n    if (!executionContext || typeof executionContext !== 'object') {\n        return {\n            json: {},\n            log: 'Invalid or missing execution context'\n        };\n    }\n\n    // Récupération des inputs du formulaire et du contexte\n    const ticketInputs = executionContext?.actions?.ticket_form?.inputs;\n    const fields = executionContext?.actions?.itmf?.response?.body?.projects?.[0]?.issuetypes?.[0]?.fields;\n\n    if (!ticketInputs) {\n        return {\n            json: {},\n            log: 'No ticket inputs found in execution context'\n        };\n    }\n\n    if (!fields) {\n        return {\n            json: {},\n            log: 'No fields metadata found in execution context'\n        };\n    }\n\n    // Initialisation de la structure de base\n    const output = {\n        json: {\n            fields: {},\n            update: {}\n        },\n        log: ''\n    };\n\n    // Fonction helper pour créer un champ de type document\n    const createDocField = (text) => ({\n        content: [\n            {\n                content: [\n                    {\n                        text: text,\n                        type: \"text\"\n                    }\n                ],\n                type: \"paragraph\"\n            }\n        ],\n        type: \"doc\",\n        version: 1\n    });\n\n    // Fonction helper pour convertir la valeur selon le type\n    const convertValue = (value, schema) => {\n        if (value == null) return null;\n\n        switch (schema?.type) {\n            case 'number':\n            case 'integer':\n                return parseInt(value, 10);\n            case 'array':\n                if (!Array.isArray(value)) {\n                    value = [value];\n                }\n                if (schema.items === 'component' || schema.items === 'version') {\n                    return value.map(v => ({ id: v }));\n                }\n                return value;\n            default:\n                return value;\n        }\n    };\n\n    // Ajout des champs projet et issuetype avec les IDs spécifiés\n    output.json.fields[\"issuetype\"] = { id: executionContext?.actions?.split_issue_name?.output?.id };\n    output.json.fields[\"project\"] = { id: executionContext?.actions?.split_project_name_id?.output?.id };\n\n    // Mapping des champs d'entrée vers la structure Jira\n    Object.entries(ticketInputs).forEach(([key, value]) => {\n        // Si la valeur est null ou undefined, on skip\n        if (value == null) return;\n\n        // Récupération du schéma du champ depuis le contexte\n        const fieldMetadata = fields[key];\n        const schema = fieldMetadata?.schema;\n\n        switch (key) {\n            // Champs avec structure document\n            case 'description':\n            case 'environment':\n                output.json.fields[key] = createDocField(value);\n                break;\n\n            // Champs avec ID simple\n            case 'priority':\n            case 'security':\n            case 'assignee':\n            case 'reporter':\n                output.json.fields[key] = { id: value };\n                break;\n\n            // Champs avec ID dans un tableau\n            case 'components':\n            case 'fixVersions':\n            case 'versions':\n                output.json.fields[key] = value ? [{ id: value }] : [];\n                break;\n\n            // Champs personnalisés\n            default:\n                if (key.startsWith('customfield_')) {\n                    if (schema?.type === 'option' || key.startsWith('customfield_')) {\n                        output.json.fields[key] = { id: value };\n                    }\n                    else if (schema?.type === 'array' && schema.items === 'option') {\n                        output.json.fields[key] = Array.isArray(value) ? value.map(v => ({ id: v })) : [{ id: value }];\n                    } else {\n                        output.json.fields[key] = convertValue(value, schema);\n                    }\n                } else {\n                    if (key !== \"submittedActionId\") {\n                        output.json.fields[key] = convertValue(value, schema);\n                    }\n\n                }\n        }\n    });\n\n    // Ajout du log formaté\n    output.log = JSON.stringify(output.json, null, 2);\n\n    return output;\n}"
+    }
+  },
+  {
+    "id": "a588432d-08df-44e2-896e-2ddd0074db8b-1734553866597",
+    "name": "Success - Original",
+    "code": "success_original",
+    "position": {
+      "x": 2592,
+      "y": -288
     },
     "links": [],
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
-            "type": "ColumnSet",
-            "columns": [
-              {
-                "type": "Column",
-                "items": [
-                  {
-                    "type": "ActionSet",
-                    "actions": [
-                      {
-                        "type": "Action.ToggleVisibility",
-                        "style": "positive",
-                        "title": "Filters",
-                        "targetElements": [
-                          "filtersContainer"
-                        ]
-                      }
-                    ]
-                  }
-                ],
-                "width": "stretch"
-              },
-              {
-                "type": "Column",
-                "width": "stretch"
-              },
-              {
-                "type": "Column",
-                "width": "stretch"
-              }
-            ]
+            "size": "Medium",
+            "text": "Your ticket has been successfully created!",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
           },
           {
-            "type": "Container",
-            "$when": "${actions.jira_get_user_ticket.response.body.issues != []}",
-            "items": [
-              {
-                "id": "filtersContainer",
-                "type": "Container",
-                "items": [
-                  {
-                    "type": "ColumnSet",
-                    "$data": "${actions.get_action_set.output.projectsVisibility}",
-                    "columns": [
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "type": "ActionSet",
-                            "actions": [
-                              {
-                                "type": "Action.ToggleVisibility",
-                                "title": "${project}",
-                                "targetElements": "${targetElements}"
-                              }
-                            ]
-                          }
-                        ],
-                        "width": 33
-                      },
-                      {
-                        "type": "Column",
-                        "width": 33
-                      },
-                      {
-                        "type": "Column",
-                        "width": 33
-                      }
-                    ]
-                  }
-                ],
-                "isVisible": false
-              },
-              {
-                "type": "ColumnSet",
-                "bleed": true,
-                "style": "accent",
-                "columns": [
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Ticket",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 100
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Status",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 100
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Summary",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 400
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Priority",
-                        "type": "TextBlock",
-                        "weight": "Bolder",
-                        "horizontalAlignment": "Center"
-                      }
-                    ],
-                    "width": 200
-                  },
-                  {
-                    "type": "Column",
-                    "items": [
-                      {
-                        "text": "Issue type",
-                        "type": "TextBlock",
-                        "wrap": true,
-                        "weight": "Bolder"
-                      }
-                    ],
-                    "width": 200
-                  }
-                ],
-                "spacing": "Medium"
-              },
-              {
-                "id": "allTickets",
-                "type": "Container",
-                "items": [
-                  {
-                    "id": "a",
-                    "type": "ColumnSet",
-                    "$data": "${actions.parse_data.output.allIssues}",
-                    "columns": [
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "[${key}](https://publicissapient.atlassian.net/browse/${key})",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "spacing": "Medium"
-                          }
-                        ],
-                        "width": 100
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${status}",
-                            "type": "TextBlock",
-                            "wrap": true
-                          }
-                        ],
-                        "width": 100
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${summary}",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "maxLines": 2,
-                            "horizontalAlignment": "Left"
-                          }
-                        ],
-                        "width": 400
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${priority}",
-                            "type": "TextBlock",
-                            "wrap": true,
-                            "horizontalAlignment": "Center"
-                          }
-                        ],
-                        "width": 200
-                      },
-                      {
-                        "type": "Column",
-                        "items": [
-                          {
-                            "text": "${issuetype}",
-                            "type": "TextBlock",
-                            "wrap": true
-                          }
-                        ],
-                        "width": 200
-                      }
-                    ],
-                    "separator": true
-                  }
-                ],
-                "spacing": "Medium"
-              },
-              {
-                "id": "filteredTickets",
-                "type": "Container",
-                "items": [
-                  {
-                    "id": "${projectName}",
-                    "type": "Container",
-                    "$data": "${actions.parse_data.output.projectsList}",
-                    "items": [
-                      {
-                        "id": "issue",
-                        "type": "ColumnSet",
-                        "$data": "${issues}",
-                        "columns": [
-                          {
-                            "type": "Column",
-                            "items": [
-                              {
-                                "text": "[${key}](https://publicissapient.atlassian.net/browse/${key})",
-                                "type": "TextBlock",
-                                "wrap": true,
-                                "spacing": "Medium"
-                              }
-                            ],
-                            "width": 100
-                          },
-                          {
-                            "type": "Column",
-                            "items": [
-                              {
-                                "text": "${status}",
-                                "type": "TextBlock",
-                                "wrap": true
-                              }
-                            ],
-                            "width": 100
-                          },
-                          {
-                            "type": "Column",
-                            "items": [
-                              {
-                                "text": "${summary}",
-                                "type": "TextBlock",
-                                "wrap": true,
-                                "maxLines": 2,
-                                "horizontalAlignment": "Left"
-                              }
-                            ],
-                            "width": 400
-                          },
-                          {
-                            "type": "Column",
-                            "items": [
-                              {
-                                "text": "${priority}",
-                                "type": "TextBlock",
-                                "wrap": true,
-                                "horizontalAlignment": "Center"
-                              }
-                            ],
-                            "width": 200
-                          },
-                          {
-                            "type": "Column",
-                            "items": [
-                              {
-                                "text": "${issuetype}",
-                                "type": "TextBlock",
-                                "wrap": true
-                              }
-                            ],
-                            "width": 200
-                          }
-                        ],
-                        "separator": true
-                      }
-                    ],
-                    "spacing": "Medium",
-                    "isVisible": false
-                  }
-                ],
-                "style": "emphasis",
-                "isVisible": false
-              },
-              {
-                "type": "ActionSet",
-                "actions": [
-                  {
-                    "url": "https://publicissapient.atlassian.net/browse",
-                    "role": "Link",
-                    "type": "Action.OpenUrl",
-                    "title": "More"
-                  }
-                ]
-              }
-            ]
+            "text": "Ticket ID:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
           },
           {
-            "type": "Container",
-            "$when": "${actions.jira_get_user_ticket.response.body.issues == []}",
-            "items": [
-              {
-                "text": "You currently have no open issues in JIRA.",
-                "type": "TextBlock",
-                "wrap": true
-              }
-            ]
+            "text": "${actions.create_ticket.response.body.id}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "text": "Ticket Key:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "${actions.create_ticket.response.body.key}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "text": "Ticket URL:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "text": "[${actions.create_ticket.response.body.self}](${actions.create_ticket.response.body.self})",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "Accent",
+            "spacing": "Small"
           }
         ],
         "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.6"
       }
     }

@@ -259,7 +259,7 @@
                         "title": "Close"
                       },
                       {
-                        "url": "https://ven07623.service-now.com/incident.do?sysparm_query=number%3D${number}",
+                        "url": "${actions.start.inputVariables.service_now_url}incident.do?sysparm_query=number%3D${number}",
                         "type": "Action.OpenUrl",
                         "style": "positive",
                         "title": "Open"
@@ -320,6 +320,14 @@
         "targetId": "f6ab92dd-67d8-4553-8473-25dcb8c59eba"
       }
     ],
-    "type": "trigger"
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "service_now_url",
+          "defaultValue": "https://your_service_now_instance.service-now.com/"
+        }
+      ]
+    }
   }
 ]

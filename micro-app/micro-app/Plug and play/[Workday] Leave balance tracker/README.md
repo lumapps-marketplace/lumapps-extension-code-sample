@@ -15,7 +15,7 @@ This template provides a user-friendly interface for viewing and managing Workda
 - [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/)
 
 ## Inputs / Variables to Set
-None
+- **department**: Your department name in Workday ex : lumapps_dpt1
 
 ## Comments on Functioning
 1. **getworkerid**: Gets worker ID from current email

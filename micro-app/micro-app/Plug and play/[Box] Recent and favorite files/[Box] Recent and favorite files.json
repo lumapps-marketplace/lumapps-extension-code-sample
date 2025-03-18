@@ -56,7 +56,7 @@
                     "weight": "Bolder"
                   },
                   {
-                    "text": "[${item.name}](https://publicissandbox.ent.box.com/file/${item.id})",
+                    "text": "[${item.name}](${actions.start.inputVariables.box_url}file/${item.id})",
                     "type": "TextBlock",
                     "wrap": true,
                     "$data": "${actions.getrecentitems.response.body.entries}",
@@ -76,7 +76,7 @@
                     "weight": "Bolder"
                   },
                   {
-                    "text": "[${name}](https://publicissandbox.ent.box.com/file/${id})",
+                    "text": "[${name}](${actions.start.inputVariables.box_url}file/${id})",
                     "type": "TextBlock",
                     "wrap": true,
                     "$data": "${actions.getfavorites.response.body.entries}"
@@ -107,7 +107,7 @@
                     "type": "ActionSet",
                     "actions": [
                       {
-                        "url": "https://publicissandbox.ent.box.com/",
+                        "url": "${actions.start.inputVariables.box_url}",
                         "type": "Action.OpenUrl",
                         "style": "positive",
                         "title": "More"
@@ -235,6 +235,21 @@
         "targetId": "b0c1ce7c-6408-414a-9391-ea2d477eb48c"
       }
     ],
-    "type": "trigger"
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "box_url",
+          "defaultValue": "https://yourenvironment.box.com/",
+          "helper": {
+            "lang": "en",
+            "value": "Replace this value by your own box URL",
+            "translations": {
+              "en": "Replace this value by your own box URL"
+            }
+          }
+        }
+      ]
+    }
   }
 ]
