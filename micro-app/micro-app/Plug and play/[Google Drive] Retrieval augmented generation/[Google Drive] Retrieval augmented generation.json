@@ -1,0 +1,211 @@
+[
+  {
+    "id": "a6d63016-7b6f-473a-9781-ab69573d18d2",
+    "name": "jsfunction",
+    "code": "jsfunction",
+    "position": {
+      "x": 192,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "79e09a70-af67-4dd1-a0cc-f0099a70000c"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n* @returns {Object}                  The result of your data processing which will be available in the next execution context.\n*/\nfunction removeDoubleQuotes(str) {\n  return str.replace(/[\"\\r\\n\\t]/g, '');\n}\nfunction main(executionContext) {\n  // Declaration of the output variable.\n  let output = {};\n\n  // Function to remove special characters\n  function removeSpecialCharacters(str) {\n      return str.replace(/[^a-zA-Z0-9]/g, '');\n  }\n  const driveFileContents_1 = typeof executionContext.actions.getfile_1.response.body == \"string\" ? executionContext.actions.getfile_1.response.body : \"\"\n  const driveFileContents_2 = typeof executionContext.actions.getfile_2.response.body == \"string\" ? executionContext.actions.getfile_2.response.body : \"\"\n  const driveFileContents_3 = typeof executionContext.actions.getfile_3.response.body == \"string\" ? executionContext.actions.getfile_3.response.body : \"\"\n\n  // Store the concatenated contents in the output\n  output.concatenatedDriveFiles = driveFileContents_1 + \" \" + driveFileContents_2 + \" \" + driveFileContents_3;\n\n\n  const prompt = \"Based on the following content extract, please answer the end user query: \"+ executionContext.actions.start.inputVariables.query + \" Here are the content extracts: \"\n\n  output.prompt = removeDoubleQuotes(prompt + output.concatenatedDriveFiles)\n\n  // Mandatory: return your output\n  return output;\n}"
+    }
+  },
+  {
+    "id": "79e09a70-af67-4dd1-a0cc-f0099a70000c",
+    "name": "generateanswer",
+    "code": "generateanswer",
+    "position": {
+      "x": 396,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "d6ac900a-64ce-45aa-9354-612da76e61bc"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n    \"prompt\": \"${actions.jsfunction.output.prompt}\"\r\n}",
+        "path": "/v2/organizations/${organization.id}/text-completions",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "lumapps"
+    }
+  },
+  {
+    "id": "b75ecdf8-b90f-49be-8d0b-f4a15af4e083",
+    "name": "drivesearch",
+    "code": "drivesearch",
+    "position": {
+      "x": -696,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "9af647a5-a59c-4117-8b9a-01837d6bcde8"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_drive"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/drive/v3/files?supportsAllDrives=true&includeItemsFromAllDrives=true&q=fullText contains '${actions.start.inputVariables.query}'&fields=files(id,name,mimeType)&q=mimeType='application/vnd.google-apps.presentation' or mimeType='application/vnd.google-apps.document'",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "google_drive"
+    }
+  },
+  {
+    "id": "6825dea2-dd57-4142-81e9-47e1f2203251",
+    "name": "getfile3",
+    "code": "getfile_3",
+    "position": {
+      "x": -36,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "a6d63016-7b6f-473a-9781-ab69573d18d2"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_drive"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/drive/v3/files/${actions.drivesearch.response.body.files[2].id}/export?mimeType=text/plain",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "google_drive"
+    }
+  },
+  {
+    "id": "ca14a3ef-28e2-4379-a1da-b5a0144cb546",
+    "name": "getfile2",
+    "code": "getfile_2",
+    "position": {
+      "x": -264,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6825dea2-dd57-4142-81e9-47e1f2203251"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_drive"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/drive/v3/files/${actions.drivesearch.response.body.files[1].id}/export?mimeType=text/plain",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "google_drive"
+    }
+  },
+  {
+    "id": "9af647a5-a59c-4117-8b9a-01837d6bcde8",
+    "name": "getfile1",
+    "code": "getfile_1",
+    "position": {
+      "x": -492,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "ca14a3ef-28e2-4379-a1da-b5a0144cb546"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_drive"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/drive/v3/files/${actions.drivesearch.response.body.files[0].id}/export?mimeType=text/plain",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "google_drive"
+    }
+  },
+  {
+    "id": "d6ac900a-64ce-45aa-9354-612da76e61bc",
+    "name": "Show response in Ask",
+    "code": "show_response_in_ask",
+    "position": {
+      "x": 648,
+      "y": 0
+    },
+    "links": [],
+    "type": "lumapps_component",
+    "settings": {
+      "componentSettings": {
+        "answer": "${actions.generateanswer.response.body.completions}",
+        "isRequired": false
+      },
+      "type": "ai_augmented_search",
+      "inputVariables": []
+    }
+  },
+  {
+    "id": "dc38f916-3d3a-4789-970c-bdf15bea8ccf",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -912,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "b75ecdf8-b90f-49be-8d0b-f4a15af4e083"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "query",
+          "type": "string",
+          "defaultValue": "who is henry viii",
+          "multiValues": false,
+          "required": false
+        }
+      ]
+    }
+  }
+]
