@@ -18,7 +18,7 @@ This microapp enables AI-powered search capabilities within ServiceNow knowledge
 - [ServiceNow API documentation](https://www.servicenow.com/docs/bundle/yokohama-api-reference/page/build/applications/concept/api-rest.html)
 
 ## Inputs / Variables to Set
-- query: Search query string for knowledge base articles (string)
+- query: Search query string for knowledge base articles (string) that is automatically set by ASK AI when deployed
   Default value: "VPN"
   Required: false
 
