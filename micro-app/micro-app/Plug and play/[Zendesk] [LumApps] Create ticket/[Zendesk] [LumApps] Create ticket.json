@@ -1,0 +1,319 @@
+[
+  {
+    "id": "b55bd141-3135-4b1e-bbd6-9d0b11d6fd65",
+    "name": "Error",
+    "code": "error",
+    "position": {
+      "x": 1260,
+      "y": 180
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "https://cdn-icons-png.flaticon.com/512/463/463612.png",
+                    "size": "Small",
+                    "type": "Image",
+                    "altText": "Error"
+                  }
+                ],
+                "width": "auto"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Medium",
+                    "text": "Something went wrong!!",
+                    "type": "TextBlock",
+                    "color": "Attention",
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "An error has ocurred. Please try again later.",
+                    "type": "TextBlock",
+                    "wrap": true
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5",
+        "actions": [
+          {
+            "data": {
+              "action": "retryApiCall"
+            },
+            "type": "Action.Submit",
+            "title": "Retry"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "186f2f6a-b424-4e07-9dbf-590de49fcf32",
+    "name": "Success",
+    "code": "success",
+    "position": {
+      "x": 1260,
+      "y": -264
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "url": "https://cdn-icons-png.flaticon.com/512/845/845646.png",
+                    "size": "Small",
+                    "type": "Image",
+                    "altText": "Success"
+                  }
+                ],
+                "width": "auto"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Medium",
+                    "text": "Success!",
+                    "type": "TextBlock",
+                    "color": "Good",
+                    "weight": "Bolder"
+                  },
+                  {
+                    "text": "Ticket [${actions.createrequest.response.body.request.id}](https://support.lumapps.com/hc/en-us/requests/${actions.createrequest.response.body.request.id}) has been successfully created.",
+                    "type": "TextBlock",
+                    "wrap": true
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5",
+        "actions": [
+          {
+            "data": {
+              "action": "acknowledgeSuccess"
+            },
+            "type": "Action.Submit",
+            "style": "positive",
+            "title": "OK"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "31f566aa-1d90-405f-a3fd-fdd928636507",
+    "name": "Action 31f566aa-1d90-405f-a3fd-fdd928636507",
+    "code": "action_31_f_566_aa_1_d_90_405_f_a_3_fd_fdd_928636507",
+    "position": {
+      "x": 996,
+      "y": -48
+    },
+    "links": [
+      {
+        "targetId": "b55bd141-3135-4b1e-bbd6-9d0b11d6fd65",
+        "isFallback": true
+      },
+      {
+        "targetId": "186f2f6a-b424-4e07-9dbf-590de49fcf32",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "367",
+              "rules": [
+                {
+                  "id": "368",
+                  "leftValue": "${actions.createrequest.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "200"
+                },
+                {
+                  "id": "23053",
+                  "leftValue": "${actions.createrequest.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "201"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "c23247e8-64c2-4580-89e7-f5a4cf61a10c",
+    "name": "createrequest",
+    "code": "createrequest",
+    "position": {
+      "x": 756,
+      "y": -48
+    },
+    "links": [
+      {
+        "targetId": "31f566aa-1d90-405f-a3fd-fdd928636507"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "zendesk"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"request\": {\r\n    \"subject\": \"${actions.requestform.inputs.subject}\",\r\n      \"requester\": {\r\n        \"email\": \"${user.email}\"\r\n      },\r\n    \"comment\": {\r\n      \"body\": \"${actions.requestform.inputs.comment}\",\r\n      \"public\":true\r\n    },\r\n    \"custom_fields\": [\r\n    {\r\n    \"id\":360016785700, \r\n    \"value\":\"${actions.requestform.inputs.priority}\"\r\n    }\r\n  ],\r\n    \"public\": true\r\n}}",
+        "path": "/api/v2/requests",
+        "queryParams": [],
+        "url": ""
+      },
+      "providerType": "zendesk"
+    }
+  },
+  {
+    "id": "9202969a-837c-498e-82be-d20c219a4fc1",
+    "name": "requestform",
+    "code": "requestform",
+    "position": {
+      "x": 468,
+      "y": -48
+    },
+    "links": [
+      {
+        "targetId": "c23247e8-64c2-4580-89e7-f5a4cf61a10c"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Large",
+                    "text": "Submit a request",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "id": "subject",
+            "type": "Input.Text",
+            "label": "Subject",
+            "isRequired": true,
+            "placeholder": "",
+            "errorMessage": "Subject cannot be blank"
+          },
+          {
+            "id": "comment",
+            "type": "Input.Text",
+            "label": "Description",
+            "isRequired": true,
+            "isMultiline": true,
+            "errorMessage": "Please add a description"
+          },
+          {
+            "id": "priority",
+            "type": "Input.ChoiceSet",
+            "label": "Priority",
+            "choices": [
+              {
+                "title": "Minor",
+                "value": "minor"
+              },
+              {
+                "title": "Moderate",
+                "value": "moderate"
+              },
+              {
+                "title": "Major",
+                "value": "major"
+              },
+              {
+                "title": "Critical",
+                "value": "critical"
+              }
+            ],
+            "isRequired": true,
+            "placeholder": "",
+            "errorMessage": "Please select a priority"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Submit"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "59225592-b474-48bb-a2ba-7625bc1854a1",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 180,
+      "y": -48
+    },
+    "links": [
+      {
+        "targetId": "9202969a-837c-498e-82be-d20c219a4fc1"
+      }
+    ],
+    "type": "trigger"
+  }
+]
