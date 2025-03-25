@@ -33,7 +33,7 @@
                 "items": [
                   {
                     "size": "Medium",
-                    "text": "Something went wrong!",
+                    "text": "Something went wrong!!",
                     "type": "TextBlock",
                     "color": "Attention",
                     "weight": "Bolder"
