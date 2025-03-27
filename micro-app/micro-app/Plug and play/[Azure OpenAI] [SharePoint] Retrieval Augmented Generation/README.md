@@ -1,7 +1,7 @@
 # Azure OpenAI x SharePoint Retrieval Augmented Generation Micro-app
 
 ## Description
-This microapp enables intelligent document search and question answering using Azure OpenAI and SharePoint integration. It performs semantic search across SharePoint documents and provides AI-generated answers with source citations.
+This micro-app enables intelligent document search and question answering using Azure OpenAI and SharePoint integration. It performs semantic search across SharePoint documents and provides AI-generated answers with source citations.
 
 ## Features
 - Azure OpenAI integration for intelligent responses
