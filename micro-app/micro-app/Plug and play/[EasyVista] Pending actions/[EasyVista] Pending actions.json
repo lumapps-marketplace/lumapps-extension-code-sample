@@ -1,0 +1,233 @@
+[
+  {
+    "id": "6722a1b5-566a-4a90-ae79-76d5e41b974e",
+    "name": "get_user_id",
+    "code": "get_user_id",
+    "position": {
+      "x": 228,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "9ec8853d-74d7-45ca-90e2-108564984522-1742820333226",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/ev/1.0.0/employees?search=e_mail:${user.email}",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "unspecified"
+      }
+    }
+  },
+  {
+    "id": "add7b1c8-dabd-4927-a08c-32a2328bbfbb",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6722a1b5-566a-4a90-ae79-76d5e41b974e",
+        "type": "default"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "tenant_easy_vista",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "https://your_tenant_easy_vista.com/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "9ec8853d-74d7-45ca-90e2-108564984522-1742820333226",
+    "name": "get_user_actions",
+    "code": "get_user_actions",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "ae0dfcc3-4ed4-4cb4-ada8-5eb0f1fb3370-1742825664943",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/ev/1.0.0/actions?fields=action_type.action_type_id&search=action_type.action_type_id:1,action_type.action_type_id:32,done_by_id:${actions.get_user_id.response.body.records[0].EMPLOYEE_ID},end_date_ut:\"is_null\"",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "unspecified"
+      }
+    }
+  },
+  {
+    "id": "ae0dfcc3-4ed4-4cb4-ada8-5eb0f1fb3370-1742825664943",
+    "name": "actions_counter",
+    "code": "actions_counter",
+    "position": {
+      "x": 684,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "type": "Container",
+            "$when": "${count(where(actions.get_user_actions.response.body.records, x, x.ACTION_TYPE.ACTION_TYPE_ID == '1')) > 0}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "url": "https://cdn-icons-png.flaticon.com/512/1827/1827349.png",
+                        "size": "Medium",
+                        "type": "Image"
+                      }
+                    ],
+                    "width": 2,
+                    "verticalContentAlignment": "Center"
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "size": "Medium",
+                        "text": "Pending resolution : ${count(where(actions.get_user_actions.response.body.records, x, x.ACTION_TYPE.ACTION_TYPE_ID == '1'))}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "weight": "Bolder"
+                      }
+                    ],
+                    "width": 98,
+                    "verticalContentAlignment": "Center"
+                  }
+                ]
+              }
+            ],
+            "selectAction": {
+              "url": "${actions.start.inputVariables.tenant_easy_vista}",
+              "type": "Action.OpenUrl"
+            },
+            "verticalContentAlignment": "Center"
+          },
+          {
+            "type": "Container",
+            "$when": "${count(where(actions.get_user_actions.response.body.records, x, x.ACTION_TYPE.ACTION_TYPE_ID == '32')) > 0}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "url": "https://cdn-icons-png.flaticon.com/512/1827/1827349.png",
+                        "size": "Medium",
+                        "type": "Image"
+                      }
+                    ],
+                    "width": 2,
+                    "verticalContentAlignment": "Center"
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "size": "Medium",
+                        "text": "Pending validation : ${count(where(actions.get_user_actions.response.body.records, x, x.ACTION_TYPE.ACTION_TYPE_ID == '32'))}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "weight": "Bolder"
+                      }
+                    ],
+                    "width": 98,
+                    "verticalContentAlignment": "Center"
+                  }
+                ]
+              }
+            ],
+            "separator": true,
+            "selectAction": {
+              "url": "${actions.start.inputVariables.tenant_easy_vista}",
+              "type": "Action.OpenUrl"
+            },
+            "verticalContentAlignment": "Center"
+          },
+          {
+            "type": "Container",
+            "$when": "${count(where(actions.get_user_actions.response.body.records, x, x.ACTION_TYPE.ACTION_TYPE_ID == '23')) == 0 && count(where(actions.get_user_actions.response.body.records, x, x.ACTION_TYPE.ACTION_TYPE_ID == '32')) == 0}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "url": "https://cdn-icons-png.flaticon.com/512/1055/1055183.png",
+                        "size": "Small",
+                        "type": "Image"
+                      }
+                    ],
+                    "width": 2
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "id": "do-not-display",
+                        "size": "Medium",
+                        "text": "No pending validation",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "weight": "Bolder"
+                      }
+                    ],
+                    "width": 98,
+                    "horizontalAlignment": "Left"
+                  }
+                ]
+              }
+            ],
+            "selectAction": {
+              "url": "${actions.start.inputVariables.tenant_easy_vista}",
+              "type": "Action.OpenUrl"
+            }
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  }
+]
