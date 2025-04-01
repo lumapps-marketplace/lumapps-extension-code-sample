@@ -1,7 +1,7 @@
 # Zendesk Ticket List Micro-app
 
 ## Description
-This microapp displays a user's recent Zendesk support tickets in a clean, organized list format. It shows the latest open tickets with their status and provides direct links to view ticket details.
+This micro-app displays a user's recent Zendesk support tickets in a clean, organized list format. It shows the latest open tickets with their status and provides direct links to view ticket details.
 
 ## Features
 - Displays the 5 most recent open tickets

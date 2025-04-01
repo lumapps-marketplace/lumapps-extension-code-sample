@@ -1,7 +1,7 @@
 # ServiceNow Mobile Phone Order Micro-app
 
 ## Description
-This microapp enables users to order mobile phones through ServiceNow's service catalog. It provides a user-friendly interface to browse available phones, customize options, and submit orders directly through the ServiceNow system.
+This micro-app enables users to order mobile phones through ServiceNow's service catalog. It provides a user-friendly interface to browse available phones, customize options, and submit orders directly through the ServiceNow system.
 
 ## Features
 - Interactive mobile phone catalog with images and descriptions

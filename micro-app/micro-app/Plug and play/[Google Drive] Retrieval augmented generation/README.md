@@ -1,7 +1,7 @@
 # Google Drive Retrieval Augmented Generation Micro-app
 
 ## Description
-This microapp enables AI-powered search capabilities within Google Drive documents. It searches through your Drive content, retrieves relevant documents, and generates intelligent responses based on the document contents using AI.
+This micro-app enables AI-powered search capabilities within Google Drive documents. It searches through your Drive content, retrieves relevant documents, and generates intelligent responses based on the document contents using AI.
 
 ## Features
 - Intelligent search in Google Drive documents

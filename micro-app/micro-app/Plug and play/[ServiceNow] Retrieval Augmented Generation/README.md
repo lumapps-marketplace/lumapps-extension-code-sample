@@ -1,7 +1,7 @@
 # ServiceNow Knowledge Base AI Search Micro-app
 
 ## Description
-This microapp enables AI-powered search capabilities within ServiceNow knowledge base articles. It searches through knowledge base content, retrieves relevant articles, and generates intelligent responses based on the article contents using AI.
+This micro-app enables AI-powered search capabilities within ServiceNow knowledge base articles. It searches through knowledge base content, retrieves relevant articles, and generates intelligent responses based on the article contents using AI.
 
 ## Features
 - Intelligent search in ServiceNow knowledge base articles

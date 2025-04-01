@@ -1,7 +1,7 @@
 # Latest LumApps News Summarizer Micro-app
 
 ## Description
-This microapp automatically retrieves the latest news from LumApps and generates an AI-powered summary using Azure OpenAI. It provides engaging summaries of the three most recent news articles, with support for both English and French users.
+This micro-app automatically retrieves the latest news from LumApps and generates an AI-powered summary using Azure OpenAI. It provides engaging summaries of the three most recent news articles, with support for both English and French users.
 
 ## Features
 - Automatic fetching of the 3 most recent news articles
