@@ -6,6 +6,7 @@ This template helps you display pending actions for selected action id.
 ## Features
 - Display pending actions for selected action id
 - Multiple pending actions can be displayed in an adaptive card
+- Open pending action in a new tab
 
 ## Documentation
 - [Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)

@@ -1,0 +1,501 @@
+[
+  {
+    "id": "41f74e86-88b3-4380-96ce-78cb24f0a499",
+    "name": "postOkWMessage",
+    "code": "post_ok_w_message",
+    "position": {
+      "x": 1332,
+      "y": -216
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Set out of office time",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "✅ Out of office event successfully created",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "text": "[Open in Calendar](${actions.post_ooo_with_decline_message.response.body.htmlLink})",
+                "type": "TextBlock",
+                "wrap": true
+              }
+            ],
+            "style": "good"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "2e2aa7c7-6ea1-4da0-ae75-5dc0878a64f3",
+    "name": "parseDate",
+    "code": "parse_date",
+    "position": {
+      "x": 0,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "38c36ce9-2c9a-420c-b3bb-040a1cc6345a",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n    let output = {};\n\n    // Récupération des variables en s'assurant que ce sont bien des chaînes de caractères\n    const startdate = String(executionContext.actions.set_time.inputs.startDate || \"2025-08-01\");\n    const starttime = String(executionContext.actions.set_time.inputs.startTime || \"00:00\");\n\n    const enddate = String(executionContext.actions.set_time.inputs.endDate || \"2025-08-02\");\n    const endtime = String(executionContext.actions.set_time.inputs.endTime || \"23:59\");\n\n    // Extraction de la date seule (avant le \"T\")\n    const startDateOnly = startdate.split('T')[0];\n    const endDateOnly = enddate.split('T')[0];\n\n    // Parse start and end dateTime, en s'assurant que ce sont bien des strings\n    output.start = startDateOnly + \"T\" + starttime + \":00\";\n    output.end = endDateOnly + \"T\" + endtime + \":00\";\n\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "4ea919a6-7f50-4576-846d-29f2dffc8d2d",
+    "name": "Action 4ea919a6-7f50-4576-846d-29f2dffc8d2d",
+    "code": "action_4_ea_919_a_6_7_f_50_4576_846_d_29_f_2_dffc_8_d_2_d",
+    "position": {
+      "x": 984,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "41f74e86-88b3-4380-96ce-78cb24f0a499",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "17648",
+              "rules": [
+                {
+                  "id": "17649",
+                  "leftValue": "${actions.post_ooo_with_decline_message.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "200"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "28068645-5f38-4f58-8b8f-94a2498da61d",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "7712",
+              "rules": [
+                {
+                  "id": "9416",
+                  "leftValue": "${actions.post_ooo.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "200"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "3e746d4b-0b84-4f19-b4b6-8ffd9a6c619c",
+        "type": "default",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "a59ba967-f38d-4277-a056-9300aa59110a",
+    "name": "postOooWithDeclineMessage",
+    "code": "post_ooo_with_decline_message",
+    "position": {
+      "x": 708,
+      "y": -144
+    },
+    "links": [
+      {
+        "targetId": "4ea919a6-7f50-4576-846d-29f2dffc8d2d",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_calendar"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"summary\": \"Out of office\",\r\n  \"eventType\": \"outOfOffice\",\r\n  \"transparency\": \"opaque\",\r\n  \"start\": {\r\n    \"dateTime\": \"${actions.parse_date.output.start}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },  \r\n  \"end\": {\r\n    \"dateTime\": \"${actions.parse_date.output.end}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },\r\n  \"outOfOfficeProperties\": {\r\n    \"autoDeclineMode\": \"${actions.set_time.inputs.autoDeclineMode}\",\r\n    \"declineMessage\": \"${actions.set_decline_message.inputs.declineMessage}\"\r\n  }\r\n}",
+        "path": "/v3/calendars/primary/events",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "af05f029-2d86-4789-8c21-5d5f7b1ead22",
+    "name": "setDeclineMessage",
+    "code": "set_decline_message",
+    "position": {
+      "x": 516,
+      "y": -144
+    },
+    "links": [
+      {
+        "targetId": "a59ba967-f38d-4277-a056-9300aa59110a",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Set out of office",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "id": "declineMessage",
+            "type": "Input.Text",
+            "label": "Decline message",
+            "value": "Declined because I am out of office",
+            "isRequired": true,
+            "placeholder": "Response message if an invitation is automatically declined by Calendar",
+            "errorMessage": "Please set a decline message"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Submit"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "38c36ce9-2c9a-420c-b3bb-040a1cc6345a",
+    "name": "Action 38c36ce9-2c9a-420c-b3bb-040a1cc6345a",
+    "code": "action_38_c_36_ce_9_2_c_9_a_420_c_b_3_bb_040_a_1_cc_6345_a",
+    "position": {
+      "x": 252,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "af05f029-2d86-4789-8c21-5d5f7b1ead22",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "6418",
+              "rules": [
+                {
+                  "id": "6419",
+                  "leftValue": "${actions.set_time.inputs.autoDeclineMode}",
+                  "operator": {
+                    "operation": "notEquals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.NOT_EQUALS"
+                  },
+                  "rightValue": "declineNone"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "9a10723a-ccbe-4b33-82cf-f0a8b3066115",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "245",
+              "rules": [
+                {
+                  "id": "246",
+                  "leftValue": "${actions.set_time.inputs.autoDeclineMode}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "declineNone"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "3e746d4b-0b84-4f19-b4b6-8ffd9a6c619c",
+    "name": "postNok",
+    "code": "post_nok",
+    "position": {
+      "x": 1344,
+      "y": 228
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Set Out of office time",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "❌An error occured. Please try again later.",
+                "type": "TextBlock",
+                "wrap": true,
+                "color": "Default"
+              }
+            ],
+            "style": "attention"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "28068645-5f38-4f58-8b8f-94a2498da61d",
+    "name": "postOkWoMessage",
+    "code": "post_ok_wo_message",
+    "position": {
+      "x": 1404,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Set out of office time",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "✅ Out of office event successfully created",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "text": "[Open in Calendar](${actions.post_ooo.response.body.htmlLink})",
+                "type": "TextBlock",
+                "wrap": true
+              }
+            ],
+            "style": "good"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "9a10723a-ccbe-4b33-82cf-f0a8b3066115",
+    "name": "postOoo",
+    "code": "post_ooo",
+    "position": {
+      "x": 600,
+      "y": 120
+    },
+    "links": [
+      {
+        "targetId": "4ea919a6-7f50-4576-846d-29f2dffc8d2d",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_calendar"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"summary\": \"Out of office\",\r\n  \"eventType\": \"outOfOffice\",\r\n  \"transparency\": \"opaque\",\r\n  \"start\": {\r\n    \"dateTime\": \"${actions.parse_date.output.start}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },  \r\n  \"end\": {\r\n    \"dateTime\": \"${actions.parse_date.output.end}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },\r\n  \"outOfOfficeProperties\": {\r\n    \"autoDeclineMode\": \"declineNone\"\r\n  }\r\n}",
+        "path": "/v3/calendars/primary/events",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "c16466f1-85cf-4a8f-981a-d5e0bceea3fe",
+    "name": "setTime",
+    "code": "set_time",
+    "position": {
+      "x": -252,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "2e2aa7c7-6ea1-4da0-ae75-5dc0878a64f3",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "text": "Set out of office time",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "startDate",
+                    "type": "Input.Date",
+                    "label": "Start date:",
+                    "isRequired": true,
+                    "errorMessage": "Please select a start date"
+                  },
+                  {
+                    "id": "startTime",
+                    "type": "Input.Time",
+                    "label": "Start time",
+                    "spacing": "None",
+                    "isRequired": true,
+                    "errorMessage": "Please select a start time"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "endDate",
+                    "type": "Input.Date",
+                    "label": "End date",
+                    "isRequired": true,
+                    "errorMessage": "Please select an end date"
+                  },
+                  {
+                    "id": "endTime",
+                    "type": "Input.Time",
+                    "label": "End time",
+                    "spacing": "None",
+                    "isRequired": true,
+                    "errorMessage": "Please select an end time"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "id": "autoDeclineMode",
+            "type": "Input.ChoiceSet",
+            "style": "expanded",
+            "value": "declineAllConflictingInvitations",
+            "choices": [
+              {
+                "title": "Do not automatically decline meetings",
+                "value": "declineNone"
+              },
+              {
+                "title": "Decline only new meeting invitations",
+                "value": "declineOnlyNewConflictingInvitations"
+              },
+              {
+                "title": " Decline new and existing meetings",
+                "value": "declineAllConflictingInvitations"
+              }
+            ],
+            "placeholder": "Placeholder text"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "c2cc594f-889d-4839-aa15-63a2829d9296",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -504,
+      "y": -12
+    },
+    "links": [
+      {
+        "targetId": "c16466f1-85cf-4a8f-981a-d5e0bceea3fe",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  }
+]
