@@ -455,7 +455,7 @@
               {
                 "type": "Action.Submit",
                 "style": "positive",
-                "title": "Next"
+                "title": "Save"
               }
             ]
           }
