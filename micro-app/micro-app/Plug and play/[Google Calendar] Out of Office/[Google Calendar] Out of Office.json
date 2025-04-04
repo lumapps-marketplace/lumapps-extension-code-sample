@@ -1,8 +1,8 @@
 [
   {
     "id": "41f74e86-88b3-4380-96ce-78cb24f0a499",
-    "name": "postOkWMessage",
-    "code": "post_ok_w_message",
+    "name": "postOk",
+    "code": "post_ok",
     "position": {
       "x": 1332,
       "y": -216
@@ -29,7 +29,14 @@
               {
                 "text": "[Open in Calendar](${actions.post_ooo_with_decline_message.response.body.htmlLink})",
                 "type": "TextBlock",
-                "wrap": true
+                "wrap": true,
+                "$when": "${actions.post_ooo_with_decline_message.response.status == 200}"
+              },
+              {
+                "text": "[Open in Calendar](${actions.post_ooo.response.body.htmlLink})",
+                "type": "TextBlock",
+                "wrap": true,
+                "$when": "${actions.post_ooo.response.status ==  200}"
               }
             ],
             "style": "good"
@@ -88,24 +95,9 @@
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
                   "rightValue": "200"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "targetId": "28068645-5f38-4f58-8b8f-94a2498da61d",
-        "type": "default",
-        "conditions": {
-          "combinator": "AND",
-          "rulesGroup": [
-            {
-              "combinator": "OR",
-              "id": "7712",
-              "rules": [
+                },
                 {
-                  "id": "9416",
+                  "id": "6868",
                   "leftValue": "${actions.post_ooo.response.status}",
                   "operator": {
                     "operation": "equals",
@@ -297,47 +289,6 @@
               }
             ],
             "style": "attention"
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.5"
-      }
-    }
-  },
-  {
-    "id": "28068645-5f38-4f58-8b8f-94a2498da61d",
-    "name": "postOkWoMessage",
-    "code": "post_ok_wo_message",
-    "position": {
-      "x": 1404,
-      "y": 0
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "Set out of office time",
-            "type": "TextBlock",
-            "style": "heading"
-          },
-          {
-            "type": "Container",
-            "items": [
-              {
-                "text": "✅ Out of office event successfully created",
-                "type": "TextBlock",
-                "wrap": true
-              },
-              {
-                "text": "[Open in Calendar](${actions.post_ooo.response.body.htmlLink})",
-                "type": "TextBlock",
-                "wrap": true
-              }
-            ],
-            "style": "good"
           }
         ],
         "type": "AdaptiveCard",

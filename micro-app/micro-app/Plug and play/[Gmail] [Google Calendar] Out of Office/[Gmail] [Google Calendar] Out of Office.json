@@ -1,0 +1,674 @@
+[
+  {
+    "id": "4ba6dbac-2d58-480f-98c0-af5b3f98e260",
+    "name": "postNok",
+    "code": "post_nok",
+    "position": {
+      "x": 1188,
+      "y": -300
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Set Out of office time",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "❌An error occured. Please try again later.",
+                "type": "TextBlock",
+                "wrap": true,
+                "color": "Default"
+              }
+            ],
+            "style": "attention"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "a0e6aed1-b322-4438-a14f-c2582f56bdc7",
+    "name": "Action a0e6aed1-b322-4438-a14f-c2582f56bdc7",
+    "code": "action_a_0_e_6_aed_1_b_322_4438_a_14_f_c_2582_f_56_bdc_7",
+    "position": {
+      "x": 972,
+      "y": -204
+    },
+    "links": [
+      {
+        "targetId": "4ba6dbac-2d58-480f-98c0-af5b3f98e260",
+        "type": "default",
+        "isFallback": true
+      },
+      {
+        "targetId": "9aa5f188-06b0-40cf-b2ba-cf3fb1b2853c",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "21211",
+              "rules": [
+                {
+                  "id": "21212",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_calendar.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "9aa5f188-06b0-40cf-b2ba-cf3fb1b2853c",
+    "name": "postOk",
+    "code": "post_ok",
+    "position": {
+      "x": 1188,
+      "y": -480
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Set out of office time",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "✅ Out of office event successfully created",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "text": "[Open Gmail settings](https://mail.google.com/mail/u/0/#settings/vacation)",
+                "type": "TextBlock",
+                "wrap": true,
+                "$when": "${actions.post_gmail.response.status == 200}",
+                "color": "Accent",
+                "spacing": "None"
+              },
+              {
+                "text": "[Open in Calendar](${actions.post_calendar.response.body.htmlLink})",
+                "type": "TextBlock",
+                "wrap": true,
+                "$when": "${actions.post_calendar.response.status == 200}",
+                "color": "Accent",
+                "spacing": "None"
+              }
+            ],
+            "style": "good"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "3b005b5a-cedc-4dac-a612-5c014d9b7b3d",
+    "name": "Action 3b005b5a-cedc-4dac-a612-5c014d9b7b3d",
+    "code": "action_3_b_005_b_5_a_cedc_4_dac_a_612_5_c_014_d_9_b_7_b_3_d",
+    "position": {
+      "x": 396,
+      "y": -396
+    },
+    "links": [
+      {
+        "targetId": "2e2aa7c7-6ea1-4da0-ae75-5dc0878a64f3",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "11488",
+              "rules": [
+                {
+                  "id": "11489",
+                  "operator": {
+                    "type": "boolean",
+                    "operation": "true",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.TRUE"
+                  },
+                  "leftValue": "${actions.set_date_and_apps.inputs.calendar}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            },
+            {
+              "id": "21827",
+              "rules": [
+                {
+                  "id": "21828",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_gmail.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "AND"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "9aa5f188-06b0-40cf-b2ba-cf3fb1b2853c",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "11851",
+              "rules": [
+                {
+                  "id": "11852",
+                  "operator": {
+                    "type": "boolean",
+                    "operation": "false",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.FALSE"
+                  },
+                  "leftValue": "${actions.set_date_and_apps.inputs.calendar}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            },
+            {
+              "id": "12539",
+              "rules": [
+                {
+                  "id": "12540",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_gmail.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "AND"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "4ba6dbac-2d58-480f-98c0-af5b3f98e260",
+        "type": "default",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "c4d29e68-09a7-4a71-abb8-9d1d85906d3c",
+    "name": "Action c4d29e68-09a7-4a71-abb8-9d1d85906d3c",
+    "code": "action_c_4_d_29_e_68_09_a_7_4_a_71_abb_8_9_d_1_d_85906_d_3_c",
+    "position": {
+      "x": -192,
+      "y": -216
+    },
+    "links": [
+      {
+        "targetId": "c4a7c193-52f3-4366-896a-a2043026c436",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "10972",
+              "rules": [
+                {
+                  "id": "10973",
+                  "operator": {
+                    "type": "boolean",
+                    "operation": "true",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.TRUE"
+                  },
+                  "leftValue": "${actions.set_date_and_apps.inputs.gmail}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "2e2aa7c7-6ea1-4da0-ae75-5dc0878a64f3",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "11115",
+              "rules": [
+                {
+                  "id": "11116",
+                  "operator": {
+                    "type": "boolean",
+                    "operation": "true",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.TRUE"
+                  },
+                  "leftValue": "${actions.set_date_and_apps.inputs.calendar}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            },
+            {
+              "id": "11254",
+              "rules": [
+                {
+                  "id": "11255",
+                  "operator": {
+                    "type": "boolean",
+                    "operation": "false",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.FALSE"
+                  },
+                  "leftValue": "${actions.set_date_and_apps.inputs.gmail}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "AND"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "c4a7c193-52f3-4366-896a-a2043026c436",
+    "name": "parseDateToUnix",
+    "code": "parse_date_to_unix",
+    "position": {
+      "x": 0,
+      "y": -396
+    },
+    "links": [
+      {
+        "targetId": "a36619b6-691b-4b84-8a8b-109fc82ffef3",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n    let output = {};\n\n    // Récupération des variables en s'assurant que ce sont bien des chaînes de caractères\n    const startdate = String(executionContext.actions.set_date_and_apps.inputs.startDate || \"2025-08-01\");\n    const starttime = String(executionContext.actions.set_date_and_apps.inputs.startTime || \"00:00\");\n\n    const enddate = String(executionContext.actions.set_date_and_apps.inputs.endDate || \"2025-08-02\");\n    const endtime = String(executionContext.actions.set_date_and_apps.inputs.endTime || \"23:59\");\n\n    // Extraction de la date seule (avant le \"T\")\n    const startDateOnly = startdate.split('T')[0];\n    const endDateOnly = enddate.split('T')[0];\n\n    // Combine the date and time into full datetime strings\n    const startDateTime = startDateOnly + \"T\" + starttime + \":00\";\n    const endDateTime = endDateOnly + \"T\" + endtime + \":00\";\n\n    // Convert the combined date-time strings to Unix timestamps (in milliseconds)\n    const startTimestamp = new Date(startDateTime).getTime();\n    const endTimestamp = new Date(endDateTime).getTime();\n\n    // Store the Unix timestamps in the output object\n    output.start = startTimestamp;\n    output.end = endTimestamp;\n\n    //output.sdate = startDateTime;\n    //output.edate = endDateTime;\n\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "df15a79d-3cfe-4254-b305-4cafa9be4a81",
+    "name": "setSettings",
+    "code": "set_settings",
+    "position": {
+      "x": -384,
+      "y": -216
+    },
+    "links": [
+      {
+        "targetId": "c4d29e68-09a7-4a71-abb8-9d1d85906d3c",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Out of office",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "Container",
+            "$when": "${$root.actions.set_date_and_apps.inputs.gmail == \"true\"}",
+            "items": [
+              {
+                "size": "Medium",
+                "text": "Gmail vacation responder:",
+                "type": "TextBlock",
+                "wrap": true,
+                "style": "default",
+                "weight": "Bolder"
+              },
+              {
+                "id": "responseSubject",
+                "type": "Input.Text",
+                "label": "Subject:",
+                "spacing": "None",
+                "isRequired": true,
+                "placeholder": "Enter an email subject",
+                "errorMessage": "Please enter an email subject"
+              },
+              {
+                "id": "responseBodyHtml",
+                "type": "Input.Text",
+                "label": "Message:",
+                "spacing": "None",
+                "isRequired": true,
+                "isMultiline": true,
+                "placeholder": "Enter email message",
+                "errorMessage": "Please enter an automatic response message"
+              },
+              {
+                "id": "restrictToContacts",
+                "type": "Input.Toggle",
+                "title": "Only send a response to people in my contacts",
+                "value": "false"
+              },
+              {
+                "id": "restrictToDomain",
+                "type": "Input.Toggle",
+                "title": "Only send a response to people in my domain",
+                "value": "false"
+              }
+            ],
+            "style": "emphasis"
+          },
+          {
+            "type": "Container",
+            "$when": "${$root.actions.set_date_and_apps.inputs.calendar ==\"true\"}",
+            "items": [
+              {
+                "size": "Medium",
+                "text": "Google Calendar",
+                "type": "TextBlock",
+                "wrap": true,
+                "style": "default",
+                "weight": "Bolder"
+              },
+              {
+                "id": "autoDeclineMode",
+                "type": "Input.ChoiceSet",
+                "label": "Decline mode:",
+                "style": "expanded",
+                "value": "declineAllConflictingInvitations",
+                "choices": [
+                  {
+                    "title": "Do not automatically decline meetings",
+                    "value": "declineNone"
+                  },
+                  {
+                    "title": "Decline only new meeting invitations",
+                    "value": "declineOnlyNewConflictingInvitations"
+                  },
+                  {
+                    "title": " Decline new and existing meetings",
+                    "value": "declineAllConflictingInvitations"
+                  }
+                ],
+                "spacing": "None",
+                "isRequired": true,
+                "placeholder": "Placeholder text",
+                "errorMessage": "Please select a decline mode"
+              },
+              {
+                "id": "declineMessage",
+                "type": "Input.Text",
+                "label": "Message",
+                "value": "Declined because I am out of office",
+                "spacing": "None",
+                "placeholder": "Enter a decline message"
+              }
+            ],
+            "style": "emphasis"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "a36619b6-691b-4b84-8a8b-109fc82ffef3",
+    "name": "postGmail",
+    "code": "post_gmail",
+    "position": {
+      "x": 192,
+      "y": -396
+    },
+    "links": [
+      {
+        "targetId": "3b005b5a-cedc-4dac-a612-5c014d9b7b3d",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"enableAutoReply\": true,\r\n  \"responseSubject\": \"${actions.set_settings.inputs.responseSubject}\",\r\n  \"responseBodyHtml\": \"${actions.set_settings.inputs.responseBodyHtml}\",\r\n  \"restrictToContacts\": \"${actions.set_settings.inputs.restrictToContacts}\",\r\n  \"restrictToDomain\": \"${actions.set_settings.inputs.restrictToDomain}\",\r\n  \"startTime\": \"${actions.parse_date_to_unix.output.start}\",\r\n  \"endTime\": \"${actions.parse_date_to_unix.output.end}\"\r\n}",
+        "path": "/gmail/v1/users/me/settings/vacation",
+        "httpMethod": "PUT",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_gmail"
+      }
+    }
+  },
+  {
+    "id": "ab68d78b-371b-4331-a311-5fc5d7db84ce",
+    "name": "setDateAndApps",
+    "code": "set_date_and_apps",
+    "position": {
+      "x": -588,
+      "y": -216
+    },
+    "links": [
+      {
+        "targetId": "df15a79d-3cfe-4254-b305-4cafa9be4a81",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Out of office",
+            "type": "TextBlock",
+            "style": "heading"
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "startDate",
+                    "type": "Input.Date",
+                    "label": "Start date:",
+                    "isRequired": true,
+                    "errorMessage": "Please select a start date"
+                  },
+                  {
+                    "id": "startTime",
+                    "type": "Input.Time",
+                    "label": "Start time",
+                    "spacing": "None",
+                    "isRequired": true,
+                    "errorMessage": "Please select a start time"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "endDate",
+                    "type": "Input.Date",
+                    "label": "End date",
+                    "isRequired": true,
+                    "errorMessage": "Please select an end date"
+                  },
+                  {
+                    "id": "endTime",
+                    "type": "Input.Time",
+                    "label": "End time",
+                    "spacing": "None",
+                    "isRequired": true,
+                    "errorMessage": "Please select an end time"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "items": [
+              {
+                "text": "Apps:",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "id": "gmail",
+                "type": "Input.Toggle",
+                "title": "Gmail: Activate your vacation responder",
+                "value": "false",
+                "spacing": "None"
+              },
+              {
+                "id": "calendar",
+                "type": "Input.Toggle",
+                "title": "Google Calendar: Create a new  out of office event",
+                "value": "false",
+                "spacing": "None"
+              }
+            ]
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "2e2aa7c7-6ea1-4da0-ae75-5dc0878a64f3",
+    "name": "parseDateToIso",
+    "code": "parse_date_to_iso",
+    "position": {
+      "x": 600,
+      "y": -204
+    },
+    "links": [
+      {
+        "targetId": "a59ba967-f38d-4277-a056-9300aa59110a",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n    let output = {};\n\n    // Récupération des variables en s'assurant que ce sont bien des chaînes de caractères\n    const startdate = String(executionContext.actions.set_date_and_apps.inputs.startDate || \"2025-08-01\");\n    const starttime = String(executionContext.actions.set_date_and_apps.inputs.startTime || \"00:00\");\n\n    const enddate = String(executionContext.actions.set_date_and_apps.inputs.endDate || \"2025-08-02\");\n    const endtime = String(executionContext.actions.set_date_and_apps.inputs.endTime || \"23:59\");\n\n    // Extraction de la date seule (avant le \"T\")\n    const startDateOnly = startdate.split('T')[0];\n    const endDateOnly = enddate.split('T')[0];\n\n    // Parse start and end dateTime, en s'assurant que ce sont bien des strings\n    output.start = startDateOnly + \"T\" + starttime + \":00\";\n    output.end = endDateOnly + \"T\" + endtime + \":00\";\n\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "a59ba967-f38d-4277-a056-9300aa59110a",
+    "name": "postCalendar",
+    "code": "post_calendar",
+    "position": {
+      "x": 792,
+      "y": -204
+    },
+    "links": [
+      {
+        "targetId": "a0e6aed1-b322-4438-a14f-c2582f56bdc7",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"summary\": \"Out of office\",\r\n  \"eventType\": \"outOfOffice\",\r\n  \"transparency\": \"opaque\",\r\n  \"start\": {\r\n    \"dateTime\": \"${actions.parse_date_to_iso.output.start}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },  \r\n  \"end\": {\r\n    \"dateTime\": \"${actions.parse_date_to_iso.output.end}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },\r\n  \"outOfOfficeProperties\": {\r\n    \"autoDeclineMode\": \"${actions.set_settings.inputs.autoDeclineMode}\",\r\n    \"declineMessage\": \"${actions.set_settings.inputs.declineMessage}\"\r\n  }\r\n}",
+        "path": "/v3/calendars/primary/events",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_calendar"
+      }
+    }
+  },
+  {
+    "id": "c2cc594f-889d-4839-aa15-63a2829d9296",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -768,
+      "y": -216
+    },
+    "links": [
+      {
+        "targetId": "ab68d78b-371b-4331-a311-5fc5d7db84ce",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  }
+]
