@@ -1,6 +1,9 @@
 {
     "settings.time_of_day": "Horário do dia",
     "settings.font_size": "Tamanho da fonte",
+    "settings.coma_position": "Posição de coma",
+    "settings.coma_position.before": "Antes do nome de usuário",
+    "settings.coma_position.after": "Após o nome do usuário",
     "hello": "Olá", 
     "welcome":"Bem-vindo",
     "good_morning": "Bom dia",  

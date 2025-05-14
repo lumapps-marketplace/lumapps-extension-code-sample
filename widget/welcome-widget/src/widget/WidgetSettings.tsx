@@ -36,19 +36,37 @@ const WithIntlSettings: WidgetSettings = ({ properties = {}, exportProp }) => {
         value: 32
     }];
 
+    const COMA_POSITION = [{
+        label: 'settings.coma_position.before',
+        value: 'before'
+    }, {
+        label: 'settings.coma_position.after',
+        value: 'after'
+    }]
+
     const [displayWelcome, setDisplayWelcome] = useState(properties.displayWelcome || false);
-    const [isOpen, setOpen] = useState(false);
+    const [isOpenFontSize, setOpenFontSize] = useState(false);
+    const [isOpenComaPosition, setOpenComaPosition] = useState(false);
     const [fontSize, setFontSize] = React.useState<any>(properties.fontSize || FONT_SIZES[0]);
+    const [comaPosition, setComaPosition] = React.useState<any>(properties.comaPosition || COMA_POSITION[1]);
     
-    const closeSelect = () => setOpen(false);
-    const toggleSelect = () => setOpen(!isOpen);
-    const selectItem = (item: any) => () => {
+    const closeSelectFontSize = () => setOpenFontSize(false);
+    const toggleSelectFontSize = () => setOpenFontSize(!isOpenFontSize);
+    const selectItemFontSize = (item: any) => () => {
         setFontSize(item);
-        closeSelect();
+        closeSelectFontSize();
+    };
+
+    const closeSelectComaPosition = () => setOpenComaPosition(false);
+    const toggleSelectComaPosition = () => setOpenComaPosition(!isOpenComaPosition);
+    const selectItemComaPosition = (item: any) => () => {
+        setComaPosition(item);
+        closeSelectComaPosition();
     };
 
     useExportProps(displayWelcome, 'displayWelcome', properties, exportProp);
     useExportProps(fontSize, 'fontSize', properties, exportProp);
+    useExportProps(comaPosition, 'comaPosition', properties,exportProp);
 
     return (
         <>
@@ -59,21 +77,44 @@ const WithIntlSettings: WidgetSettings = ({ properties = {}, exportProp }) => {
             <Select
                 className="lumx-spacing-margin-top-huge"
                 style={{ width: '100%' }}
-                isOpen={isOpen}
+                isOpen={isOpenFontSize}
                 value={fontSize.label}
                 label={intl.formatMessage({ id: 'settings.font_size' })}
-                onInputClick={toggleSelect}
-                onDropdownClose={closeSelect}
+                onInputClick={toggleSelectFontSize}
+                onDropdownClose={closeSelectFontSize}
             >
                 <List>
                     {FONT_SIZES.map((size, index) => (
                             <ListItem
                                 isSelected={fontSize.value === size.value}
                                 key={index}
-                                onItemSelected={selectItem(size)}
+                                onItemSelected={selectItemFontSize(size)}
                                 size={Size.tiny}
                             >
                                 {size.label}
+                            </ListItem>
+                        ))}
+                </List>
+            </Select>
+
+            <Select
+                className="lumx-spacing-margin-top-huge"
+                style={{ width: '100%' }}
+                isOpen={isOpenComaPosition}
+                value={intl.formatMessage({ id: comaPosition.label})}
+                label={intl.formatMessage({ id: 'settings.coma_position' })}
+                onInputClick={toggleSelectComaPosition}
+                onDropdownClose={closeSelectComaPosition}
+            >
+                <List>
+                    {COMA_POSITION.map((position, index) => (
+                            <ListItem
+                                isSelected={comaPosition.value === position.value}
+                                key={index}
+                                onItemSelected={selectItemComaPosition(position)}
+                                size={Size.tiny}
+                            >
+                                <FormattedMessage id={position.label}></FormattedMessage>
                             </ListItem>
                         ))}
                 </List>

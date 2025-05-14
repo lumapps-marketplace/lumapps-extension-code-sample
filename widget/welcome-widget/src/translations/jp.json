@@ -1,6 +1,9 @@
 {
     "settings.stime_of_day": "時間",
     "settings.font_size": "文字サイズ",
+    "settings.coma_position": "昏睡状態",
+    "settings.coma_position.before": "ユーザー名の前に",
+    "settings.coma_position.after": "ユーザー名の後",
     "hello": "こんにちは", 
     "welcome": "ようこそ", 
     "good_morning": "おはようございます",  
