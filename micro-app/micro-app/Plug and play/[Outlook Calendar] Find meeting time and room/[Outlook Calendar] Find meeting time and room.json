@@ -1,0 +1,1143 @@
+[
+  {
+    "id": "371363c7-5933-45d2-b1a3-c5b5ad1d4d16",
+    "name": "searchUser",
+    "code": "search_user",
+    "position": {
+      "x": -720,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "e2070258-2bd2-4d23-b879-bbf9e2d12a99",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Find a colleague's availabilities for a meeting.",
+            "type": "TextBlock",
+            "weight": "Bolder"
+          },
+          {
+            "id": "userSearch",
+            "type": "Input.Text",
+            "label": "Search a colleague",
+            "isRequired": true,
+            "placeholder": "By name or email address",
+            "errorMessage": "Required"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Search"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "0e20dd2c-3ca5-40ff-911e-ce724f7fb10b",
+    "name": "Action 0e20dd2c-3ca5-40ff-911e-ce724f7fb10b",
+    "code": "action_0_e_20_dd_2_c_3_ca_5_40_ff_911_e_ce_724_f_7_fb_10_b",
+    "position": {
+      "x": 420,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "d14796c5-d05e-4f20-96a8-cf6dc557da61",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "31508",
+              "rules": [
+                {
+                  "id": "33484",
+                  "operator": {
+                    "type": "string",
+                    "operation": "notEmpty",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.NOT_EMPTY"
+                  },
+                  "leftValue": "${actions.findmeetingtimes.response.body.emptySuggestionsReason}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "762270d1-5feb-4dd0-b5a7-19d6241bfbfa",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "31873",
+              "rules": [
+                {
+                  "id": "33938",
+                  "operator": {
+                    "type": "string",
+                    "operation": "empty",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.EMPTY"
+                  },
+                  "leftValue": "${actions.findmeetingtimes.response.body.emptySuggestionsReason}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "d14796c5-d05e-4f20-96a8-cf6dc557da61",
+    "name": "noTimeSlot",
+    "code": "no_time_slot",
+    "position": {
+      "x": 804,
+      "y": -216
+    },
+    "links": [
+      {
+        "targetId": "eb236e6d-65e5-48c8-88db-92313f84d5c0",
+        "type": "go_back"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Sorry, we were unable to find available time slots. Reason: ${actions.findmeetingtimes.response.body.emptySuggestionsReason}",
+            "type": "TextBlock",
+            "wrap": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "actions": [
+          {
+            "id": "eb236e6d-65e5-48c8-88db-92313f84d5c0",
+            "type": "Action.Execute",
+            "title": "Back"
+          }
+        ],
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "2d6dac47-5d10-4357-8344-a58265c2ad63",
+    "name": "resultNok",
+    "code": "result_nok",
+    "position": {
+      "x": 2316,
+      "y": 156
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "size": "Default",
+                "text": "❌ Error please try again",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Bolder",
+                "spacing": "Small"
+              }
+            ],
+            "style": "attention"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "01289125-446c-46c2-9c6d-8b01a8a40bb2",
+    "name": "Action 01289125-446c-46c2-9c6d-8b01a8a40bb2",
+    "code": "action_01289125_446_c_46_c_2_9_c_6_d_8_b_01_a_8_a_40_bb_2",
+    "position": {
+      "x": 2076,
+      "y": 24
+    },
+    "links": [
+      {
+        "targetId": "7ba8d0ca-e923-4237-ae5d-0c298b39c57b",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "20679",
+              "rules": [
+                {
+                  "id": "20680",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_meet.response.status}",
+                  "rightValue": "200"
+                },
+                {
+                  "id": "20943",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_meet_with_room.response.status}",
+                  "rightValue": "201"
+                },
+                {
+                  "id": "22317",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_meet_with_room.response.status}",
+                  "rightValue": "200"
+                },
+                {
+                  "id": "22580",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_meet.response.status}",
+                  "rightValue": "201"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "2d6dac47-5d10-4357-8344-a58265c2ad63",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "22867",
+              "rules": [
+                {
+                  "id": "22868",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_meet.response.status}",
+                  "rightValue": "400"
+                },
+                {
+                  "id": "23133",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.post_meet_with_room.response.status}",
+                  "rightValue": "400"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "3071991c-266b-4804-a9c2-61312737c5e0",
+    "name": "Action 3071991c-266b-4804-a9c2-61312737c5e0",
+    "code": "action_3071991_c_266_b_4804_a_9_c_2_61312737_c_5_e_0",
+    "position": {
+      "x": 1440,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0807260f-c574-4369-a6e3-fda36f992f55",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "13899",
+              "rules": [
+                {
+                  "id": "38482",
+                  "operator": {
+                    "type": "string",
+                    "operation": "notEmpty",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.NOT_EMPTY"
+                  },
+                  "leftValue": "${actions.get_location.output.locations}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "f63fca23-ee95-4fde-80a0-ab13b77864c7",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "37415",
+              "rules": [
+                {
+                  "id": "37836",
+                  "operator": {
+                    "type": "string",
+                    "operation": "empty",
+                    "singleValue": true,
+                    "name": "MICROAPP.FILTER.OPERATION.EMPTY"
+                  },
+                  "leftValue": "${actions.get_location.output.locations}",
+                  "rightValue": ""
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "e5f6f187-ee18-4a3b-8277-ebf61c134214",
+    "name": "postMeetWithRoom",
+    "code": "post_meet_with_room",
+    "position": {
+      "x": 1884,
+      "y": -144
+    },
+    "links": [
+      {
+        "targetId": "01289125-446c-46c2-9c6d-8b01a8a40bb2",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"subject\": \"${actions.get_end_choosen_slot.output.title}\",\r\n  \"body\": {\r\n    \"contentType\": \"HTML\",\r\n    \"content\": \"${actions.get_end_choosen_slot.output.description}\"\r\n  },\r\n  \"start\": {\r\n    \"dateTime\": \"${actions.get_end_choosen_slot.output.startMeeting}\",\r\n    \"timeZone\": \"${actions.parse_slot.output.start.timeZone}\"\r\n  },\r\n  \"end\": {\r\n    \"dateTime\": \"${actions.get_end_choosen_slot.output.endMeeting}\",\r\n    \"timeZone\": \"${actions.parse_slot.output.start.timeZone}\"\r\n  },\r\n  \"location\":{\r\n      \"displayName\": \"${actions.choose_room.inputs.room}\"\r\n  },\r\n  \"attendees\": [\r\n    {\r\n      \"emailAddress\": {\r\n        \"address\": \"${actions.selectuser.inputs.userchoice}\"\r\n      },\r\n      \"type\": \"required\"\r\n    }\r\n  ]\r\n}",
+        "path": "/v1.0/me/events",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "microsoft"
+      }
+    }
+  },
+  {
+    "id": "a2f43b3e-8f60-4c67-abae-439db8b11cbe",
+    "name": "getLocation",
+    "code": "get_location",
+    "position": {
+      "x": 1212,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "3071991c-266b-4804-a9c2-61312737c5e0",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\t// Get the selected time slot from previous action input\n  const selectedSlot = executionContext.actions.choose_meeting_time.inputs.choosenSlot;\n  //const selectedSlot = \"2025-05-12T07:00:00.0000000\";\n\n  // Get the API response with meetingTimeSuggestions\n  const suggestions = executionContext.actions.findmeetingtimes.response.body.meetingTimeSuggestions;\n\n  if (!selectedSlot || !suggestions) {\n    output.error = \"Missing selected slot or suggestions.\";\n    return output;\n  }\n\n  // Find the matching suggestion based on start time\n  const matchedSuggestion = suggestions.find(suggestion => \n    suggestion.meetingTimeSlot?.start?.dateTime === selectedSlot\n  );\n\n  if (!matchedSuggestion || !matchedSuggestion.locations) {\n    output.locations = [];\n  } else {\n    // Format locations for use in Adaptive Card (as title/value pairs)\n    output.locations = matchedSuggestion.locations.map(location => ({\n      title: location.displayName,\n      value: location.displayName\n    }));\n  }\n\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "f63fca23-ee95-4fde-80a0-ab13b77864c7",
+    "name": "chooseRoom",
+    "code": "choose_room",
+    "position": {
+      "x": 1668,
+      "y": -144
+    },
+    "links": [
+      {
+        "targetId": "e5f6f187-ee18-4a3b-8277-ebf61c134214",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "id": "room",
+            "type": "Input.ChoiceSet",
+            "label": "Choose a room",
+            "choices": [
+              {
+                "$data": "${actions.get_location.output.locations}",
+                "title": "${displayName}",
+                "value": "${displayName}"
+              }
+            ],
+            "placeholder": "Placeholder text"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Submit"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "065f0147-c7f1-417a-b1d8-2c1fe5805bb4",
+    "name": "log4",
+    "code": "log_4",
+    "position": {
+      "x": 1308,
+      "y": 216
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Erreur :",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.post_meet.response.body.error.message}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Action.Execute"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "c39d3e9a-27f4-4701-b76f-762654e33a18",
+    "name": "log3",
+    "code": "log_3",
+    "position": {
+      "x": 1140,
+      "y": -396
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "LOGS",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.get_end_choosen_slot.output.startMeeting}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.parse_slot.output.start.timeZone}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.get_end_choosen_slot.output.endMeeting}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.parse_slot.output.start.timeZone}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.selectuser.inputs.userchoice}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Action.Execute"
+              }
+            ]
+          },
+          {
+            "text": "output.locations: ${actions.get_location.output.locations}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "output.locations[0]: ${actions.get_location.output.locations[0]}",
+            "type": "TextBlock",
+            "wrap": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "1f8c6c45-ddda-41fd-8ecd-4997c6bc616d",
+    "name": "log2",
+    "code": "log_2",
+    "position": {
+      "x": 576,
+      "y": 228
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "Erreur :",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.findmeetingtimes.response.body.error.message}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Action.Execute"
+              }
+            ]
+          },
+          {
+            "text": "{\n  \"attendees\": [\n    {\n      \"emailAddress\": {\n        \"address\": \"Michael@demoms.lumapps.com\"\n      },\n      \"type\": \"Required\"\n    }\n  ],\n  \"locationConstraint\": {\n    \"isRequired\": false,\n    \"suggestLocation\": true\n  },\n  \"timeConstraint\": {\n    \"timeslots\": [\n      {\n        \"start\": {\n          \"dateTime\": \"2025-06-10T09:00:00\",\n          \"timeZone\": \"UTC\"\n        },\n        \"end\": {\n          \"dateTime\": \"2025-06-21T09:30:00\",\n          \"timeZone\": \"UTC\"\n        }\n      }\n    ]\n  },\n  \"meetingDuration\": \"PT30M\"\n}",
+            "type": "TextBlock",
+            "wrap": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "1132c86f-199c-4ba9-b159-039ad5be4b2b",
+    "name": "log1",
+    "code": "log_1",
+    "position": {
+      "x": 408,
+      "y": -408
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "text": "LOGS",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.selectuser.inputs.userchoice}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.parse_slot.output.start.dateTime}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.parse_slot.output.start.timeZone}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.parse_slot.output.end.dateTime}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "${actions.parse_slot.output.end.timeZone}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "title": "Action.Execute"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "7ba8d0ca-e923-4237-ae5d-0c298b39c57b",
+    "name": "displayResult",
+    "code": "display_result",
+    "position": {
+      "x": 2304,
+      "y": -132
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Large",
+            "text": "🎉 ✅ Your appointment has been successfully created!",
+            "type": "TextBlock",
+            "wrap": true,
+            "color": "Good",
+            "weight": "Bolder",
+            "spacing": "Medium"
+          },
+          {
+            "text": "Find the details below:",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "type": "Container",
+            "$when": "${actions.post_meet.response.status == 201}",
+            "items": [
+              {
+                "text": "🪧Title: ${actions.post_meet.response.body.subject}",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "text": "📅 Date and time:\n${formatDateTime(actions.post_meet.response.body.start.dateTime, 'dd/MM/yy HH:mm')}",
+                "type": "TextBlock",
+                "wrap": true,
+                "spacing": "Small"
+              },
+              {
+                "text": "👤 With: ${actions.post_meet.response.body.attendees[0].emailAddress.name}",
+                "type": "TextBlock",
+                "wrap": true,
+                "weight": "Bolder",
+                "spacing": "None"
+              },
+              {
+                "type": "ActionSet",
+                "actions": [
+                  {
+                    "url": "${actions.post_meet.response.body.webLink}",
+                    "type": "Action.OpenUrl",
+                    "style": "positive",
+                    "title": "🔗 Link to the appointment"
+                  }
+                ],
+                "spacing": "None"
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "$when": "${actions.post_meet_with_room.response.status == 201}",
+            "items": [
+              {
+                "text": "🪧Title: ${actions.post_meet_with_room.response.body.subject}",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "text": "📅 Date and time:\n${formatDateTime(actions.post_meet_with_room.response.body.start.dateTime, 'dd/MM/yy HH:mm')}",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "text": "👤 With: ${actions.post_meet_with_room.response.body.attendees[0].emailAddress.name}",
+                "type": "TextBlock",
+                "wrap": true
+              },
+              {
+                "type": "ActionSet",
+                "actions": [
+                  {
+                    "url": "${actions.post_meet_with_room.response.body.webLink}",
+                    "type": "Action.OpenUrl",
+                    "style": "positive",
+                    "title": "🔗 Link to the appointment"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "46b576b5-724f-45f6-a9eb-3914df7ec18d",
+    "name": "getEndChoosenSlot",
+    "code": "get_end_choosen_slot",
+    "position": {
+      "x": 1008,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "a2f43b3e-8f60-4c67-abae-439db8b11cbe",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n    // In this function, you can build an output from the execution context.\n    // You can change the content of this function but do not rename it.\n    // The result of this function will be available in the next action.\n\n    let userEmail = executionContext.user.email;\n    let invitee = executionContext.actions.selectuser.inputs.userchoice;\n    let duration = executionContext.actions.selectuser.inputs.duration;\n\n    // Get start meeting time\n\tlet startMeeting = executionContext.actions.choose_meeting_time.inputs.choosenSlot;\n    //let startMeeting = \"2025-06-11T07:00:00.0000000\";\n    \n    // Create a new Date object from the start meeting time\n    let startDate = new Date(startMeeting);\n    \n    // Add [duration] minutes (duration * 60 * 1000 ms) to the start date\n    let endDate = new Date(startDate.getTime() + duration * 60 * 1000);\n\n    // Manually format endDate to match the format \"YYYY-MM-DDTHH:MM:SS.SSSSSSS\" (same as startMeeting)\n    let endMeeting = endDate.toISOString().slice(0, 20) + '0000000';  // Slice and pad to match the desired precision\n\n    // Declaration of the output variable.\n    let output = {\n        startMeeting: startMeeting,\n        endMeeting: endMeeting\n    };\n\n    let title = executionContext.actions.choose_meeting_time.inputs.meetTitle || `Auto meet ${userEmail} x ${invitee}`;\n    let description = executionContext.actions.choose_meeting_time.inputs.meetDesc || \"This meet was created using a microapp.\";\n\n    output.title = title;\n    output.description = description;\n \n    // Mandatory: return your output.\n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "0807260f-c574-4369-a6e3-fda36f992f55",
+    "name": "postMeet",
+    "code": "post_meet",
+    "position": {
+      "x": 1776,
+      "y": 156
+    },
+    "links": [
+      {
+        "targetId": "01289125-446c-46c2-9c6d-8b01a8a40bb2",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\n  \"subject\": \"${actions.get_end_choosen_slot.output.title}\",\n  \"body\": {\n    \"contentType\": \"HTML\",\n    \"content\": \"${actions.get_end_choosen_slot.output.description}\"\n  },\n  \"start\": {\n    \"dateTime\": \"${actions.get_end_choosen_slot.output.startMeeting}\",\n    \"timeZone\": \"${actions.parse_slot.output.start.timeZone}\"\n  },\n  \"end\": {\n    \"dateTime\": \"${actions.get_end_choosen_slot.output.endMeeting}\",\n    \"timeZone\": \"${actions.parse_slot.output.start.timeZone}\"\n  },\n  \"attendees\": [\n    {\n      \"emailAddress\": {\n        \"address\": \"${actions.selectuser.inputs.userchoice}\"\n      },\n      \"type\": \"required\"\n    }\n  ]\n}",
+        "path": "/v1.0/me/events",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "providerType": "microsoft",
+      "authentication": {
+        "method": "connector",
+        "providerType": "microsoft"
+      }
+    }
+  },
+  {
+    "id": "762270d1-5feb-4dd0-b5a7-19d6241bfbfa",
+    "name": "chooseMeetingTime",
+    "code": "choose_meeting_time",
+    "position": {
+      "x": 804,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "46b576b5-724f-45f6-a9eb-3914df7ec18d",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Available time slots:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder",
+            "spacing": "Medium"
+          },
+          {
+            "id": "choosenSlot",
+            "type": "Input.ChoiceSet",
+            "choices": [
+              {
+                "$data": "${actions.findmeetingtimes.response.body.meetingTimeSuggestions}",
+                "title": "${formatDateTime(meetingTimeSlot.start.dateTime, 'dd/MM/yy - HH:mm')}",
+                "value": "${meetingTimeSlot.start.dateTime}"
+              }
+            ],
+            "spacing": "Small",
+            "placeholder": "Select time slot"
+          },
+          {
+            "id": "meetTitle",
+            "type": "Input.Text",
+            "label": "Meeting title",
+            "spacing": "None",
+            "placeholder": "Enter the title of your meeting"
+          },
+          {
+            "id": "meetDesc",
+            "type": "Input.Text",
+            "label": "Meeting description",
+            "spacing": "None",
+            "placeholder": "Enter the description of your meeting"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Validate"
+              }
+            ],
+            "spacing": "None"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "5c23547d-0e70-4b9f-b42f-6af985a22f6a",
+    "name": "parseSlot",
+    "code": "parse_slot",
+    "position": {
+      "x": -36,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0759c261-f7ce-4a8a-bc98-a41b7443692c",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n    let output = {};\n\n     // Helper to convert minutes to ISO8601 duration\n    function minutesToISO8601(minutes) {\n        if (typeof minutes !== 'number' || minutes < 0) {\n            throw new Error('Minutes must be a non-negative number');\n        }\n\n        const hours = Math.floor(minutes / 60);\n        const remainingMinutes = minutes % 60;\n\n        let durationStr = 'PT';\n        if (hours > 0) {\n            durationStr += `${hours}H`;\n        }\n        if (remainingMinutes > 0 || hours === 0) {\n            durationStr += `${remainingMinutes}M`;\n        }\n\n        return durationStr;\n    }\n    \n    // Récupération des données d'entrée\n    const selectUser = executionContext.actions.selectuser.inputs;\n    \n    if (selectUser) {\n        // Extraction uniquement de la date sans l'heure\n        const startDateOnly = selectUser.startDate.split(\"T\")[0]; \n        const endDateOnly = selectUser.endDate.split(\"T\")[0]; \n        const duration = selectUser.duration;\n\n        // Formatage des dates en ISO 8601 avec fuseau UTC\n        const formattedStart = {\n            start: {\n                dateTime: `${startDateOnly}T${selectUser.startHour}:00`,\n                //dateTime: \"2025-06-10T00:00:00\", \n                timeZone: \"UTC\"\n            },\n            end: {\n                dateTime: `${endDateOnly}T${selectUser.endHour}:00`,\n                //dateTime: \"2025-06-11T00:00:00\",\n                timeZone: \"UTC\"\n            },\n            meetingDuration: minutesToISO8601(duration)\n        };\n        \n        output = formattedStart;\n    }\n    \n    return output;\n}\n"
+    }
+  },
+  {
+    "id": "0759c261-f7ce-4a8a-bc98-a41b7443692c",
+    "name": "findmeetingtimes",
+    "code": "findmeetingtimes",
+    "position": {
+      "x": 168,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0e20dd2c-3ca5-40ff-911e-ce724f7fb10b",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"attendees\": [\r\n    {\r\n      \"emailAddress\": {\r\n        \"address\": \"${actions.selectuser.inputs.userchoice}\"\r\n      },\r\n      \"type\": \"Required\"\r\n    }\r\n  ],\r\n  \"locationConstraint\": {\r\n    \"isRequired\": ${bool(actions.selectuser.inputs.roomRequired)},\r\n    \"suggestLocation\": ${bool(actions.selectuser.inputs.roomRequired)}\r\n  },\r\n  \"timeConstraint\": {\r\n    \"timeslots\": [\r\n      {\r\n        \"start\": {\r\n          \"dateTime\": \"${actions.parse_slot.output.start.dateTime}\",\r\n          \"timeZone\": \"${actions.parse_slot.output.start.timeZone}\"\r\n        },\r\n        \"end\": {\r\n          \"dateTime\": \"${actions.parse_slot.output.end.dateTime}\",\r\n          \"timeZone\": \"${actions.parse_slot.output.end.timeZone}\"\r\n        }\r\n      }\r\n    ]\r\n  },\r\n  \"meetingDuration\": \"${actions.parse_slot.output.meetingDuration}\"\r\n}",
+        "path": "/v1.0/me/findMeetingTimes",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "providerType": "microsoft",
+      "authentication": {
+        "method": "connector",
+        "providerType": "microsoft"
+      }
+    }
+  },
+  {
+    "id": "eb236e6d-65e5-48c8-88db-92313f84d5c0",
+    "name": "selectuser",
+    "code": "selectuser",
+    "position": {
+      "x": -252,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "5c23547d-0e70-4b9f-b42f-6af985a22f6a",
+        "type": "default"
+      },
+      {
+        "targetId": "371363c7-5933-45d2-b1a3-c5b5ad1d4d16",
+        "type": "go_back"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Find a colleague's availabilities for a meeting.",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder",
+            "spacing": "Medium"
+          },
+          {
+            "id": "userchoice",
+            "type": "Input.ChoiceSet",
+            "label": "Select the user with whom you want to schedule an appointment.",
+            "choices": [
+              {
+                "$data": "${actions.getusers.response.body.items}",
+                "title": "${fullName} - ${apiProfile.primaryEmail}",
+                "value": "${apiProfile.primaryEmail}"
+              }
+            ],
+            "spacing": "Small",
+            "isRequired": true,
+            "placeholder": "Select user here",
+            "errorMessage": "Please select a user"
+          },
+          {
+            "id": "duration",
+            "min": 5,
+            "type": "Input.Number",
+            "label": "Select meet duration (minutes)",
+            "value": 30,
+            "isRequired": true,
+            "errorMessage": "Select meet duration"
+          },
+          {
+            "size": "Medium",
+            "text": "Select the time slot in which you want to find an appointment slot.",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder",
+            "spacing": "Large"
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "startDate",
+                    "min": "${utcNow()}",
+                    "type": "Input.Date",
+                    "label": "From",
+                    "value": "${utcNow()}",
+                    "spacing": "Small",
+                    "isRequired": true,
+                    "errorMessage": "Please choose a starting date"
+                  },
+                  {
+                    "id": "startHour",
+                    "type": "Input.Time",
+                    "label": "At",
+                    "value": "08:00",
+                    "spacing": "Small",
+                    "isRequired": true,
+                    "errorMessage": "Please choose a start time"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "endDate",
+                    "min": "${utcNow()}",
+                    "type": "Input.Date",
+                    "label": "To",
+                    "value": "${utcNow()}",
+                    "spacing": "Small",
+                    "isRequired": true,
+                    "errorMessage": "Please choose an end date"
+                  },
+                  {
+                    "id": "endHour",
+                    "type": "Input.Time",
+                    "label": "At",
+                    "value": "19:00",
+                    "spacing": "Small",
+                    "isRequired": true,
+                    "errorMessage": "Please choose an end time"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ],
+            "spacing": "Small"
+          },
+          {
+            "id": "roomRequired",
+            "type": "Input.Toggle",
+            "label": "Check this box if a room is required for your meeting. ",
+            "title": "Book a room"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Confirm"
+              }
+            ],
+            "spacing": "Medium"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "actions": [
+          {
+            "id": "371363c7-5933-45d2-b1a3-c5b5ad1d4d16",
+            "type": "Action.Execute",
+            "title": "Back"
+          }
+        ],
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "e2070258-2bd2-4d23-b879-bbf9e2d12a99",
+    "name": "getusers",
+    "code": "getusers",
+    "position": {
+      "x": -492,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "eb236e6d-65e5-48c8-88db-92313f84d5c0",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/user/list",
+        "httpMethod": "GET",
+        "queryParams": [
+          {
+            "key": "maxResults",
+            "value": "100"
+          },
+          {
+            "key": "query",
+            "value": "${actions.search_user.inputs.userSearch}"
+          }
+        ]
+      },
+      "providerType": "lumapps",
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      }
+    }
+  },
+  {
+    "id": "5cbdced8-c367-4c54-a959-20aad1039a21",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -924,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "371363c7-5933-45d2-b1a3-c5b5ad1d4d16",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  }
+]
