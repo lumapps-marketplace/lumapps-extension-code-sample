@@ -5,7 +5,7 @@
     "code": "search_user",
     "position": {
       "x": -240,
-      "y": 0
+      "y": -156
     },
     "links": [
       {
@@ -54,7 +54,7 @@
     "code": "post_meet",
     "position": {
       "x": 2040,
-      "y": 0
+      "y": -156
     },
     "links": [
       {
@@ -82,16 +82,12 @@
     "name": "getAvailableRoom",
     "code": "get_available_room",
     "position": {
-      "x": 2100,
-      "y": -264
+      "x": 2124,
+      "y": -336
     },
     "links": [
       {
         "targetId": "4a900abe-705f-4220-8115-0d029797ae4e",
-        "type": "default"
-      },
-      {
-        "targetId": "33781ff7-5ec1-45d6-8ac7-7e257201e20c",
         "type": "default"
       }
     ],
@@ -106,14 +102,10 @@
     "name": "chooseRoom",
     "code": "choose_room",
     "position": {
-      "x": 2304,
-      "y": -264
+      "x": 2328,
+      "y": -336
     },
     "links": [
-      {
-        "targetId": "6666e974-506c-492d-a6b6-4dc67591f96a",
-        "type": "go_back"
-      },
       {
         "targetId": "4c039ba9-5f0e-40c9-9966-1aa809f56a52",
         "type": "default"
@@ -160,13 +152,7 @@
         ],
         "type": "AdaptiveCard",
         "version": "1.5",
-        "actions": [
-          {
-            "id": "6666e974-506c-492d-a6b6-4dc67591f96a",
-            "type": "Action.Execute",
-            "title": "Back"
-          }
-        ]
+        "actions": []
       }
     }
   },
@@ -175,10 +161,15 @@
     "name": "Action ddf69d37-9699-44a3-9b72-3ce7b5ec3d61",
     "code": "action_ddf_69_d_37_9699_44_a_3_9_b_72_3_ce_7_b_5_ec_3_d_61",
     "position": {
-      "x": 1332,
-      "y": 0
+      "x": 1356,
+      "y": -156
     },
     "links": [
+      {
+        "targetId": "b6d199bf-ccf4-4398-a16c-893947a6f5f5",
+        "type": "default",
+        "isFallback": true
+      },
       {
         "targetId": "03980d00-99c0-440a-b9fa-3211538b177f",
         "type": "default",
@@ -187,10 +178,10 @@
           "rulesGroup": [
             {
               "combinator": "OR",
-              "id": "36856",
+              "id": "2969",
               "rules": [
                 {
-                  "id": "36857",
+                  "id": "2970",
                   "leftValue": "${actions.choose_slot.inputs.needRoom}",
                   "operator": {
                     "operation": "equals",
@@ -203,11 +194,6 @@
             }
           ]
         }
-      },
-      {
-        "targetId": "b6d199bf-ccf4-4398-a16c-893947a6f5f5",
-        "type": "default",
-        "isFallback": true
       }
     ],
     "type": "router"
@@ -217,8 +203,8 @@
     "name": "getRoomSlot",
     "code": "get_room_slot",
     "position": {
-      "x": 1920,
-      "y": -264
+      "x": 1932,
+      "y": -336
     },
     "links": [
       {
@@ -246,8 +232,8 @@
     "name": "parseRoom",
     "code": "parse_room",
     "position": {
-      "x": 1728,
-      "y": -264
+      "x": 1740,
+      "y": -336
     },
     "links": [
       {
@@ -262,77 +248,12 @@
     }
   },
   {
-    "id": "6c844768-ba8c-4ecc-bf80-6a28d42e0289",
-    "name": "log6",
-    "code": "log_6",
-    "position": {
-      "x": 552,
-      "y": -444
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "LOG",
-            "type": "TextBlock"
-          },
-          {
-            "type": "Container",
-            "$data": "${actions.parse_rooms_email.output.calendars}",
-            "items": [
-              {
-                "text": "${id}",
-                "type": "TextBlock",
-                "wrap": true
-              }
-            ]
-          },
-          {
-            "text": "api freebusy",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "Container",
-            "items": [
-              {
-                "text": "{\n  \"timeMin\": \"${actions.parse_slot.output.start.dateTime}+01:00\",\n  \"timeMax\": \"${actions.parse_slot.output.end.dateTime}+01:00\",\n  \"timeZone\": \"Europe/Paris\",\n  \"items\": ${actions.parse_rooms_email.output.calendars}\n}",
-                "type": "TextBlock",
-                "wrap": true
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.5"
-      }
-    }
-  },
-  {
-    "id": "248ee513-4484-4ad5-9e10-226c78e1dd0b",
-    "name": "parseRoomsEmail",
-    "code": "parse_rooms_email",
-    "position": {
-      "x": -72,
-      "y": -384
-    },
-    "links": [],
-    "type": "function",
-    "settings": {
-      "language": "javascript",
-      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\t// Parse the calendar resources from the response\n    const items = executionContext?.actions?.get_rooms?.response?.body?.items;\n    \n    // Extract emails from calendar resources\n    const calendarItems = Array.isArray(items)\n        ? items.map(item => ({ id: item.resourceEmail }))\n        : [];\n\n    // Add user's email to the list\n    output = {\n        calendars: [...calendarItems]\n    };\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
-    }
-  },
-  {
     "id": "03980d00-99c0-440a-b9fa-3211538b177f",
     "name": "getRooms",
     "code": "get_rooms",
     "position": {
-      "x": 1524,
-      "y": -264
+      "x": 1548,
+      "y": -336
     },
     "links": [
       {
@@ -360,8 +281,8 @@
     "name": "resultok",
     "code": "resultok",
     "position": {
-      "x": 2928,
-      "y": -240
+      "x": 2964,
+      "y": -372
     },
     "links": [],
     "type": "adaptive_card",
@@ -396,11 +317,6 @@
               }
             ],
             "style": "good"
-          },
-          {
-            "text": "${jsonStringify(actions.post_meet.response.body)}",
-            "type": "TextBlock",
-            "wrap": true
           }
         ],
         "type": "AdaptiveCard",
@@ -413,8 +329,8 @@
     "name": "Action da82020e-e1ac-403a-b742-7af3181fb92f",
     "code": "action_da_82020_e_e_1_ac_403_a_b_742_7_af_3181_fb_92_f",
     "position": {
-      "x": 2700,
-      "y": 0
+      "x": 2736,
+      "y": -156
     },
     "links": [
       {
@@ -511,51 +427,12 @@
     "type": "router"
   },
   {
-    "id": "8cb9397b-d5ae-4558-b9b9-7f4313cb73ca",
-    "name": "log4",
-    "code": "log_4",
-    "position": {
-      "x": 780,
-      "y": 240
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "Log",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "eiogzheiog ${actions.choose_slot.inputs.meetTime}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "ActionSet",
-            "actions": [
-              {
-                "type": "Action.Execute",
-                "title": "Action.Execute"
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.6"
-      }
-    }
-  },
-  {
     "id": "4cd1d7fc-9f80-44f1-8136-7b60c055dc17",
     "name": "parseData",
     "code": "parse_data",
     "position": {
-      "x": 1104,
-      "y": 0
+      "x": 1152,
+      "y": -156
     },
     "links": [
       {
@@ -574,8 +451,8 @@
     "name": "postMeetWithRoom",
     "code": "post_meet_with_room",
     "position": {
-      "x": 2508,
-      "y": -264
+      "x": 2520,
+      "y": -336
     },
     "links": [
       {
@@ -599,61 +476,12 @@
     }
   },
   {
-    "id": "e82108fe-7c63-4328-ad6a-908f4322dd8c",
-    "name": "log2",
-    "code": "log_2",
-    "position": {
-      "x": 444,
-      "y": 240
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "LOGS",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "${actions.findtimeslot.response.body.error.errors[0].message}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "${actions.findtimeslot.response.body.error.code} ",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "fzezef ${jsonStringify(actions.findtimeslot.response.body)}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "ActionSet",
-            "actions": [
-              {
-                "type": "Action.Execute",
-                "title": "Action.Execute"
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.6"
-      }
-    }
-  },
-  {
     "id": "ee100379-cdf3-4271-98a4-ff64bf56b15e",
     "name": "findAvailability",
     "code": "find_availability",
     "position": {
-      "x": 708,
-      "y": 0
+      "x": 756,
+      "y": -156
     },
     "links": [
       {
@@ -668,61 +496,12 @@
     }
   },
   {
-    "id": "558b4e42-9b7d-42f8-82a7-9ceaee819012",
-    "name": "log1",
-    "code": "log_1",
-    "position": {
-      "x": 1044,
-      "y": -504
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "LOGS",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "${actions.selectuser.inputs.userchoice}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "${actions.parse_slot.output.start.dateTime}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "${actions.parse_slot.output.end.dateTime}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "ActionSet",
-            "actions": [
-              {
-                "type": "Action.Execute",
-                "title": "Action.Execute"
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.6"
-      }
-    }
-  },
-  {
     "id": "f7f69e52-0c0f-4f41-bc27-4af910d95bcb",
     "name": "parseSlot",
     "code": "parse_slot",
     "position": {
-      "x": 348,
-      "y": 0
+      "x": 372,
+      "y": -156
     },
     "links": [
       {
@@ -741,8 +520,8 @@
     "name": "chooseSlot",
     "code": "choose_slot",
     "position": {
-      "x": 900,
-      "y": 0
+      "x": 960,
+      "y": -156
     },
     "links": [
       {
@@ -832,8 +611,8 @@
     "name": "findtimeslot",
     "code": "findtimeslot",
     "position": {
-      "x": 528,
-      "y": 0
+      "x": 564,
+      "y": -156
     },
     "links": [
       {
@@ -862,17 +641,13 @@
     "name": "selectuser",
     "code": "selectuser",
     "position": {
-      "x": 168,
-      "y": 0
+      "x": 192,
+      "y": -156
     },
     "links": [
       {
         "targetId": "f7f69e52-0c0f-4f41-bc27-4af910d95bcb",
         "type": "default"
-      },
-      {
-        "targetId": "eea8981b-660d-4268-9f81-a0ed77b551e1",
-        "type": "go_back"
       }
     ],
     "type": "adaptive_card",
@@ -993,13 +768,7 @@
         ],
         "type": "AdaptiveCard",
         "version": "1.5",
-        "actions": [
-          {
-            "id": "eea8981b-660d-4268-9f81-a0ed77b551e1",
-            "type": "Action.Execute",
-            "title": "Back"
-          }
-        ]
+        "actions": []
       }
     }
   },
@@ -1008,8 +777,8 @@
     "name": "getusers",
     "code": "getusers",
     "position": {
-      "x": -36,
-      "y": 0
+      "x": -12,
+      "y": -156
     },
     "links": [
       {
@@ -1047,8 +816,8 @@
     "name": "Start",
     "code": "start",
     "position": {
-      "x": -444,
-      "y": 0
+      "x": -456,
+      "y": -156
     },
     "links": [
       {
@@ -1059,66 +828,12 @@
     "type": "trigger"
   },
   {
-    "id": "e82108fe-7c63-4328-ad6a-908f4322dd8c-1740654597021",
-    "name": "log3",
-    "code": "log_3",
-    "position": {
-      "x": 1044,
-      "y": -276
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "LOGS",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "sfdfd ${jsonStringify(actions.find_availability.output)}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "{\n  \"summary\": \"${actions.parse_data.output.title}\",\n  \"description\": \"${actions.parse_data.output.description}\",\n  \"start\": {\n    \"dateTime\": \"${actions.choose_slot.inputs.meetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },  \n  \"end\": {\n    \"dateTime\": \"${actions.parse_data.output.newMeetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },\n  \"attendees\": [\n    {\n      \"email\": \"${user.email}\"\n    },\n    {\n      \"email\": \"${actions.selectuser.inputs.userchoice}\"\n    }\n  ]\n}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "needroom : ${actions.choose_slot.inputs.needRoom}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "parse data: ${actions.parse_data.output.roomBool}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "ActionSet",
-            "actions": [
-              {
-                "type": "Action.Execute",
-                "title": "Action.Execute"
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.5"
-      }
-    }
-  },
-  {
     "id": "2729bab9-4608-41b5-9e4e-d61a1a0b68a6-1740735159346",
     "name": "resultnok",
     "code": "resultnok",
     "position": {
-      "x": 2940,
-      "y": 252
+      "x": 2964,
+      "y": 48
     },
     "links": [],
     "type": "adaptive_card",
@@ -1148,85 +863,6 @@
         ],
         "type": "AdaptiveCard",
         "version": "1.6"
-      }
-    }
-  },
-  {
-    "id": "8cb9397b-d5ae-4558-b9b9-7f4313cb73ca-1740735443724",
-    "name": "log5",
-    "code": "log_5",
-    "position": {
-      "x": 1536,
-      "y": -552
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "LOG",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "{\n  \"summary\": \"${actions.parse_data.output.title}\",\n  \"description\": \"${meetDesc}\",\n  \"start\": {\n    \"dateTime\": \"${actions.choose_slot.inputs.meetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },  \n  \"end\": {\n    \"dateTime\": \"${actions.parse_data.output.description}\",\n    \"timeZone\": \"Europe/Paris\"\n  },\n  \"attendees\": [\n    {\n      \"email\": \"${actions.selectuser.inputs.userchoice}\"\n    }\n  ]\n}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "ActionSet",
-            "actions": [
-              {
-                "type": "Action.Execute",
-                "title": "Action.Execute"
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.6"
-      }
-    }
-  },
-  {
-    "id": "ad351829-c9bf-4077-9cc3-eac33846405b",
-    "name": "log6",
-    "code": "log_6",
-    "position": {
-      "x": 1728,
-      "y": 228
-    },
-    "links": [],
-    "type": "adaptive_card",
-    "settings": {
-      "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "body": [
-          {
-            "text": "LOG",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "text": "${actions.choose_slot.inputs.needRoom}",
-            "type": "TextBlock",
-            "wrap": true
-          },
-          {
-            "type": "ActionSet",
-            "actions": [
-              {
-                "type": "Action.Execute",
-                "title": "Action.Execute"
-              }
-            ]
-          }
-        ],
-        "type": "AdaptiveCard",
-        "version": "1.5",
-        "id": "blank-0"
       }
     }
   }
