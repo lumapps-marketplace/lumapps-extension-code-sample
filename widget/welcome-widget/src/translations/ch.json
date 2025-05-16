@@ -1,6 +1,9 @@
 {
     "settings.time_of_day": "一天中的时间",
     "settings.font_size": "字体大小",
+    "settings.coma_position": "昏迷位置",
+    "settings.coma_position.before": "在用户名之前",
+    "settings.coma_position.after": "在用户名之后",
     "hello": "你好",    
     "welcome": "欢迎",
     "good_morning": "早上好",  

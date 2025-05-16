@@ -1,6 +1,9 @@
 {
     "settings.time_of_day": "Tageszeit",
     "settings.font_size": "Schriftgröße",
+    "settings.coma_position": "Koma-Stellung",
+    "settings.coma_position.before": "Vor dem Benutzernamen",
+    "settings.coma_position.after": "Nach dem Benutzernamen",
     "hello": "Guten Tag", 
     "welcome": "Willkommen", 
     "good_morning": "Guten Morgen",  

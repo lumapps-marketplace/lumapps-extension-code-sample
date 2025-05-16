@@ -1,6 +1,9 @@
 {
     "settings.time_of_day": "Tijd van de dag",
     "settings.font_size": "Lettergrootte",
+    "settings.coma_position": "Comapositie",
+    "settings.coma_position.before": "Voor de gebruikersnaam",
+    "settings.coma_position.after": "Na de gebruikersnaam",
     "hello": "Hallo", 
     "welcome": "welkom", 
     "good_morning": "Goedemorgen",  

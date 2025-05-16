@@ -21,7 +21,7 @@ type Widget = import('lumapps-sdk-js').ContentComponent<
     import('./types').SampleAppParams >;
 
 const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) => {
-    const { displayWelcome, fontSize } = value;
+    const { displayWelcome, fontSize, comaPosition } = value;
     const { firstName } = useCurrentUser();
     const hour = new Date().getHours();
 
@@ -40,7 +40,9 @@ const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) =
     return (
         <div className="widget-welcome" style={getStyle()}>
             {displayWelcome ? <FormattedMessage id={welcomeId}></FormattedMessage> : <FormattedMessage id="welcome"></FormattedMessage>}
-            <span> {firstName}, </span>
+            {comaPosition && comaPosition.value === 'before' && ','}
+            <span> {firstName}</span>
+            {!comaPosition || comaPosition.value === 'after' && ','}
         </div>
     );
 };
