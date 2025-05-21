@@ -1,0 +1,417 @@
+[
+  {
+    "id": "468541aa-260c-421f-b55e-53b001a0e50e",
+    "name": "parseStartDate",
+    "code": "parse_start_date",
+    "position": {
+      "x": -468,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "577925a3-5142-4894-a306-5d739d998941",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\tconst startDate = String(executionContext.actions.get_start_date.inputs.startDate || \"2025-08-01T08:00\").split('T')[0];\n\n\toutput.startDate = startDate;\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "e8ad76b5-a01c-4930-a951-db18ab5f87cd",
+    "name": "getStartDate",
+    "code": "get_start_date",
+    "position": {
+      "x": -696,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "468541aa-260c-421f-b55e-53b001a0e50e",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Leave Request",
+            "type": "TextBlock",
+            "weight": "Bolder"
+          },
+          {
+            "id": "startDate",
+            "type": "Input.Date",
+            "label": "Start date:",
+            "value": "${utcNow()}",
+            "isRequired": true,
+            "errorMessage": "Please select a starting date"
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "c3d059f9-892d-4ddf-8ea9-72dabd4893c5",
+    "name": "Submit Leave Request",
+    "code": "submit_leave_request",
+    "position": {
+      "x": 420,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "f840459c-3900-4005-9174-24389104465c",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "sap"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n  \"__metadata\" : {\r\n    \"uri\" : \"http://apisalesdemo2.successfactors.eu/odata/v2/EmployeeTime\",\r\n    \"type\": \"SFOData.EmployeeTime\"\r\n  },\r\n  \"startDate\": \"/Date(${actions.parse_time_to_timestamp.output.start})/\",\r\n  \"endDate\": \"/Date(${actions.parse_time_to_timestamp.output.end})/\",\r\n  \"userIdNav\": {\r\n    \"__metadata\": {\r\n      \"uri\": \"https://apisalesdemo2.successfactors.eu/odata/v2/User('${actions.get_user_id.response.body.d.results[0].userId}')\",\r\n      \"type\": \"SFOData.User\"\r\n    }\r\n  },\r\n  \"timeTypeNav\": {\r\n    \"__metadata\": {\r\n      \"uri\": \"https://apisalesdemo2.successfactors.eu/odata/v2/TimeType('${actions.leave_request_form.inputs.leave_type}')\",\r\n      \"type\": \"SFOData.TimeType\"\r\n    }\r\n  },\r\n  \"comment\": \"${actions.parse_time_to_timestamp.output.comment}\"\r\n}\r\n",
+        "path": "/odata/v2/EmployeeTime?$format=json",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "0f7bfbe5-f6dd-458a-86d9-ba44ad8a5eb8",
+    "name": "parseTimeToTimestamp",
+    "code": "parse_time_to_timestamp",
+    "position": {
+      "x": 204,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "c3d059f9-892d-4ddf-8ea9-72dabd4893c5",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\t// Récupération des variables en s'assurant que ce sont bien des chaînes de caractères\n\tconst startDate = String(executionContext.actions.get_start_date.inputs.startDate || \"2025-08-01T00:00\").split('T')[0];\n\t//const startTime = String(executionContext.actions.leave_request_form.inputs.startTime || \"08:00\")\n\tconst endDate = String(executionContext.actions.leave_request_form.inputs.endDate || \"2025-08-01T00:00\").split('T')[0];\n\t//const endTime = String(executionContext.actions.leave_request_form.inputs.endTime || \"12:00\")\n\tconst reason = String(executionContext.actions.leave_request_form.inputs.reason || \"Leave request created through a microapp\");\n\n    // Convert the combined date-time strings to Unix timestamps (in milliseconds)\n    const startTimestamp = new Date(startDate).getTime();\n    const endTimestamp = new Date(endDate).getTime();\n\n    // Store the Unix timestamps in the output object\n    output.start = startTimestamp;\n\toutput.end = endTimestamp;\n\toutput.comment = reason;\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "577925a3-5142-4894-a306-5d739d998941",
+    "name": "getBalance",
+    "code": "get_balance",
+    "position": {
+      "x": -228,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "076d517f-680f-4005-9174-24389104465c",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "sap"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/rest/timemanagement/absence/v1/timeTypeBalances?$at=${actions.parse_start_date.output.startDate}&$format=json&$filter=userId eq '${actions.get_user_id.response.body.d.results[0].userId}'",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "5f7a51c3-20f6-42b9-9ed1-3a71f89761e4",
+    "name": "getUserID",
+    "code": "get_user_id",
+    "position": {
+      "x": -912,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "e8ad76b5-a01c-4930-a951-db18ab5f87cd",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "sap"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/odata/v2/User?&$format=json&$filter=email eq ${user.email}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "1375691c-1813-4564-9353-682731243850",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -1116,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "5f7a51c3-20f6-42b9-9ed1-3a71f89761e4",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  },
+  {
+    "id": "076d517f-680f-4005-9174-24389104465c",
+    "name": "Leave Request Form",
+    "code": "leave_request_form",
+    "position": {
+      "x": -12,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "0f7bfbe5-f6dd-458a-86d9-ba44ad8a5eb8",
+        "type": "default"
+      },
+      {
+        "targetId": "e8ad76b5-a01c-4930-a951-db18ab5f87cd",
+        "type": "go_back"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Large",
+            "text": "Leave Request",
+            "type": "TextBlock",
+            "weight": "Bolder"
+          },
+          {
+            "id": "leave_type",
+            "type": "Input.ChoiceSet",
+            "label": "Leave Type:",
+            "choices": [
+              {
+                "$data": "${actions.get_balance.response.body.value}",
+                "title": "${timeType.externalName}: ${balance.formattedWithUnit}",
+                "value": "${timeType.externalCode}"
+              }
+            ],
+            "isRequired": true,
+            "placeholder": "Select Leave Type",
+            "errorMessage": "Please select a leave type"
+          },
+          {
+            "text": "Selected start date: ${actions.parse_start_date.output.startDate}",
+            "type": "TextBlock",
+            "wrap": true,
+            "spacing": "Medium",
+            "separator": true
+          },
+          {
+            "id": "endDate",
+            "min": "${actions.parse_start_date.output.startDate}",
+            "type": "Input.Date",
+            "label": "End Date:",
+            "value": "${actions.parse_start_date.output.startDate}",
+            "spacing": "None",
+            "isRequired": true,
+            "errorMessage": "Please select an end date"
+          },
+          {
+            "id": "reason",
+            "type": "Input.Text",
+            "label": "Reason",
+            "isMultiline": true,
+            "placeholder": "Briefly explain your reason for leave"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5",
+        "actions": [
+          {
+            "data": {
+              "reason": "${reason}",
+              "endDate": "${end_date}",
+              "leaveType": "${leave_type}",
+              "startDate": "${start_date}"
+            },
+            "type": "Action.Submit",
+            "style": "positive",
+            "title": "Submit Request"
+          },
+          {
+            "id": "e8ad76b5-a01c-4930-a951-db18ab5f87cd",
+            "type": "Action.Execute",
+            "title": "Back"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "f840459c-3900-4005-9174-24389104465c",
+    "name": "Handle Response",
+    "code": "handle_response",
+    "position": {
+      "x": 612,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "840459c-3900-4005-9174-24389104465c",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "combinator": "OR",
+              "id": "rule_group_id",
+              "rules": [
+                {
+                  "id": "rule_id",
+                  "leftValue": "${actions.submit_leave_request.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "200"
+                },
+                {
+                  "id": "38236",
+                  "leftValue": "${actions.submit_leave_request.response.status}",
+                  "operator": {
+                    "operation": "equals",
+                    "type": "string",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "rightValue": "201"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "940459c-3900-4005-9174-24389104465c",
+        "type": "default",
+        "isFallback": true
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "840459c-3900-4005-9174-24389104465c",
+    "name": "Success",
+    "code": "success",
+    "position": {
+      "x": 900,
+      "y": -12
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Large",
+            "text": "Leave request submitted successfully!",
+            "type": "TextBlock",
+            "color": "Good",
+            "weight": "Bolder"
+          },
+          {
+            "text": "Start date: ${actions.parse_start_date.output.startDate}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "End date: ${actions.leave_request_form.inputs.endDate}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "Type: ${actions.leave_request_form.inputs.leave_type}",
+            "type": "TextBlock",
+            "wrap": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "940459c-3900-4005-9174-24389104465c",
+    "name": "Error",
+    "code": "error",
+    "position": {
+      "x": 900,
+      "y": 216
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Large",
+            "text": "An error occurred while submitting your leave request. Please try again later.",
+            "type": "TextBlock",
+            "color": "Attention",
+            "weight": "Bolder"
+          },
+          {
+            "text": "Error: ${actions.submit_leave_request.response.body.error.code}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "Message: ${actions.submit_leave_request.response.body.error.message.value}",
+            "type": "TextBlock",
+            "wrap": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  }
+]

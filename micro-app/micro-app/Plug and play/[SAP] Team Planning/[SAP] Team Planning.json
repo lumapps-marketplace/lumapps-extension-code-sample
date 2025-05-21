@@ -1,0 +1,326 @@
+[
+  {
+    "id": "76c4017a-ef1a-4332-b909-83c6993205fb",
+    "name": "parseCalendar",
+    "code": "parse_calendar",
+    "position": {
+      "x": 240,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "29815273-3234-4763-9363-518696516154",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\tconst userMap = {};\n\texecutionContext.actions.get_team_members.response.body.d.results.forEach(user => {\n\t\tuserMap[user.userId] = `${user.firstName} ${user.lastName}`;\n\t});\n\n\tconst managerInfo = executionContext.actions.get_manager.response.body.d.results[0].manager;\n\tuserMap[managerInfo.userId] = `${managerInfo.firstName} ${managerInfo.lastName}`;\n\n\t// Initialize the next 7 days\n\tconst result = [];\n\tconst today = new Date();\n\ttoday.setHours(0, 0, 0, 0); // normalize to midnight\n\n\tfor (let i = 0; i < 7; i++) {\n\t\tconst day = new Date(today);\n\t\tday.setDate(today.getDate() + i);\n\t\tconst isoDate = day.toISOString().split(\"T\")[0];\n\t\tresult.push({ date: isoDate, absentees: [] });\n\t}\n\t\n\texecutionContext.actions.get_sap_team_planning.response.body.d.results.forEach(entry => {\n\t\tconst userId = entry.userId;\n\t\tconst start = new Date(Number(entry.startDate.match(/\\d+/)[0]));\n\t\tconst end = new Date(Number(entry.endDate.match(/\\d+/)[0]));\n\n\t\t// Loop through next 7 days and check if each day is in the absence range\n\t\tresult.forEach(dayEntry => {\n\t\t\tconst day = new Date(dayEntry.date + \"T00:00:00\");\n\t\t\tif (day >= start && day <= end && entry.approvalStatus != \"CANCELLED\") {\n\t\t\t\tconst fullName = userMap[userId] || userId;\n\t\t\t\tconst timeType = entry.timeType\n\t\t\t\tdayEntry.absentees.push({name: fullName, type: timeType});\n\t\t\t}\n\t\t});\n\t});\n\n\tresult.forEach(dayEntry => {\n\t\tif (dayEntry.absentees.length == 0) {\n\t\t\tdayEntry.absentees.push({name: \"No one is absent\", type: \"\"});\n\t\t}\n\t})\n\n\t//output.users = userMap;\n\toutput.result = result;\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "3f915605-9a56-4a1b-8f61-befb72a90840",
+    "name": "parseData",
+    "code": "parse_data",
+    "position": {
+      "x": -288,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "16861682-1980-4981-9749-581191136341",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n\n\tconst results = executionContext.actions.get_team_members.response.body.d.results;\n\tconst manager = executionContext.actions.get_manager.response.body.d.results[0].manager.userId\n\tconst userIds = results.map(user => `'${user.userId}'`);\n\n\tconst today = new Date();\n\tconst plus7 = new Date();\n\tplus7.setDate(today.getDate() + 7);\n\n\toutput.teamIds = userIds.join(',') + \",'\" + manager + \"'\";\n\toutput.today = today.toISOString().split('T')[0] + 'T00:00:00'\n\toutput.plus7 = plus7.toISOString().split('T')[0] + 'T00:00:00'\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "c1ccbbb2-dcf4-460a-9434-9ebc10b66ae5",
+    "name": "getTeamMembers",
+    "code": "get_team_members",
+    "position": {
+      "x": -492,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "3f915605-9a56-4a1b-8f61-befb72a90840",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/odata/v2/User?$format=json&$filter=manager/userId eq '${actions.get_manager.response.body.d.results[0].manager.userId}'&$select=userId,firstName,lastName,email",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "sap"
+      }
+    }
+  },
+  {
+    "id": "a18d870d-afcd-44e8-ae8a-91653ed5c8e2",
+    "name": "getManager",
+    "code": "get_manager",
+    "position": {
+      "x": -696,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "c1ccbbb2-dcf4-460a-9434-9ebc10b66ae5",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/odata/v2/User?&$format=json&$filter=email eq '${user.email}'&$select=userId,manager&$expand=manager",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "sap"
+      }
+    }
+  },
+  {
+    "id": "79072383-2243-4427-8067-490662259573",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -900,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "a18d870d-afcd-44e8-ae8a-91653ed5c8e2",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  },
+  {
+    "id": "16861682-1980-4981-9749-581191136341",
+    "name": "Get SAP Team Planning",
+    "code": "get_sap_team_planning",
+    "position": {
+      "x": -24,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "76c4017a-ef1a-4332-b909-83c6993205fb",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "path": "/odata/v2/EmployeeTime?$format=json&$filter=userId in ${actions.parse_data.output.teamIds} and startDate%20ge%20datetime%27${actions.parse_data.output.today}%27 and startDate%20le%20datetime%27${actions.parse_data.output.plus7}%27&$select=userId,startDate,endDate,timeType,approvalStatus",
+        "httpMethod": "GET",
+        "queryParams": [
+          {
+            "key": "startDate",
+            "value": "${formatDateTime(utcNow(), 'yyyy-MM-dd')}"
+          },
+          {
+            "key": "endDate",
+            "value": "${formatDateTime(addDays(utcNow(), 7), 'yyyy-MM-dd')}"
+          },
+          {
+            "key": "userId",
+            "value": "${actions.start.inputVariables.userId}"
+          }
+        ]
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "sap"
+      }
+    }
+  },
+  {
+    "id": "29815273-3234-4763-9363-518696516154",
+    "name": "Handle SAP Response",
+    "code": "handle_sap_response",
+    "position": {
+      "x": 516,
+      "y": 36
+    },
+    "links": [
+      {
+        "targetId": "99257864-6149-4015-9596-739568492972",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "rule_group_1",
+              "rules": [
+                {
+                  "id": "rule_1",
+                  "operator": {
+                    "type": "number",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.get_sap_team_planning.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "AND"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "66849894-3732-4761-8368-357938723737",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "rule_group_2",
+              "rules": [
+                {
+                  "id": "rule_2",
+                  "operator": {
+                    "type": "number",
+                    "operation": "notEquals",
+                    "name": "MICROAPP.FILTER.OPERATION.NOT_EQUALS"
+                  },
+                  "leftValue": "${actions.get_sap_team_planning.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "AND"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "99257864-6149-4015-9596-739568492972",
+    "name": "resultok",
+    "code": "resultok",
+    "position": {
+      "x": 840,
+      "y": -132
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Large",
+            "text": "Team Planning for the Week",
+            "type": "TextBlock",
+            "weight": "Bolder"
+          },
+          {
+            "type": "Container",
+            "$data": "${actions.parse_calendar.output.result}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "${date}",
+                        "type": "TextBlock",
+                        "weight": "Bolder"
+                      }
+                    ],
+                    "width": "auto"
+                  },
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "type": "Container",
+                        "$data": "${absentees}",
+                        "items": [
+                          {
+                            "text": "${name}",
+                            "type": "TextBlock",
+                            "color": "Accent"
+                          },
+                          {
+                            "text": "${type}",
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "isSubtle": true
+                          }
+                        ]
+                      }
+                    ],
+                    "width": "stretch"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "66849894-3732-4761-8368-357938723737",
+    "name": "resultnok",
+    "code": "resultnok",
+    "position": {
+      "x": 840,
+      "y": 216
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "size": "Large",
+            "text": "Error fetching team planning data from SAP.",
+            "type": "TextBlock",
+            "color": "Attention",
+            "weight": "Bolder"
+          },
+          {
+            "text": "Error: ${actions.get_sap_team_planning.response.body.error.code}",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "text": "Message: ${actions.get_sap_team_planning.response.body.error.message.value}",
+            "type": "TextBlock",
+            "wrap": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  }
+]
