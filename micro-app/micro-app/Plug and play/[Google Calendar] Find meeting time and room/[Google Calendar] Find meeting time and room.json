@@ -1,10 +1,39 @@
 [
   {
+    "id": "b3d64373-7c7f-4b16-8b2b-9faf09fcd398",
+    "name": "getBuildings",
+    "code": "get_buildings",
+    "position": {
+      "x": 720,
+      "y": -156
+    },
+    "links": [
+      {
+        "targetId": "6666e974-506c-492d-a6b6-4dc67591f96a",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/admin/directory/v1/customer/my_customer/resources/buildings",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "google"
+      }
+    }
+  },
+  {
     "id": "eea8981b-660d-4268-9f81-a0ed77b551e1",
     "name": "searchUser",
     "code": "search_user",
     "position": {
-      "x": -240,
+      "x": -444,
       "y": -156
     },
     "links": [
@@ -16,7 +45,6 @@
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "size": "Medium",
@@ -44,6 +72,7 @@
           }
         ],
         "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.5"
       }
     }
@@ -64,16 +93,16 @@
     ],
     "type": "api_call",
     "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"summary\": \"${actions.parse_data.output.title}\",\r\n  \"description\": \"${actions.parse_data.output.description}\",\r\n  \"start\": {\r\n    \"dateTime\": \"${actions.choose_slot.inputs.meetTime}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },  \r\n  \"end\": {\r\n    \"dateTime\": \"${actions.parse_data.output.newMeetTime}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },\r\n  \"attendees\": [\r\n    {\r\n      \"email\": \"${user.email}\"\r\n    },\r\n    {\r\n      \"email\": \"${actions.selectuser.inputs.userchoice}\"\r\n    }\r\n  ]\r\n}",
+        "path": "/v3/calendars/primary/events",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
       "authentication": {
         "method": "connector",
         "providerType": "google_calendar"
-      },
-      "endpoint": {
-        "httpMethod": "POST",
-        "body": "{\r\n  \"summary\": \"${actions.parse_data.output.title}\",\r\n  \"description\": \"${actions.parse_data.output.description}\",\r\n  \"start\": {\r\n    \"dateTime\": \"${actions.choose_slot.inputs.meetTime}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },  \r\n  \"end\": {\r\n    \"dateTime\": \"${actions.parse_data.output.newMeetTime}\",\r\n    \"timeZone\": \"Europe/Paris\"\r\n  },\r\n  \"attendees\": [\r\n    {\r\n      \"email\": \"${user.email}\"\r\n    },\r\n    {\r\n      \"email\": \"${actions.selectuser.inputs.userchoice}\"\r\n    }\r\n  ]\r\n}",
-        "path": "/v3/calendars/primary/events",
-        "queryParams": [],
-        "url": ""
       }
     }
   },
@@ -114,7 +143,6 @@
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "size": "Large",
@@ -151,8 +179,9 @@
           }
         ],
         "type": "AdaptiveCard",
-        "version": "1.5",
-        "actions": []
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "actions": [],
+        "version": "1.5"
       }
     }
   },
@@ -177,20 +206,20 @@
           "combinator": "AND",
           "rulesGroup": [
             {
-              "combinator": "OR",
               "id": "2969",
               "rules": [
                 {
                   "id": "2970",
-                  "leftValue": "${actions.choose_slot.inputs.needRoom}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.choose_slot.inputs.needRoom}",
                   "rightValue": "true"
                 }
-              ]
+              ],
+              "combinator": "OR"
             }
           ]
         }
@@ -214,16 +243,16 @@
     ],
     "type": "api_call",
     "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"timeMin\": \"${actions.choose_slot.inputs.meetTime}+01:00\",\r\n  \"timeMax\": \"${actions.parse_data.output.newMeetTime}+01:00\",\r\n  \"timeZone\": \"Europe/Paris\",\r\n  \"items\": ${jsonStringify(actions.parse_room.output.calendars)}\r\n}\r\n",
+        "path": "/v3/freeBusy",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
       "authentication": {
         "method": "connector",
         "providerType": "google_calendar"
-      },
-      "endpoint": {
-        "httpMethod": "POST",
-        "body": "{\r\n  \"timeMin\": \"${actions.choose_slot.inputs.meetTime}+01:00\",\r\n  \"timeMax\": \"${actions.parse_data.output.newMeetTime}+01:00\",\r\n  \"timeZone\": \"Europe/Paris\",\r\n  \"items\": ${jsonStringify(actions.parse_room.output.calendars)}\r\n}\r\n",
-        "path": "/v3/freeBusy",
-        "queryParams": [],
-        "url": ""
       }
     }
   },
@@ -263,16 +292,16 @@
     ],
     "type": "api_call",
     "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/admin/directory/v1/customer/my_customer/resources/calendars?orderBy=buildingId, capacity&query= buildingId=\"${actions.choose_slot.inputs.buildingId}\" AND capacity!=1",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
       "authentication": {
         "method": "connector",
         "providerType": "google"
-      },
-      "endpoint": {
-        "httpMethod": "GET",
-        "body": "",
-        "path": "/admin/directory/v1/customer/my_customer/resources/calendars?orderBy=buildingId, capacity&query= buildingId=\"Paris---Beaume\" AND capacity!=1",
-        "queryParams": [],
-        "url": ""
       }
     }
   },
@@ -288,7 +317,6 @@
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "type": "Container",
@@ -320,6 +348,7 @@
           }
         ],
         "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.5"
       }
     }
@@ -340,50 +369,50 @@
           "combinator": "AND",
           "rulesGroup": [
             {
-              "combinator": "OR",
               "id": "2452",
               "rules": [
                 {
                   "id": "2453",
-                  "leftValue": "${actions.post_meet.response.status}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.post_meet.response.status}",
                   "rightValue": "200"
                 },
                 {
                   "id": "2633",
-                  "leftValue": "${actions.post_meet.response.status}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.post_meet.response.status}",
                   "rightValue": "201"
                 },
                 {
                   "id": "809",
-                  "leftValue": "${actions.post_meet_with_room.response.status}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.post_meet_with_room.response.status}",
                   "rightValue": "200"
                 },
                 {
                   "id": "1006",
-                  "leftValue": "${actions.post_meet_with_room.response.status}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.post_meet_with_room.response.status}",
                   "rightValue": "201"
                 }
-              ]
+              ],
+              "combinator": "OR"
             }
           ]
         }
@@ -395,30 +424,30 @@
           "combinator": "AND",
           "rulesGroup": [
             {
-              "combinator": "OR",
               "id": "2798",
               "rules": [
                 {
                   "id": "2799",
-                  "leftValue": "${actions.post_meet.response.status}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.post_meet.response.status}",
                   "rightValue": "400"
                 },
                 {
                   "id": "1401",
-                  "leftValue": "${actions.post_meet_with_room.response.status}",
                   "operator": {
-                    "operation": "equals",
                     "type": "string",
+                    "operation": "equals",
                     "name": "MICROAPP.FILTER.OPERATION.EQUALS"
                   },
+                  "leftValue": "${actions.post_meet_with_room.response.status}",
                   "rightValue": "400"
                 }
-              ]
+              ],
+              "combinator": "OR"
             }
           ]
         }
@@ -462,16 +491,16 @@
     ],
     "type": "api_call",
     "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\n  \"summary\": \"${actions.parse_data.output.title}\",\n  \"description\": \"${actions.parse_data.output.description}\",\n  \"start\": {\n    \"dateTime\": \"${actions.choose_slot.inputs.meetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },  \n  \"end\": {\n    \"dateTime\": \"${actions.parse_data.output.newMeetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },\n  \"attendees\": [\n    {\n      \"email\": \"${user.email}\"\n    },\n    {\n      \"email\": \"${actions.selectuser.inputs.userchoice}\"\n    },\n    {\n      \"email\": \"${actions.choose_room.inputs.room}\"\n    }\n  ]\n}",
+        "path": "/v3/calendars/primary/events",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
       "authentication": {
         "method": "connector",
         "providerType": "google_calendar"
-      },
-      "endpoint": {
-        "httpMethod": "POST",
-        "body": "{\n  \"summary\": \"${actions.parse_data.output.title}\",\n  \"description\": \"${actions.parse_data.output.description}\",\n  \"start\": {\n    \"dateTime\": \"${actions.choose_slot.inputs.meetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },  \n  \"end\": {\n    \"dateTime\": \"${actions.parse_data.output.newMeetTime}\",\n    \"timeZone\": \"Europe/Paris\"\n  },\n  \"attendees\": [\n    {\n      \"email\": \"${user.email}\"\n    },\n    {\n      \"email\": \"${actions.selectuser.inputs.userchoice}\"\n    },\n    {\n      \"email\": \"${actions.choose_room.inputs.room}\"\n    }\n  ]\n}",
-        "path": "/v3/calendars/primary/events",
-        "queryParams": [],
-        "url": ""
       }
     }
   },
@@ -480,12 +509,12 @@
     "name": "findAvailability",
     "code": "find_availability",
     "position": {
-      "x": 756,
+      "x": 504,
       "y": -156
     },
     "links": [
       {
-        "targetId": "6666e974-506c-492d-a6b6-4dc67591f96a",
+        "targetId": "b3d64373-7c7f-4b16-8b2b-9faf09fcd398",
         "type": "default"
       }
     ],
@@ -500,7 +529,7 @@
     "name": "parseSlot",
     "code": "parse_slot",
     "position": {
-      "x": 372,
+      "x": 108,
       "y": -156
     },
     "links": [
@@ -532,7 +561,6 @@
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "type": "ColumnSet",
@@ -591,6 +619,18 @@
             ]
           },
           {
+            "id": "buildingId",
+            "type": "Input.ChoiceSet",
+            "choices": [
+              {
+                "$data": "${actions.get_buildings.response.body.buildings}",
+                "title": "${buildingName}",
+                "value": "${buildingId}"
+              }
+            ],
+            "placeholder": "Select a building"
+          },
+          {
             "type": "ActionSet",
             "actions": [
               {
@@ -602,6 +642,7 @@
           }
         ],
         "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.5"
       }
     }
@@ -611,7 +652,7 @@
     "name": "findtimeslot",
     "code": "findtimeslot",
     "position": {
-      "x": 564,
+      "x": 312,
       "y": -156
     },
     "links": [
@@ -622,18 +663,18 @@
     ],
     "type": "api_call",
     "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\n  \"timeMin\": \"${actions.parse_slot.output.start.dateTime}+01:00\",\n  \"timeMax\": \"${actions.parse_slot.output.end.dateTime}+01:00\",\n  \"timeZone\": \"Europe/Paris\",\n  \"items\": [\n    {\n      \"id\": \"${user.email}\"\n    },\n    {\n      \"id\": \"${actions.selectuser.inputs.userchoice}\"\n    }\n  ]\n}\n",
+        "path": "/v3/freeBusy",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "providerType": "google_calendar",
       "authentication": {
         "method": "connector",
         "providerType": "google_calendar"
-      },
-      "endpoint": {
-        "httpMethod": "POST",
-        "body": "{\n  \"timeMin\": \"${actions.parse_slot.output.start.dateTime}+01:00\",\n  \"timeMax\": \"${actions.parse_slot.output.end.dateTime}+01:00\",\n  \"timeZone\": \"Europe/Paris\",\n  \"items\": [\n    {\n      \"id\": \"${user.email}\"\n    },\n    {\n      \"id\": \"${actions.selectuser.inputs.userchoice}\"\n    }\n  ]\n}\n",
-        "path": "/v3/freeBusy",
-        "queryParams": [],
-        "url": ""
-      },
-      "providerType": "google_calendar"
+      }
     }
   },
   {
@@ -641,7 +682,7 @@
     "name": "selectuser",
     "code": "selectuser",
     "position": {
-      "x": 192,
+      "x": -84,
       "y": -156
     },
     "links": [
@@ -653,7 +694,6 @@
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "size": "Medium",
@@ -767,8 +807,9 @@
           }
         ],
         "type": "AdaptiveCard",
-        "version": "1.5",
-        "actions": []
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "actions": [],
+        "version": "1.5"
       }
     }
   },
@@ -777,7 +818,7 @@
     "name": "getusers",
     "code": "getusers",
     "position": {
-      "x": -12,
+      "x": -264,
       "y": -156
     },
     "links": [
@@ -788,14 +829,11 @@
     ],
     "type": "api_call",
     "settings": {
-      "authentication": {
-        "method": "lumapps",
-        "providerType": "lumapps"
-      },
       "endpoint": {
-        "httpMethod": "GET",
+        "url": "",
         "body": "",
         "path": "/_ah/api/lumsites/v1/user/list",
+        "httpMethod": "GET",
         "queryParams": [
           {
             "key": "query",
@@ -805,10 +843,13 @@
             "key": "maxResults",
             "value": "100"
           }
-        ],
-        "url": ""
+        ]
       },
-      "providerType": "lumapps"
+      "providerType": "lumapps",
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      }
     }
   },
   {
@@ -816,7 +857,7 @@
     "name": "Start",
     "code": "start",
     "position": {
-      "x": -456,
+      "x": -612,
       "y": -156
     },
     "links": [
@@ -839,7 +880,6 @@
     "type": "adaptive_card",
     "settings": {
       "template": {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "type": "Container",
@@ -862,6 +902,7 @@
           }
         ],
         "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.6"
       }
     }
