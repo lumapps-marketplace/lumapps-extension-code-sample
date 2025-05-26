@@ -1,0 +1,675 @@
+[
+  {
+    "id": "4021f85b-cf0e-44f8-b184-56efe8063d0e",
+    "name": "filter_pending_id",
+    "code": "filter_pending_id",
+    "position": {
+      "x": 1332,
+      "y": -360
+    },
+    "links": [
+      {
+        "targetId": "6fd5487b-4279-4c16-8f2c-4b9903890c78",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object}  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\tlet get_approve = executionContext.actions.get_approve_id?.response?.body?.values;\n\tlet output = {};\n\n\tif (Array.isArray(get_approve)) {\n\t\tlet pendingItem = get_approve.find(item => item.finalDecision === \"pending\");\n\t\tif (pendingItem) {\n\t\t\toutput.id = pendingItem.id;\n\t\t}\n\t}\n\n\t// Mandatory: return your output.\n\treturn output;\n}\n"
+    }
+  },
+  {
+    "id": "49578243-f359-43c8-998f-fd571b9062ba",
+    "name": "not reject ",
+    "code": "not_reject",
+    "position": {
+      "x": 1908,
+      "y": 516
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Jira_%28Software%29_logo.svg",
+            "type": "Image"
+          },
+          {
+            "size": "Medium",
+            "text": "Technical issue with request rejection. Please contact IT.",
+            "type": "TextBlock",
+            "color": "Light",
+            "style": "heading",
+            "weight": "Bolder",
+            "fontType": "Monospace",
+            "horizontalAlignment": "Center"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "de32a8e2-bc33-4d05-b19b-3df6871ad7e4",
+    "name": "reject",
+    "code": "reject",
+    "position": {
+      "x": 1908,
+      "y": 204
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Jira_%28Software%29_logo.svg",
+            "type": "Image"
+          },
+          {
+            "size": "Large",
+            "text": "Request has been rejected",
+            "type": "TextBlock",
+            "color": "Accent",
+            "style": "heading",
+            "weight": "Bolder",
+            "fontType": "Monospace",
+            "horizontalAlignment": "Center"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.6"
+      }
+    }
+  },
+  {
+    "id": "a411a569-d544-4f17-8d06-9532495eb3ae",
+    "name": "Action a411a569-d544-4f17-8d06-9532495eb3ae",
+    "code": "action_a_411_a_569_d_544_4_f_17_8_d_06_9532495_eb_3_ae",
+    "position": {
+      "x": 1716,
+      "y": 348
+    },
+    "links": [
+      {
+        "targetId": "49578243-f359-43c8-998f-fd571b9062ba",
+        "type": "default",
+        "isFallback": true
+      },
+      {
+        "targetId": "de32a8e2-bc33-4d05-b19b-3df6871ad7e4",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "859",
+              "rules": [
+                {
+                  "id": "860",
+                  "operator": {
+                    "type": "number",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.disapprove_ticket.response.status}",
+                  "rightValue": "204"
+                },
+                {
+                  "id": "3930",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.disapprove_ticket.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "8ee076fe-1ae1-49b9-865c-63bc3fdb7b1b",
+    "name": "approve not ok",
+    "code": "approve_not_ok",
+    "position": {
+      "x": 1896,
+      "y": -168
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Jira_%28Software%29_logo.svg",
+            "type": "Image"
+          },
+          {
+            "size": "Medium",
+            "text": "Technical issue with approbation. Please contact IT.",
+            "type": "TextBlock",
+            "color": "Light",
+            "style": "heading",
+            "weight": "Bolder",
+            "fontType": "Monospace",
+            "horizontalAlignment": "Center"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "2a038a37-382b-4853-8bf1-d81186dade66",
+    "name": "approve ok",
+    "code": "approve_ok",
+    "position": {
+      "x": 1896,
+      "y": -528
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Jira_%28Software%29_logo.svg",
+            "type": "Image"
+          },
+          {
+            "size": "Large",
+            "text": "Request has been approved",
+            "type": "TextBlock",
+            "color": "Accent",
+            "style": "heading",
+            "weight": "Bolder",
+            "fontType": "Monospace",
+            "horizontalAlignment": "Center"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "8b3e3df8-6d91-4a75-b8bd-5fa558db57be",
+    "name": "Action 8b3e3df8-6d91-4a75-b8bd-5fa558db57be",
+    "code": "action_8_b_3_e_3_df_8_6_d_91_4_a_75_b_8_bd_5_fa_558_db_57_be",
+    "position": {
+      "x": 1692,
+      "y": -360
+    },
+    "links": [
+      {
+        "targetId": "8ee076fe-1ae1-49b9-865c-63bc3fdb7b1b",
+        "type": "default",
+        "isFallback": true
+      },
+      {
+        "targetId": "2a038a37-382b-4853-8bf1-d81186dade66",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "582",
+              "rules": [
+                {
+                  "id": "583",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.approve_ticket.response.status}",
+                  "rightValue": "204"
+                },
+                {
+                  "id": "13613",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals",
+                    "name": "MICROAPP.FILTER.OPERATION.EQUALS"
+                  },
+                  "leftValue": "${actions.approve_ticket.response.status}",
+                  "rightValue": "200"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "c205876f-892b-44e6-b149-91e0bbfd29b6",
+    "name": "Disapprove ticket",
+    "code": "disapprove_ticket",
+    "position": {
+      "x": 1488,
+      "y": 348
+    },
+    "links": [
+      {
+        "targetId": "a411a569-d544-4f17-8d06-9532495eb3ae",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"decision\": \"decline\"\r\n}",
+        "path": "/rest/servicedeskapi/request/${actions.jira_list_ticket.inputs.ticketkey}/approval/${actions.filter_pending_id_2.output.id}",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "6f52f885-f9f2-4db9-92bd-8d4d1dabbf26",
+    "name": "get approve id",
+    "code": "get_approve_id",
+    "position": {
+      "x": 1128,
+      "y": -360
+    },
+    "links": [
+      {
+        "targetId": "4021f85b-cf0e-44f8-b184-56efe8063d0e",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"decision\": \"approve\"\r\n}",
+        "path": "/rest/servicedeskapi/request/${actions.jira_list_ticket.inputs.ticketid}/approval/",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "e7eaabc0-a815-419e-9b15-2a450753fe70",
+    "name": "Action e7eaabc0-a815-419e-9b15-2a450753fe70",
+    "code": "action_e_7_eaabc_0_a_815_419_e_9_b_15_2_a_450753_fe_70",
+    "position": {
+      "x": 912,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "6f52f885-f9f2-4db9-92bd-8d4d1dabbf26",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "6746",
+              "rules": [
+                {
+                  "id": "6747",
+                  "operator": {
+                    "type": "string",
+                    "operation": "contains",
+                    "name": "MICROAPP.FILTER.OPERATION.CONTAINS"
+                  },
+                  "leftValue": "${actions.jira_list_ticket.submittedActionId}",
+                  "rightValue": "approve"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      },
+      {
+        "targetId": "e265f946-bdbc-4ade-b21c-d68e7574fde6",
+        "type": "default",
+        "conditions": {
+          "combinator": "AND",
+          "rulesGroup": [
+            {
+              "id": "24701",
+              "rules": [
+                {
+                  "id": "24702",
+                  "operator": {
+                    "type": "string",
+                    "operation": "contains",
+                    "name": "MICROAPP.FILTER.OPERATION.CONTAINS"
+                  },
+                  "leftValue": "${actions.jira_list_ticket.submittedActionId}",
+                  "rightValue": "reject"
+                }
+              ],
+              "combinator": "OR"
+            }
+          ]
+        }
+      }
+    ],
+    "type": "router"
+  },
+  {
+    "id": "5a068879-2a84-4393-ba56-763c40876240",
+    "name": "Jira list ticket",
+    "code": "jira_list_ticket",
+    "position": {
+      "x": 684,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "e7eaabc0-a815-419e-9b15-2a450753fe70",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "body": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Jira_%28Software%29_logo.svg",
+            "type": "Image"
+          },
+          {
+            "type": "Container",
+            "$data": "${actions.get_ticket.response.body.issues}",
+            "items": [
+              {
+                "type": "ColumnSet",
+                "style": "accent",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [
+                      {
+                        "text": "Assigned Ticket",
+                        "type": "TextBlock",
+                        "wrap": true
+                      },
+                      {
+                        "size": "Medium",
+                        "text": "Requester: ${fields.creator.displayName}",
+                        "type": "TextBlock",
+                        "wrap": true
+                      },
+                      {
+                        "size": "Medium",
+                        "text": "Status: ${fields.status.name}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "style": "default"
+                      },
+                      {
+                        "size": "Medium",
+                        "text": "Summary: ${fields.summary}",
+                        "type": "TextBlock",
+                        "wrap": true
+                      },
+                      {
+                        "text": "Created on: ${formatDateTime(fields.created, 'YYYY-MM-DD')}",
+                        "type": "TextBlock",
+                        "wrap": true,
+                        "color": "Dark",
+                        "spacing": "Medium"
+                      },
+                      {
+                        "type": "ColumnSet",
+                        "columns": [
+                          {
+                            "type": "Column",
+                            "items": [
+                              {
+                                "type": "ActionSet",
+                                "actions": [
+                                  {
+                                    "url": "https://kansai-airports.atlassian.net/servicedesk/customer/portal/11/${key}",
+                                    "type": "Action.OpenUrl",
+                                    "title": "Open"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "ActionSet",
+                                "actions": [
+                                  {
+                                    "id": "approve_${key}",
+                                    "data": {
+                                      "ticketid": "${id}",
+                                      "ticketkey": "${key}"
+                                    },
+                                    "type": "Action.Execute",
+                                    "style": "positive",
+                                    "title": "Approve"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "ActionSet",
+                                "actions": [
+                                  {
+                                    "id": "reject_${key}",
+                                    "data": {
+                                      "ticketkey": "${key}"
+                                    },
+                                    "type": "Action.Execute",
+                                    "style": "destructive",
+                                    "title": "Reject"
+                                  }
+                                ]
+                              }
+                            ],
+                            "width": "stretch"
+                          }
+                        ]
+                      }
+                    ],
+                    "width": "stretch"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "cc755653-4e89-4010-85bd-47493c584760",
+    "name": "Get ticket",
+    "code": "get_ticket",
+    "position": {
+      "x": 456,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "5a068879-2a84-4393-ba56-763c40876240",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/3/search?jql=project = ${actions.start.inputVariables.jira_project} and  approvals = myPendingApproval()  ORDER BY created DESC  ",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "f002dff8-d6e4-4fa1-b2d0-b3fc9fc8371b",
+    "name": "Get user",
+    "code": "get_user",
+    "position": {
+      "x": 240,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "cc755653-4e89-4010-85bd-47493c584760",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/rest/api/3/user/search?query=${user.email}",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "providerType": "jira",
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "f9445bba-a293-482e-9bba-bd604c95c738",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "f002dff8-d6e4-4fa1-b2d0-b3fc9fc8371b",
+        "type": "default"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "jira_project",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "LMV"
+        }
+      ]
+    }
+  },
+  {
+    "id": "6fd5487b-4279-4c16-8f2c-4b9903890c78",
+    "name": "Approve ticket",
+    "code": "approve_ticket",
+    "position": {
+      "x": 1512,
+      "y": -360
+    },
+    "links": [
+      {
+        "targetId": "8b3e3df8-6d91-4a75-b8bd-5fa558db57be",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"decision\": \"approve\"\r\n}",
+        "path": "/rest/servicedeskapi/request/${actions.jira_list_ticket.inputs.ticketid}/approval/${actions.filter_pending_id.output.id}",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "e265f946-bdbc-4ade-b21c-d68e7574fde6",
+    "name": "get approve id 2",
+    "code": "get_approve_id_2",
+    "position": {
+      "x": 1128,
+      "y": 348
+    },
+    "links": [
+      {
+        "targetId": "cd9e0f56-7fff-48d3-9d82-3a0f3f99efb7",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{\r\n  \"decision\": \"approve\"\r\n}",
+        "path": "/rest/servicedeskapi/request/${actions.jira_list_ticket.inputs.ticketkey}/approval/",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "jira"
+      }
+    }
+  },
+  {
+    "id": "cd9e0f56-7fff-48d3-9d82-3a0f3f99efb7",
+    "name": "filter_pending_id2",
+    "code": "filter_pending_id_2",
+    "position": {
+      "x": 1308,
+      "y": 348
+    },
+    "links": [
+      {
+        "targetId": "c205876f-892b-44e6-b149-91e0bbfd29b6",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object}  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\tlet get_approve = executionContext.actions.get_approve_id_2?.response?.body?.values;\n\tlet output = {};\n\n\tif (Array.isArray(get_approve)) {\n\t\tlet pendingItem = get_approve.find(item => item.finalDecision === \"pending\");\n\t\tif (pendingItem) {\n\t\t\toutput.id = pendingItem.id;\n\t\t}\n\t}\n\n\t// Mandatory: return your output.\n\treturn output;\n}\n"
+    }
+  }
+]
