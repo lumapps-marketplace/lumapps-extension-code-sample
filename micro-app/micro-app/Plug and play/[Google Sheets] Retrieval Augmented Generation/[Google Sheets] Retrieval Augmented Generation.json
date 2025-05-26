@@ -1,0 +1,152 @@
+[
+  {
+    "id": "dccf692d-0b04-46ad-9e8c-5de739542e24",
+    "name": "answer",
+    "code": "answer",
+    "position": {
+      "x": 948,
+      "y": 96
+    },
+    "links": [],
+    "type": "lumapps_component",
+    "settings": {
+      "componentSettings": {
+        "answer": "${actions.query_llm_lumapps.response.body.completions}",
+        "sources": {
+          "url": "",
+          "$data": "",
+          "$when": "${count($root.undefined)>0}",
+          "title": ""
+        }
+      },
+      "type": "ai_augmented_search",
+      "inputVariables": []
+    }
+  },
+  {
+    "id": "d597b121-4a80-4a8d-9002-c323b4b0782d",
+    "name": "query llm lumapps",
+    "code": "query_llm_lumapps",
+    "position": {
+      "x": 720,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "dccf692d-0b04-46ad-9e8c-5de739542e24",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "{   \r\n    \"prompt\":${jsonStringify(actions.create_prompt.output.prompt)}\r\n}\r\n",
+        "path": "/v2/organizations/${organization.id}/text-completions",
+        "httpMethod": "POST",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      }
+    }
+  },
+  {
+    "id": "5f434842-6952-4427-87fe-9fdcf5ba504a",
+    "name": "create prompt",
+    "code": "create_prompt",
+    "position": {
+      "x": 456,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "d597b121-4a80-4a8d-9002-c323b4b0782d",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "function main(executionContext) {\n\tlet output = {};\n\n\t// Extract the user query\n\tconst query = executionContext.actions.start.inputVariables.query;\n\n\t// Extract the products array\n\tconst productArray = executionContext.actions.get_products.response.body.values;\n\n\t// Convert the array of product objects to a string\n\tconst productData = JSON.stringify(productArray);\n\n\t// Construct the prompt\n\tconst prompt = `Please answer the following end user query \"${query}\" based on the following data: ${productData}`;\n\n\t// Set the result in the output\n\toutput.prompt = prompt;\n\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "5de1985b-a7a0-469a-9e8b-1b51e65765c4",
+    "name": "get products",
+    "code": "get_products",
+    "position": {
+      "x": 240,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "5f434842-6952-4427-87fe-9fdcf5ba504a",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "endpoint": {
+        "url": "",
+        "body": "",
+        "path": "/v4/spreadsheets/${actions.start.inputVariables.spreadsheetid}/values/${actions.start.inputVariables.sheet_name}!${actions.start.inputVariables.range}",
+        "httpMethod": "GET",
+        "queryParams": []
+      },
+      "authentication": {
+        "method": "connector",
+        "providerType": "google_sheets"
+      }
+    }
+  },
+  {
+    "id": "cf0f0e70-6eed-42b6-a8f1-e838da764283",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": 12,
+      "y": 96
+    },
+    "links": [
+      {
+        "targetId": "5de1985b-a7a0-469a-9e8b-1b51e65765c4",
+        "type": "default"
+      }
+    ],
+    "type": "trigger",
+    "settings": {
+      "inputVariables": [
+        {
+          "id": "query",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "do we have white paint in stock?"
+        },
+        {
+          "id": "spreadsheetid",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "1bmwq3KP7haWjtPUTfAKX01DtZlZ7w03HIdg-p8I5jJs"
+        },
+        {
+          "id": "sheet_name",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "refs"
+        },
+        {
+          "id": "range",
+          "type": "string",
+          "required": false,
+          "multiValues": false,
+          "defaultValue": "A1:E21"
+        }
+      ]
+    }
+  }
+]
