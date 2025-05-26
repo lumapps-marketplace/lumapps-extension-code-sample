@@ -1,0 +1,343 @@
+[
+  {
+    "id": "4c616e42-ceca-471c-95a0-8b2699b8382e",
+    "name": "getusers",
+    "code": "getusers",
+    "position": {
+      "x": -336,
+      "y": -84
+    },
+    "links": [
+      {
+        "targetId": "a329cf7b-b730-4439-8ba4-f0d09225b791",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "slack"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/users.list",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "b9c43f7b-9110-431f-8b1a-8d0a30a4bd76",
+    "name": "getpermalink3",
+    "code": "getpermalink_3",
+    "position": {
+      "x": 648,
+      "y": -204
+    },
+    "links": [
+      {
+        "targetId": "fb6f7b51-baaa-4d96-88df-208be39d86b0",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "slack"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/chat.getPermalink?channel=${actions.setinitialdata.output.defChannelId}&message_ts=${actions.listmessages.response.body.messages[2].ts}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "59a3812e-0dcc-46f6-bf61-3ee619538026",
+    "name": "getpermalink2",
+    "code": "getpermalink_2",
+    "position": {
+      "x": 420,
+      "y": -204
+    },
+    "links": [
+      {
+        "targetId": "b9c43f7b-9110-431f-8b1a-8d0a30a4bd76",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "slack"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/chat.getPermalink?channel=${actions.setinitialdata.output.defChannelId}&message_ts=${actions.listmessages.response.body.messages[1].ts}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "5552f810-eb8e-4674-a4a9-170f07af7228",
+    "name": "getpermalink1",
+    "code": "getpermalink_1",
+    "position": {
+      "x": 192,
+      "y": -204
+    },
+    "links": [
+      {
+        "targetId": "59a3812e-0dcc-46f6-bf61-3ee619538026",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "slack"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/chat.getPermalink?channel=${actions.setinitialdata.output.defChannelId}&message_ts=${actions.listmessages.response.body.messages[0].ts}",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "a329cf7b-b730-4439-8ba4-f0d09225b791",
+    "name": "setinitialdata",
+    "code": "setinitialdata",
+    "position": {
+      "x": -144,
+      "y": -60
+    },
+    "links": [
+      {
+        "targetId": "87b2bd89-a5c8-4f72-9a82-cb741a4a0874",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n\tlet channelid = \"\";\n\tlet channelname = '\"';\n\n\tlet channelmap = [];\n\tlet index = 0;\n\n\tlet i = 0;\n\tfor (i = 0; i < executionContext.actions.getchannels.response.body.channels.length; i++)\n\t{\n\t\tchannelmap.push({ 'id': executionContext.actions.getchannels.response.body.channels[i].id, 'name': executionContext.actions.getchannels.response.body.channels[i].name });\t\t\t\n\t}\n\t\n\ttry {\n\t\tif (executionContext?.actions?.channels?.inputs?.channel == \"\") {\n\n\t\t\tchannelid = channelmap[0].id;\n\t\t\tchannelname =channelmap[0].name;\n\t\t}\n\t\telse {\n\t\t\tchannelid = executionContext.actions.channels.inputs.channel;\n\t\t\tindex = channelmap.findIndex(item => item.id==channelid);\n\t\t\tif (index != -1) channelname = channelmap[index].name; else channelname = \"error\";\n\t\t}\n\n\t} catch (e) \n\t{\n\t\tchannelid = channelmap[0].id;\n\t\tchannelname=channelmap[0].name;\n\t\t\t\n\t}\n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\n\toutput.defChannelId = channelid;\n\toutput.defChannelName = channelname;\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "fb6f7b51-baaa-4d96-88df-208be39d86b0",
+    "name": "cleanmessages",
+    "code": "cleanmessages",
+    "position": {
+      "x": 312,
+      "y": -24
+    },
+    "links": [
+      {
+        "targetId": "062da203-0873-4b89-aeeb-debc01da9729",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n\tlet messages = [];\n\tlet users = [];\n\tlet res = executionContext.actions.listmessages.response.body.messages;\n\tlet links = [];\n\n\tlinks.push(executionContext.actions.getpermalink_1.response.body.permalink);\n\tlinks.push(executionContext.actions.getpermalink_2.response.body.permalink);\n\tlinks.push(executionContext.actions.getpermalink_3.response.body.permalink);\n\n\tusers = executionContext.actions.getusers.response.body.members;\n\t\n\n\tlet i = 0;\n\tlet j = 0;\n\n\tfor (i = 0; i < res.length; i++) {\n\t\tlet text = '';\n\t\tlet dt = Number( res[i].ts);\n\t\ttext = res[i].text;\n\t\t//to do username conversion\n\t\tfor (j = 0; j < users.length; j++)\n\t\t{\n\t\t\ttext = text.replaceAll(\"<@\"+users[j].id+\">\", users[j].profile.real_name);\n\t\t}\t\n\n\t\t\n\t\t\tmessages.push({ 'text': text, 'date': new Date(dt * 1000).toLocaleString(), 'link': links[i] });\n\t\n\t}\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\toutput.messages = messages;\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "87b2bd89-a5c8-4f72-9a82-cb741a4a0874",
+    "name": "listmessages",
+    "code": "listmessages",
+    "position": {
+      "x": 24,
+      "y": -84
+    },
+    "links": [
+      {
+        "targetId": "5552f810-eb8e-4674-a4a9-170f07af7228",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "slack"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/conversations.history?channel=${actions.setinitialdata.output.defChannelId}&limit=3",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "062da203-0873-4b89-aeeb-debc01da9729",
+    "name": "Channels",
+    "code": "channels",
+    "position": {
+      "x": 516,
+      "y": 168
+    },
+    "links": [
+      {
+        "targetId": "a329cf7b-b730-4439-8ba4-f0d09225b791",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ColumnSet",
+                    "columns": [
+                      {
+                        "type": "Column",
+                        "items": [
+                          {
+                            "id": "channel",
+                            "type": "Input.ChoiceSet",
+                            "label": "Channels",
+                            "value": " # ${actions.setinitialdata.output.defChannelName}",
+                            "choices": [
+                              {
+                                "$data": "${actions.getchannels.response.body.channels}",
+                                "title": " # ${name}",
+                                "value": "${id}"
+                              }
+                            ],
+                            "placeholder": " # ${actions.setinitialdata.output.defChannelName}"
+                          }
+                        ],
+                        "width": "stretch"
+                      },
+                      {
+                        "type": "Column",
+                        "items": [
+                          {
+                            "type": "ActionSet",
+                            "actions": [
+                              {
+                                "type": "Action.Submit",
+                                "title": "Go"
+                              }
+                            ]
+                          }
+                        ],
+                        "width": "auto",
+                        "horizontalAlignment": "Right",
+                        "verticalContentAlignment": "Center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ColumnSet",
+                    "$data": "${actions.cleanmessages.output.messages}",
+                    "columns": [
+                      {
+                        "type": "Column",
+                        "items": [
+                          {
+                            "text": " ${date}\n",
+                            "type": "TextBlock",
+                            "wrap": true,
+                            "weight": "Bolder"
+                          },
+                          {
+                            "text": " ${text}",
+                            "type": "TextBlock",
+                            "wrap": true
+                          },
+                          {
+                            "type": "ActionSet",
+                            "actions": [
+                              {
+                                "url": "${link}",
+                                "type": "Action.OpenUrl",
+                                "title": "Open"
+                              }
+                            ]
+                          }
+                        ],
+                        "width": "stretch"
+                      }
+                    ]
+                  }
+                ],
+                "width": "auto"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "41584ac3-3652-4d47-b7bb-4b01bb5f95fd",
+    "name": "getchannels",
+    "code": "getchannels",
+    "position": {
+      "x": -552,
+      "y": -84
+    },
+    "links": [
+      {
+        "targetId": "4c616e42-ceca-471c-95a0-8b2699b8382e",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "connector",
+        "providerType": "slack"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/conversations.list",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "3c6a0ec6-bca4-41bb-b351-ebf2a8a4cf02",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -768,
+      "y": -84
+    },
+    "links": [
+      {
+        "targetId": "41584ac3-3652-4d47-b7bb-4b01bb5f95fd",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  }
+]
