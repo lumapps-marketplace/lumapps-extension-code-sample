@@ -15,6 +15,11 @@ This template let end-users submit leave request to SAP.
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+- time_off_read - Required to check time off balance and view existing leave requests
+- time_off_write - Required to submit new leave requests to SAP SuccessFactors
+- user_read - Required to access user information and manager relationships
+
 ## Comments on Functioning
 1. **getManager**: retrieve user's manager ID from SAP
 2. **getTeamMembers**: retrieve user's with the same manager ID from SAP

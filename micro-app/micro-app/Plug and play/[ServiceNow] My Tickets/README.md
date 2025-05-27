@@ -17,6 +17,10 @@ This template provides a user-friendly interface for viewing and managing Servic
 ## Inputs / Variables to Set
 - **service_now_url**: Your serviceNow URL ex : https://ven0000.service-now.com/ 
 
+Service Now has no table-level granular API scopes according to [this community conversation](https://www.servicenow.com/community/platform-privacy-security-blog/restrict-access-available-to-oauth-client-using-rest-api-auth/ba-p/2524938)
+
+So we use "all applications" scope.
+
 ## Comments on Functioning
 1. **getUser**: Gets user information from email
 2. **Get Snow Domain**: Gets ServiceNow domain from response and JS parsing

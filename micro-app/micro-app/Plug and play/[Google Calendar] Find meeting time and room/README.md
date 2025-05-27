@@ -21,6 +21,10 @@ This template helps you schedule meetings with other users by finding available 
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+- https://www.googleapis.com/auth/calendar - This scope provides full access to the user's Google Calendar, allowing the micro-app to create, read, update, and delete events, including out-of-office events
+- https://www.googleapis.com/auth/admin.directory.resource.calendar - This scope allows access to calendar resources in the Google Workspace directory, enabling the micro-app to properly handle resource calendars and meeting rooms when setting out-of-office responses
+
 ## Comments on Functioning
 1. **searchuser**: Search for a user in LumApps API
 2. **getuser**: Retrieves user information in LumApps API depending on the provided query

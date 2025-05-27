@@ -13,6 +13,12 @@ This template provides a quick view of your recent and favorite files from Box.
 - [Connector Documentation](https://docs.lumapps.com/docs/admin-l4430581765424978extensions)
 - [Box API Documentation](https://developer.box.com/reference/)
 
+## Necessary API Scopes
+- base_explorer - To access basic files and folders
+- base_preview - To generate file previews
+- item_get - To retrieve information about individual files
+- root_readwrite - To access recent and favorite files
+
 ## Inputs / Variables to Set
 - **box_url**: Your environment box URL 
 

@@ -21,8 +21,8 @@ This template provides a streamlined interface for approving and rejecting Jira 
 - [Jira Service Desk API Documentation](https://developer.atlassian.com/cloud/jira/service-desk/rest/intro/)
 
 ## Necessary API Scopes
-- read:jira-service-management
-- write:jira-service-management
+- read:jira-service-management - Allows the micro-app to read service requests and approvals pending for the user
+- write:jira-service-management - Enables the micro-app to submit approval and rejection decisions
 
 ## Inputs / Variables to Set
 - **jira_project**: Jira project key (ex : LMV)

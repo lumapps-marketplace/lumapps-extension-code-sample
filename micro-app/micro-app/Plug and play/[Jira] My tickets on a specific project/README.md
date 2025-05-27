@@ -23,6 +23,10 @@ This template provides a focused view of Jira tickets for current user for a spe
 - **projectname**: Project name to filter tickets
 - **atlassian_url**: Atlassian URL (ex : https://domain.atlassian.net/)
 
+## Necessary API Scopes
+- read:jira-work - This scope allows the micro-app to read Jira issues, projects, and workflows, enabling it to retrieve tickets across all projects
+- read:jira-users - This scope allows the micro-app to read Jira users, enabling it to retrieve users for the user
+
 ## Comments on Functioning
 1. **getuser**: Gets information about the current user
 2. **Getaccid**: Gets the Atlassian userId from the LumApps email

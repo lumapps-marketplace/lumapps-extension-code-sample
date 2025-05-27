@@ -23,6 +23,10 @@ This micro-app enables users to order mobile phones through ServiceNow's service
 - No initial variables required - the microapp uses the current user's context
 - Form variables are dynamically generated based on the selected phone model
 
+Service Now has no table-level granular API scopes according to [this community conversation](https://www.servicenow.com/community/platform-privacy-security-blog/restrict-access-available-to-oauth-client-using-rest-api-auth/ba-p/2524938)
+
+So we use "all applications" scope.
+
 ## Comments on Functioning
 - The microapp starts by fetching available mobile phones from ServiceNow catalog
 - Users can browse phones with images, descriptions, and prices

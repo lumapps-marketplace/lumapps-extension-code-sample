@@ -22,6 +22,10 @@ This micro-app enables AI-powered search capabilities within ServiceNow knowledg
   Default value: "VPN"
   Required: false
 
+Service Now has no table-level granular API scopes according to [this community conversation](https://www.servicenow.com/community/platform-privacy-security-blog/restrict-access-available-to-oauth-client-using-rest-api-auth/ba-p/2524938)
+
+So we use "all applications" scope.
+
 ## Comments on Functioning
 - The microapp starts by searching ServiceNow knowledge base articles based on the user query
 - It filters and retrieves the top 3 most relevant knowledge base articles

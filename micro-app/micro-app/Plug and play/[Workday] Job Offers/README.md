@@ -20,6 +20,9 @@ This micro-app displays and filters job offers from Workday, allowing users to b
 ## Inputs / Variables to Set
 - department: You can find the value in your workday url when you are on the home page, you'll have something like <domain>/<department>/d/home.htmld
 
+## Necessary API Scopes
+- Recruiting - This scope provides access to Workday's recruitment data, including job postings, positions, and location information. It allows the micro-app to retrieve available job offers and their details.
+
 ## Comments on Functioning
 - The microapp starts by fetching all available job postings from Workday
 - It automatically extracts unique job titles and locations for filtering

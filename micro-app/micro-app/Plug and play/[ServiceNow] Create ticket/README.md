@@ -21,6 +21,11 @@ This template provides a user-friendly interface for creating ServiceNow inciden
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+Service Now has no table-level granular API scopes according to [this community conversation](https://www.servicenow.com/community/platform-privacy-security-blog/restrict-access-available-to-oauth-client-using-rest-api-auth/ba-p/2524938)
+
+So we use "all applications" scope.
+
 ## Comments on Functioning
 1. **ticketForm**: Ticket creation form with hardcoded fields
 2. **getUser**: Gets user information from email

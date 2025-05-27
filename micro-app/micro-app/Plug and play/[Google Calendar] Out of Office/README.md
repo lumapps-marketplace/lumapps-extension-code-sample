@@ -16,6 +16,9 @@ This template helps you create a new out of office event in Google Calendar.
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+- https://www.googleapis.com/auth/calendar - This scope provides full access to the user's Google Calendar, allowing the micro-app to create, read, update, and delete events, including out-of-office events
+
 ## Comments on Functioning
 1. **setTime**: Select start and end dates for the out of office event and select decline mode
 2. **parseDate**: Formats the selected date and time

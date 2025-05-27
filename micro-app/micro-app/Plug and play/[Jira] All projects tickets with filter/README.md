@@ -23,6 +23,10 @@ This template provides a comprehensive view of Jira tickets across all projects 
 ## Inputs / Variables to Set
 - **atlassian_url**: Atlassian URL (ex : https://domain.atlassian.net/)
 
+## Necessary API Scopes
+- read:jira-work - This scope allows the micro-app to read Jira issues, projects, and workflows, enabling it to retrieve tickets across all projects
+- read:jira-user - This scope provides access to user information, allowing the micro-app to map LumApps users to Jira users and display relevant ticket information
+
 ## Comments on Functioning
 1. **Getaccid**: Gets Atlassian userId from LumApps email
 2. **getUserTickets**: Retrieves tickets from all Jira projects

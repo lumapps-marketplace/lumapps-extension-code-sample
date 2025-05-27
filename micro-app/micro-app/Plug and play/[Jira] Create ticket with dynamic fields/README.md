@@ -23,6 +23,14 @@ This template provides a dynamic form interface for creating Jira tickets with d
 
 ## Inputs / Variables to Set
 - **atlassian_url**: Atlassian URL (ex : https://domain.atlassian.net/)
+
+## Necessary API Scopes
+- read:jira-work - This scope allows the micro-app to read Jira issues, projects, and workflows, enabling it to retrieve tickets across all projects
+- read:jira-users - This scope allows the micro-app to read Jira users, enabling it to retrieve users for the user
+- write:jira-work - This scope allows the micro-app to create Jira issues, enabling it to post tickets to Jira
+- write:jira-projects - This scope allows the micro-app to read Jira projects, enabling it to retrieve projects for the user
+
+
 ## Comments on Functioning
 1. **whoAmI**: Gets Atlassian userId from LumApps email
 2. **getproject**: Gets available projects from userId

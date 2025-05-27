@@ -18,6 +18,9 @@ This micro-app displays a user's recent Zendesk support tickets in a clean, orga
 - [Zendesk Connector](https://docs.lumapps.com/docs/docs/admin-administration-landing/admin-l6088963918247602/admin-l9650191038731043extensions/admin-l43084339674928007extensions/admin-l21425652206965984extensions)
 - [Zendesk API Documentation](https://developer.zendesk.com/api-reference/)
 
+## Necessary API Scopes
+- tickets:read - This scope allows the micro-app to retrieve and view ticket information from Zendesk. It provides read-only access to ticket data, including ticket IDs, subjects, statuses, and other details necessary for displaying the user's tickets.
+
 ## Display Components
 - Ticket List Header
   - Issue column (300px width)

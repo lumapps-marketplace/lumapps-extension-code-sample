@@ -19,6 +19,11 @@ https://api.sap.com/products/SAPSuccessFactors/overview
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+- time_off_read - Required to access team members' time off information
+- user_read - Required to retrieve user and team information
+- manager_reporting_read - Required to access manager-employee relationships and team structure
+
 ## Comments on Functioning
 1. **getUserID**: retrieve user ID from SAP
 2. **getStartDate**: choose start date

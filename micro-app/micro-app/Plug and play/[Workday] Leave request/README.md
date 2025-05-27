@@ -18,6 +18,9 @@ This template provides a user-friendly interface for submitting leave requests t
 ## Inputs / Variables to Set
 - **department**: Your department name in Workday ex : lumapps_dpt1
 
+## Necessary API Scopes
+- Time Off and Leave - This scope provides access to Workday's time off data, including leave balances, accruals, and time-off requests. It allows the micro-app to retrieve and display the user's current leave balances.
+
 ## Comments on Functioning
 1. **getworker**: Gets worker ID from current email
 2. **getbalances**: Gets leave balances from Workday API

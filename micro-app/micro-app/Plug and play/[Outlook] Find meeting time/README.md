@@ -17,6 +17,12 @@ This template helps users find suitable meeting times by checking availability a
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+- Calendars.Read - To read calendar availability of users
+- Calendars.ReadWrite - To create calendar events
+- User.Read - To access user information
+- User.ReadBasic.All - To search for and read basic profiles of users
+
 ## Comments on Functioning
 1. **getusers**: Retrieves all users provided in LumApps platform
 2. **selectuser**: Displays a list of users to select and desired meeting slot

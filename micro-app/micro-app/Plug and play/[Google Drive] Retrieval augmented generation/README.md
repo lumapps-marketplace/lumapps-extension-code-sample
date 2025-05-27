@@ -22,6 +22,9 @@ This micro-app enables AI-powered search capabilities within Google Drive docume
   Default value: "company policy"
   Required: false
 
+  ## Necessary API Scopes
+- https://www.googleapis.com/auth/drive.readonly - This scope allows read-only access to the user's Google Drive files, enabling the micro-app to search and retrieve documents
+
 ## Comments on Functioning
 - The microapp starts by searching Google Drive documents based on the user query
 - It filters and retrieves the top 3 most relevant documents

@@ -17,6 +17,13 @@ This template helps users find suitable meeting times and locations by checking 
 ## Inputs / Variables to Set
 None
 
+## Necessary API Scopes
+- Calendars.Read - To read calendar availability of users
+- Calendars.ReadWrite - To create calendar events
+- User.Read - To access user information
+- User.ReadBasic.All - To search for and read basic profiles of users
+- Place.Read.All - To read information about meeting rooms
+
 ## Comments on Functioning
 1. **searchuser**: Search for a user in LumApps API
 2. **getuser**: Retrieves user information in LumApps API depending on the provided query
