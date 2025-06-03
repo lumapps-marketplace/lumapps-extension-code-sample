@@ -1,7 +1,7 @@
 {
     "settings.time_of_day": "Time of the day",
     "settings.font_size": "Font size",
-    "settings.coma_position": "Coma position",
+    "settings.coma_position": "Comma position",
     "settings.coma_position.before": "Before the user name",
     "settings.coma_position.after": "After the user name",
     "hello": "Hello", 
