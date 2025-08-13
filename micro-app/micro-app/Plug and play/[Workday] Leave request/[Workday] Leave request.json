@@ -7,15 +7,16 @@
       "x": 1392,
       "y": 0
     },
+    "type": "function",
     "links": [
       {
-        "targetId": "581cbc52-8c67-4bca-b6f8-91771187bbf9"
+        "targetId": "581cbc52-8c67-4bca-b6f8-91771187bbf9",
+        "type": "default"
       }
     ],
-    "type": "function",
     "settings": {
       "language": "javascript",
-      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    let output;\n\n    const { startDate, startDatePeriod, endDate, endDatePeriod, typeofleave } = executionContext.actions.ac.inputs;\n/*\n    const startDate = \"2024-12-04\";\n    const endDate = \"2024-12-04\";\n    const endDatePeriod = \"T18:00:00.000Z\";\n    const startDatePeriod = \"T08:00:00.000Z\";\n    const typeofleave = \"e7363fe834bd4c2883d36652ac6c979a\";\n*/\n    // Parse the dates\n    const startDateTime = new Date(`${startDate}${startDatePeriod}`);\n    const endDateTime = new Date(`${endDate}${endDatePeriod}`);\n\n    // Check if the start and end dates are on different days\n    const msPerDay = 1000 * 60 * 60 * 24;\n    const isSameDay = startDateTime.toDateString() === endDateTime.toDateString();\n\n    let totalRequestedHours = 0;\n    let days = []; // To store the detailed information for each day\n\n    if (!isSameDay) {\n        // If the start and end date are different\n        const fullDays = Math.max(0, Math.floor((endDateTime - startDateTime) / msPerDay) - 1);\n        const hoursFullDays = fullDays * 8; // Each full workday is 8 hours (4 in the morning + 4 in the afternoon)\n\n        // Calculate hoursFirstDay\n        let hoursFirstDay = 0;\n        if (startDatePeriod === \"T08:00:00.000Z\") {\n            hoursFirstDay = 8;\n            days.push({\n                start: `${startDate}T08:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (startDatePeriod === \"T14:00:00.000Z\") {\n            hoursFirstDay = 4;\n            days.push({\n                start: `${startDate}T14:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        }\n\n        // Calculate hoursLastDay\n        let hoursLastDay = 0;\n        if (endDatePeriod === \"T12:00:00.000Z\") {\n            hoursLastDay = 4;\n            days.push({\n                start: `${endDate}T08:00:00.000Z`,\n                date: `${endDate}`,\n                end: `${endDate}T12:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (endDatePeriod === \"T18:00:00.000Z\") {\n            hoursLastDay = 8;\n            days.push({\n                start: `${endDate}T08:00:00.000Z`,\n                date: `${endDate}`,\n                end: `${endDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        }\n\n        // Add the full days in between\n        for (let i = 1; i <= fullDays; i++) {\n            const middleDay = new Date(startDateTime);\n            middleDay.setDate(startDateTime.getDate() + i);\n            const middleDate = middleDay.toISOString().split(\"T\")[0];\n\n            days.push({\n                start: `${middleDate}T08:00:00.000Z`,\n                date: middleDate,\n                end: `${middleDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        }\n\n        totalRequestedHours = hoursLastDay + hoursFirstDay + hoursFullDays;\n    } else {\n        // If the start and end date are the same\n        if (startDatePeriod === \"T08:00:00.000Z\" && endDatePeriod === \"T18:00:00.000Z\") {\n            totalRequestedHours = 8;\n            days.push({\n                start: `${startDate}T08:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (startDatePeriod === \"T14:00:00.000Z\" && endDatePeriod === \"T18:00:00.000Z\") {\n            totalRequestedHours = 4;\n            days.push({\n                start: `${startDate}T14:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (startDatePeriod === \"T08:00:00.000Z\" && endDatePeriod === \"T12:00:00.000Z\") {\n            totalRequestedHours = 4;\n            days.push({\n                start: `${startDate}T08:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T12:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else {\n            // Error case: start period is after end period\n            output = {\n                success: \"false\",\n                message: \"Error: start date period cannot be after end date period.\"\n            };\n            return output;\n        }\n    }\n\n    // Access the timeoffdetails array from the mapping object\n    // Accéder aux détails des congés\n    const timeoffdetails = executionContext.actions.mapping.output.timeoffdetails;\n\n    // Rechercher le plan correspondant à l'ID du type de congé\n    const absencePlan = timeoffdetails.find(detail => detail.timeofftypeid === typeofleave);\n\n    if (absencePlan) {\n        // Convertir la quantité en un nombre (float)\n        const availableHours = parseFloat(absencePlan.quantity);\n\n        // Vérifier si les heures demandées sont disponibles\n        if (totalRequestedHours <= availableHours) {\n\t\t\toutput = days;\n        } else {\n            output = {\n                success: \"false\",\n                message: `Insufficient balance in '${absencePlan.timeofftypedescriptor}'. Requested: ${totalRequestedHours} hours, Available: ${availableHours} hours.`,\n                days\n            };\n        }\n    } else {\n        output = {\n            success: \"false\",\n            message: `Absence plan with ID '${typeofleave}' not found.`,\n            days\n        };\n    }\n\n    return output;\n\n}"
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    let output;\n\n    let { startDate, startDatePeriod, endDate, endDatePeriod, typeofleave } = executionContext.actions.ac.inputs;\n\n    /*\n    const startDate = \"2025-08-13\";\n    const endDate = \"2025-08-14\";\n    const endDatePeriod = \"T18:00:00.000Z\";\n    const startDatePeriod = \"T08:00:00.000Z\";\n    const typeofleave = \"e7363fe834bd4c2883d36652ac6c979a\";\n    */\n\n    startDate = startDate.split(\"T\")[0];\n    endDate = endDate.split(\"T\")[0];\n    // Parse the dates\n    const startDateTime = new Date(`${startDate}${startDatePeriod}`);\n    const endDateTime = new Date(`${endDate}${endDatePeriod}`);\n\n    // Check if the start and end dates are on different days\n    const msPerDay = 1000 * 60 * 60 * 24;\n    const isSameDay = startDateTime.toDateString() === endDateTime.toDateString();\n\n    let totalRequestedHours = 0;\n    let days = []; // To store the detailed information for each day\n\n    if (!isSameDay) {\n        // If the start and end date are different\n        const fullDays = Math.max(0, Math.floor((endDateTime - startDateTime) / msPerDay) - 1);\n        const hoursFullDays = fullDays * 8; // Each full workday is 8 hours (4 in the morning + 4 in the afternoon)\n\n        // Calculate hoursFirstDay\n        let hoursFirstDay = 0;\n        if (startDatePeriod === \"T08:00:00.000Z\") {\n            hoursFirstDay = 8;\n            days.push({\n                start: `${startDate}T08:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (startDatePeriod === \"T14:00:00.000Z\") {\n            hoursFirstDay = 4;\n            days.push({\n                start: `${startDate}T14:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        }\n\n        // Calculate hoursLastDay\n        let hoursLastDay = 0;\n        if (endDatePeriod === \"T12:00:00.000Z\") {\n            hoursLastDay = 4;\n            days.push({\n                start: `${endDate}T08:00:00.000Z`,\n                date: `${endDate}`,\n                end: `${endDate}T12:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (endDatePeriod === \"T18:00:00.000Z\") {\n            hoursLastDay = 8;\n            days.push({\n                start: `${endDate}T08:00:00.000Z`,\n                date: `${endDate}`,\n                end: `${endDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        }\n\n        // Add the full days in between\n        for (let i = 1; i <= fullDays; i++) {\n            const middleDay = new Date(startDateTime);\n            middleDay.setDate(startDateTime.getDate() + i);\n            const middleDate = middleDay.toISOString().split(\"T\")[0];\n\n            days.push({\n                start: `${middleDate}T08:00:00.000Z`,\n                date: middleDate,\n                end: `${middleDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        }\n\n        totalRequestedHours = hoursLastDay + hoursFirstDay + hoursFullDays;\n    } else {\n        // If the start and end date are the same\n        if (startDatePeriod === \"T08:00:00.000Z\" && endDatePeriod === \"T18:00:00.000Z\") {\n            totalRequestedHours = 8;\n            days.push({\n                start: `${startDate}T08:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 8,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (startDatePeriod === \"T14:00:00.000Z\" && endDatePeriod === \"T18:00:00.000Z\") {\n            totalRequestedHours = 4;\n            days.push({\n                start: `${startDate}T14:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T18:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else if (startDatePeriod === \"T08:00:00.000Z\" && endDatePeriod === \"T12:00:00.000Z\") {\n            totalRequestedHours = 4;\n            days.push({\n                start: `${startDate}T08:00:00.000Z`,\n                date: `${startDate}`,\n                end: `${startDate}T12:00:00.000Z`,\n                dailyQuantity: 4,\n                timeOffType: { descriptor: typeofleave, id: typeofleave }\n            });\n        } else {\n            // Error case: start period is after end period\n            output = {\n                success: \"false\",\n                message: \"Error: start date period cannot be after end date period.\"\n            };\n            return output;\n        }\n    }\n\n    // Access the timeoffdetails array from the mapping object\n    // Accéder aux détails des congés\n    const timeoffdetails = executionContext.actions.mapping.output.timeoffdetails;\n\n    // Rechercher le plan correspondant à l'ID du type de congé\n    const absencePlan = timeoffdetails.find(detail => detail.timeofftypeid === typeofleave);\n\n    if (absencePlan) {\n        // Convertir la quantité en un nombre (float)\n        const availableHours = parseFloat(absencePlan.quantity);\n\n        // Vérifier si les heures demandées sont disponibles\n        if (totalRequestedHours <= availableHours) {\n\t\t\toutput = days;\n        } else {\n            output = {\n                success: \"false\",\n                message: `Insufficient balance in '${absencePlan.timeofftypedescriptor}'. Requested: ${totalRequestedHours} hours, Available: ${availableHours} hours.`,\n                days\n            };\n        }\n    } else {\n        output = {\n            success: \"false\",\n            message: `Absence plan with ID '${typeofleave}' not found.`,\n            days\n        };\n    }\n\n    return output;\n\n}"
     }
   },
   {
@@ -26,12 +27,13 @@
       "x": 816,
       "y": 0
     },
+    "type": "function",
     "links": [
       {
-        "targetId": "8c82a11e-9129-4ddc-ab63-05b3f24688ef"
+        "targetId": "8c82a11e-9129-4ddc-ab63-05b3f24688ef",
+        "type": "default"
       }
     ],
-    "type": "function",
     "settings": {
       "language": "javascript",
       "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext The execution context as a freezed object, you cannot update it directly.\n * @returns {Object} The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n    // Declaration of the output variable.\n    let output = {};\n    \n    // Récupération des tableaux nécessaires.\n    const eligibleTimes = executionContext.actions.geteligibletimes.response.body.data || [];\n    const balances = executionContext.actions.getbalances.response.body.data || [];\n\n    // Préparation d'une structure facilitant le mapping.\n    // On extrait les noms des timeoffs disponibles à partir de balances.\n    const availableTimeOffs = {};\n    balances.forEach(item => {\n        // Extraire les types d'absences regroupées dans `timeoffs` et les nettoyer.\n        const timeoffTypes = item.absencePlan.timeoffs\n            .replace(/^\\(/, '') // Supprime uniquement la première parenthèse ouvrante.\n            .replace(/\\)$/, '') // Supprime uniquement la dernière parenthèse fermante.\n            .split(',') // Sépare les différents descripteurs.\n            .map(descriptor => descriptor.trim()); // Supprime les espaces superflus.\n\n        // Ajouter chaque type d'absence au dictionnaire pour un mapping rapide.\n        timeoffTypes.forEach(type => {\n            availableTimeOffs[type] = {\n                quantity: item.quantity,\n                unit: item.unit.descriptor\n            };\n        });\n    });\n\n\n    // Construction du tableau de sortie.\n    const result = eligibleTimes\n        .filter(timeoff => availableTimeOffs[timeoff.descriptor]) // Filtrer sur les types existants.\n        .map(timeoff => ({\n            timeofftypedescriptor: timeoff.descriptor,\n            quantity: availableTimeOffs[timeoff.descriptor].quantity,\n            unit: availableTimeOffs[timeoff.descriptor].unit,\n            timeofftypeid: timeoff.id\n        }));\n\n    // Assigner le résultat à la sortie.\n    output.timeoffdetails = result;\n\n    // Mandatory: return your output.\n    return output;\n}"
@@ -45,12 +47,13 @@
       "x": 624,
       "y": 0
     },
+    "type": "api_call",
     "links": [
       {
-        "targetId": "752fb4d1-6386-42e8-9687-c76353fd08f1"
+        "targetId": "752fb4d1-6386-42e8-9687-c76353fd08f1",
+        "type": "default"
       }
     ],
-    "type": "api_call",
     "settings": {
       "authentication": {
         "method": "connector",
@@ -59,7 +62,7 @@
       "endpoint": {
         "httpMethod": "GET",
         "body": "",
-        "path": "/api/absenceManagement/v1/${actions.start.inputVariables.department}/workers/31d94e45d30e100c8878a8f44fca0000/eligibleAbsenceTypes?limit=100",
+        "path": "/api/absenceManagement/v1/lumapps_dpt1/workers/${actions.getworker.response.body.id}/eligibleAbsenceTypes?limit=100",
         "queryParams": [],
         "url": ""
       },
@@ -74,8 +77,8 @@
       "x": 2628,
       "y": 156
     },
-    "links": [],
     "type": "adaptive_card",
+    "links": [],
     "settings": {
       "template": {
         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -90,13 +93,18 @@
                 "wrap": true,
                 "weight": "Bolder",
                 "spacing": "Small"
+              },
+              {
+                "text": "Reason: ${actions.leaverequest.response.body.errors[0].error}",
+                "type": "TextBlock",
+                "wrap": true
               }
             ],
             "style": "attention"
           }
         ],
         "type": "AdaptiveCard",
-        "version": "1.6"
+        "version": "1.5"
       }
     }
   },
@@ -108,9 +116,11 @@
       "x": 2376,
       "y": 48
     },
+    "type": "router",
     "links": [
       {
         "targetId": "bc084e54-1e2f-4e97-87ca-f4c25b324db4",
+        "type": "default",
         "conditions": {
           "combinator": "AND",
           "rulesGroup": [
@@ -145,10 +155,10 @@
       },
       {
         "targetId": "ce1604b5-1e3a-4b80-9d7a-83b108148ad6",
+        "type": "default",
         "isFallback": true
       }
-    ],
-    "type": "router"
+    ]
   },
   {
     "id": "bc084e54-1e2f-4e97-87ca-f4c25b324db4",
@@ -158,8 +168,8 @@
       "x": 2604,
       "y": -84
     },
-    "links": [],
     "type": "adaptive_card",
+    "links": [],
     "settings": {
       "template": {
         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -192,12 +202,13 @@
       "x": 1980,
       "y": 60
     },
+    "type": "api_call",
     "links": [
       {
-        "targetId": "2632bf8c-f8ee-41a1-a542-291ab10b98fc"
+        "targetId": "2632bf8c-f8ee-41a1-a542-291ab10b98fc",
+        "type": "default"
       }
     ],
-    "type": "api_call",
     "settings": {
       "authentication": {
         "method": "connector",
@@ -206,7 +217,7 @@
       "endpoint": {
         "httpMethod": "POST",
         "body": "{\"days\":${jsonStringify(actions.generatedaysarray.output)}}\r\n",
-        "path": "/api/absenceManagement/v1/${actions.start.inputVariables.department}/workers/${actions.getworker.response.body.id}/requestTimeOff",
+        "path": "/api/absenceManagement/v1/lumapps_dpt1/workers/${actions.getworker.response.body.id}/requestTimeOff",
         "queryParams": [],
         "url": ""
       },
@@ -221,8 +232,8 @@
       "x": 2040,
       "y": -276
     },
-    "links": [],
     "type": "adaptive_card",
+    "links": [],
     "settings": {
       "template": {
         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -288,13 +299,16 @@
       "x": 1740,
       "y": 12
     },
+    "type": "router",
     "links": [
       {
         "targetId": "688856a1-8364-4390-8a1b-08f647e566d3",
+        "type": "default",
         "isFallback": true
       },
       {
         "targetId": "92115e41-5981-418f-b49a-c20741a45402",
+        "type": "default",
         "conditions": {
           "combinator": "AND",
           "rulesGroup": [
@@ -317,8 +331,7 @@
           ]
         }
       }
-    ],
-    "type": "router"
+    ]
   },
   {
     "id": "8c82a11e-9129-4ddc-ab63-05b3f24688ef",
@@ -328,12 +341,13 @@
       "x": 1032,
       "y": 0
     },
+    "type": "adaptive_card",
     "links": [
       {
-        "targetId": "83a70392-5657-452f-8236-67b2bf6ec1ed"
+        "targetId": "83a70392-5657-452f-8236-67b2bf6ec1ed",
+        "type": "default"
       }
     ],
-    "type": "adaptive_card",
     "settings": {
       "template": {
         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -454,12 +468,13 @@
       "x": 420,
       "y": 0
     },
+    "type": "api_call",
     "links": [
       {
-        "targetId": "dd780c7c-4619-4251-9c16-667dfe748925"
+        "targetId": "dd780c7c-4619-4251-9c16-667dfe748925",
+        "type": "default"
       }
     ],
-    "type": "api_call",
     "settings": {
       "authentication": {
         "method": "connector",
@@ -468,7 +483,7 @@
       "endpoint": {
         "httpMethod": "GET",
         "body": "",
-        "path": "/api/absenceManagement/v1/${actions.start.inputVariables.department}/balances",
+        "path": "/api/absenceManagement/v1/lumapps_dpt1/balances",
         "queryParams": [
           {
             "key": "worker",
@@ -488,12 +503,13 @@
       "x": 228,
       "y": 0
     },
+    "type": "api_call",
     "links": [
       {
-        "targetId": "909869fb-c387-4a6d-9566-77e909f298c6"
+        "targetId": "909869fb-c387-4a6d-9566-77e909f298c6",
+        "type": "default"
       }
     ],
-    "type": "api_call",
     "settings": {
       "authentication": {
         "method": "connector",
@@ -502,7 +518,7 @@
       "endpoint": {
         "httpMethod": "GET",
         "body": "",
-        "path": "/api/absenceManagement/v1/${actions.start.inputVariables.department}/workers/me",
+        "path": "/api/absenceManagement/v1/lumapps_dpt1/workers/me",
         "queryParams": [],
         "url": ""
       },
@@ -517,19 +533,12 @@
       "x": 0,
       "y": 0
     },
+    "type": "trigger",
     "links": [
       {
-        "targetId": "c571d507-bfd8-4e83-8fa6-c407a45f8745"
+        "targetId": "c571d507-bfd8-4e83-8fa6-c407a45f8745",
+        "type": "default"
       }
-    ],
-    "type": "trigger",
-    "settings": {
-      "inputVariables": [
-        {
-          "id": "department",
-          "defaultValue": "your_department_name_in_workday"
-        }
-      ]
-    }
+    ]
   }
 ]

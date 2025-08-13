@@ -7,10 +7,16 @@
       "x": 888,
       "y": 0
     },
-    "links": [],
     "type": "adaptive_card",
+    "links": [
+      {
+        "targetId": "a6ce47fe-ee5c-4267-a050-0167491a7b95",
+        "type": "go_back"
+      }
+    ],
     "settings": {
       "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "type": "Container",
@@ -49,23 +55,22 @@
                       }
                     ],
                     "width": "stretch"
-                  },
+                  }
+                ]
+              },
+              {
+                "type": "Container",
+                "items": [
                   {
-                    "type": "Column",
-                    "items": [
+                    "type": "ActionSet",
+                    "actions": [
                       {
-                        "type": "ActionSet",
-                        "actions": [
-                          {
-                            "url": "${url}",
-                            "type": "Action.OpenUrl",
-                            "style": "positive",
-                            "title": "View details"
-                          }
-                        ]
+                        "url": "${url}",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "View details"
                       }
-                    ],
-                    "width": "150px"
+                    ]
                   }
                 ]
               }
@@ -74,8 +79,14 @@
           }
         ],
         "type": "AdaptiveCard",
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "version": "1.5"
+        "version": "1.5",
+        "actions": [
+          {
+            "id": "a6ce47fe-ee5c-4267-a050-0167491a7b95",
+            "type": "Action.Execute",
+            "title": "✏️ Modify criterias"
+          }
+        ]
       }
     }
   },
@@ -87,12 +98,13 @@
       "x": 660,
       "y": 0
     },
+    "type": "function",
     "links": [
       {
-        "targetId": "ec8d5cce-bf25-49a3-8863-9df663bd4f24"
+        "targetId": "ec8d5cce-bf25-49a3-8863-9df663bd4f24",
+        "type": "default"
       }
     ],
-    "type": "function",
     "settings": {
       "language": "javascript",
       "source": "function main(executionContext) {\n    const jobPostings = executionContext.actions.get_job_postings.response.body.data;\n    const titles = (executionContext.actions.pick_filters?.inputs?.jobTitleChoice || '').split(',');\n    const locations = (executionContext.actions.pick_filters?.inputs?.locationChoice || '').split(',');\n\n    return {\n        filteredJobPostings: jobPostings\n            .filter(job => \n                (titles.length === 0 || titles.includes(job.title)) &&\n                (locations.length === 0 || locations.includes(job.primaryLocation?.descriptor))\n            )\n            .map(job => ({\n                title: job.title,\n                url: job.url,\n                location: job.primaryLocation?.descriptor\n            }))\n    };\n}"
@@ -106,14 +118,16 @@
       "x": 432,
       "y": 0
     },
+    "type": "adaptive_card",
     "links": [
       {
-        "targetId": "c7d06961-d561-4db4-b660-f9f60d812c16"
+        "targetId": "c7d06961-d561-4db4-b660-f9f60d812c16",
+        "type": "default"
       }
     ],
-    "type": "adaptive_card",
     "settings": {
       "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "body": [
           {
             "size": "Medium",
@@ -157,7 +171,7 @@
           }
         ],
         "type": "AdaptiveCard",
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5",
         "actions": [
           {
             "type": "Action.Execute",
@@ -165,8 +179,7 @@
             "style": "positive",
             "title": "Apply filters"
           }
-        ],
-        "version": "1.6"
+        ]
       }
     }
   },
@@ -178,12 +191,13 @@
       "x": 204,
       "y": 0
     },
+    "type": "function",
     "links": [
       {
-        "targetId": "a6ce47fe-ee5c-4267-a050-0167491a7b95"
+        "targetId": "a6ce47fe-ee5c-4267-a050-0167491a7b95",
+        "type": "default"
       }
     ],
-    "type": "function",
     "settings": {
       "language": "javascript",
       "source": "/**\n * Process data from the execution context in order to extract unique titles and primary locations.\n * @param {Object} executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                 The result of data processing with unique titles and primary locations.\n */\nfunction main(executionContext) {\n   // Declaration of the output variable.\n   let output = {};\n\n   // Extract job postings from the context\n   const jobPostings = executionContext.actions.get_job_postings.response.body.data;\n\n   // Extract unique titles as array of objects\n   const uniqueTitlesSet = new Set(jobPostings\n       .map(posting => posting.title)\n       .filter(title => title !== undefined)\n   );\n\n   output.titles = Array.from(uniqueTitlesSet).map(title => ({\n       value: title,\n       title: title\n   }));\n\n   // Extract unique primary locations as array of objects\n   const uniqueLocationsSet = new Set(jobPostings\n       .map(posting => posting.primaryLocation?.descriptor)\n       .filter(location => location !== undefined)\n   );\n\n   output.primaryLocations = Array.from(uniqueLocationsSet).map(location => ({\n       value: location,\n       title: location\n   }));\n\n   // Mandatory: return your output.\n   return output;\n}"
@@ -197,23 +211,24 @@
       "x": -24,
       "y": 0
     },
+    "type": "api_call",
     "links": [
       {
-        "targetId": "2eb210ac-f794-497b-9b47-c4b20173f678"
+        "targetId": "2eb210ac-f794-497b-9b47-c4b20173f678",
+        "type": "default"
       }
     ],
-    "type": "api_call",
     "settings": {
-      "endpoint": {
-        "url": "",
-        "body": "",
-        "path": "/api/recruiting/v1/${actions.start.inputVariables.department}/jobPostings",
-        "httpMethod": "GET",
-        "queryParams": []
-      },
       "authentication": {
         "method": "connector",
         "providerType": "workday"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/api/recruiting/v1/${actions.start.inputVariables.department}/jobPostings",
+        "queryParams": [],
+        "url": ""
       }
     }
   },
@@ -225,20 +240,22 @@
       "x": -252,
       "y": 0
     },
+    "type": "trigger",
     "links": [
       {
-        "targetId": "abd91f03-3c93-4be3-aac6-7a9f284068ce"
+        "targetId": "abd91f03-3c93-4be3-aac6-7a9f284068ce",
+        "type": "default"
       }
     ],
-    "type": "trigger",
     "settings": {
       "inputVariables": [
         {
           "id": "department",
           "type": "string",
-          "required": false,
+          "defaultValue": "lumapps_dpt1",
           "multiValues": false,
-          "defaultValue": "lumapps_dpt1"
+          "required": false,
+          "source": "developer"
         }
       ]
     }
