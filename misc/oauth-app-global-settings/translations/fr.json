@@ -1,0 +1,20 @@
+{
+    "global_settings.step.create_application": "Créer une application",
+    "global_settings.title.create_app": "Ajouter une application OAuth",
+    "global_settings.dialog.close": "Fermer",
+    "global_settings.dialog.cancel": "Annuler",
+    "global_settings.error.generic_error": "Une erreur est survenue",
+    "global_settigns.application.name": "Nom de l'application",
+    "global_settigns.date_format": "dd/mm/yyyy",
+    "global_settings.array.application": "Nom de l'application",
+    "global_settings.array.created_at": "Date de création",
+    "global_settings.array.delete": "Supprimer l'application",
+    "global_settings.dialog.delete": "Supprimer l'application",
+    "global_settings.array.empty": "Aucune application",
+    "global_settings.delete.confirm": "Êtes vous sûr de vouloir supprimer cette application ? Toutes les extensions utilisant cette application ne fonctionneront plus.",
+    "global_settings.dialog.save": "Enregistrer",
+    "global_settings.app_detail.message": "Le Secret d'application n'est accessible que lors de la création de l'application. Enregistrer cette information avant de fermer cette fenêtre.",
+    "global_settings.app_detail.name": "Nom de l'application",
+    "global_settings.app_detail.id": "ID d'application",
+    "global_settings.app_detail.secret": "Secret d'application"
+}

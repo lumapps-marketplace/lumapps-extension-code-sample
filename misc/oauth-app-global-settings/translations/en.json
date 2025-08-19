@@ -1,0 +1,20 @@
+{
+    "global_settings.step.create_application": "Create an application",
+    "global_settings.title.create_app": "Add an OAuth application",
+    "global_settings.dialog.close": "Close",
+    "global_settings.dialog.cancel": "Cancel",
+    "global_settings.error.generic_error": "An error occured",
+    "global_settigns.application.name": "Application name",
+    "global_settigns.date_format": "yyyy-mm-dd",
+    "global_settings.array.application": "Application name",
+    "global_settings.array.created_at": "Creation date",
+    "global_settings.array.delete": "Delete application",
+    "global_settings.dialog.delete": "Delete application",
+    "global_settings.array.empty": "No application",
+    "global_settings.delete.confirm": "Are you sure to delete this application ? All processes and extensions using this application won't work anymore.",
+    "global_settings.dialog.save": "Save",
+    "global_settings.app_detail.message": "Application secret is accessible only after application creation. Store this information before closing this window.",
+    "global_settings.app_detail.name": "Name",
+    "global_settings.app_detail.id": "Application ID",
+    "global_settings.app_detail.secret": "Application Secret"
+}
