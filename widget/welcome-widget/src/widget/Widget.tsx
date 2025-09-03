@@ -41,7 +41,7 @@ const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) =
         <div className="widget-welcome" style={getStyle()}>
             {displayWelcome ? <FormattedMessage id={welcomeId}></FormattedMessage> : <FormattedMessage id="welcome"></FormattedMessage>}
             {comaPosition && comaPosition.value === 'before' && ','}
-            <span> {firstName}</span>
+            <span>&nbsp;{firstName}</span>
             {!comaPosition || comaPosition.value === 'after' && ','}
         </div>
     );
@@ -55,6 +55,7 @@ const NotificationAwareWidget: Widget = (props) => {
         de: messagesDe,
         es: messagesEs,
         jp: messagesJp,
+        ja: messagesJp,
         it: messagesIt,
         ch: messagesCh,
         nl: messagesNl,
@@ -63,7 +64,7 @@ const NotificationAwareWidget: Widget = (props) => {
         "pt-BR":messagesPtBr,
         "pt-br":messagesPtBr,
     };
-
+    
     const lang = useMemo(() => (Object.keys(messages).includes(displayLanguage.replace('_','-')) ? displayLanguage.replace('_','-') : 'en'), [
         displayLanguage,
         messages,

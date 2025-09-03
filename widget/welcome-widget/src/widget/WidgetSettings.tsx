@@ -130,6 +130,7 @@ export const WidgetSettings: WidgetSettings = (props) => {
         fr: messagesFr,
         de: messagesDe,
         es: messagesEs,
+        ja: messagesJp,
         jp: messagesJp,
         it: messagesIt,
         ch: messagesCh,
