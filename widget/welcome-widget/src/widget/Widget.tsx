@@ -41,7 +41,7 @@ const Widget: Widget = ({ value = {}, globalValue = {}, theme = Theme.light }) =
         <div className="widget-welcome" style={getStyle()}>
             {displayWelcome ? <FormattedMessage id={welcomeId}></FormattedMessage> : <FormattedMessage id="welcome"></FormattedMessage>}
             {comaPosition && comaPosition.value === 'before' && ','}
-            <span>&nbsp;{firstName}</span>
+            {" " + firstName}
             {!comaPosition || comaPosition.value === 'after' && ','}
         </div>
     );
