@@ -1,0 +1,372 @@
+[
+  {
+    "id": "f3e9c396-e0da-494b-9bf5-b99ec97db2af",
+    "name": "getMetadata",
+    "code": "get_metadata",
+    "position": {
+      "x": 816,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "58821920-3019-451b-8fdd-dd08dbebb2fb",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/metadata/getMulti",
+        "queryParams": [
+          {
+            "key": "ids",
+            "value": "${actions.parse_metadata.output.metadataIds}"
+          },
+          {
+            "key": "fields",
+            "value": "id, name"
+          }
+        ],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "e878dd7d-2da2-4955-aada-d2e3fa720641",
+    "name": "parseMetadata",
+    "code": "parse_metadata",
+    "position": {
+      "x": 588,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "f3e9c396-e0da-494b-9bf5-b99ec97db2af",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object)  executionContext  The execution context as a freezed object, you cannot update it directly.\n * @returns {Object}                  The resultat of your data processing which will be available in the next execution context.\n */\nfunction main (executionContext) {\n\t// In this function, you can build an output from the execution context.\n\t// You can change the content of this function but do not rename it.\n\t// The result of this function will be available in the next action.\n\n\n\t// Declaration of the output variable.\n\tlet output = {};\n \n\t// Your code here. For help, please go to https://docs.lumapps.com.\n\tconst contentList = executionContext.actions.get_content.response.body.items;\n\tconst metadataIdSet = new Set();\n\n    if (Array.isArray(contentList)) {\n        contentList.forEach(item => {\n            const metadataArray = item.metadata;\n            if (Array.isArray(metadataArray)) {\n                metadataArray.forEach(id => {\n                    if (id) {\n                        metadataIdSet.add(id);\n                    }\n                });\n            }\n        });\n    }\n\n    output.metadataIds = Array.from(metadataIdSet);\n\n\t// Mandatory: return your output.\n\treturn output;\n}"
+    }
+  },
+  {
+    "id": "0424f005-76d1-4e3c-8701-8d0fbcf68395",
+    "name": "displayResult",
+    "code": "display_result",
+    "position": {
+      "x": 1704,
+      "y": 0
+    },
+    "links": [],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Medium",
+            "text": "Here is what you missed between ${actions.format_result.output.start} and  ${actions.format_result.output.end}:",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "type": "ColumnSet",
+            "$data": "${actions.format_result.output.result}",
+            "style": "emphasis",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "size": "Small",
+                    "text": "${explanation}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "spacing": "None"
+                  },
+                  {
+                    "size": "Medium",
+                    "text": "${title}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "weight": "Bolder",
+                    "spacing": "None"
+                  },
+                  {
+                    "text": "${date} - ${author}",
+                    "type": "TextBlock",
+                    "wrap": true,
+                    "spacing": "None"
+                  }
+                ],
+                "width": "stretch",
+                "spacing": "None"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "type": "ActionSet",
+                    "actions": [
+                      {
+                        "url": "${url}",
+                        "type": "Action.OpenUrl",
+                        "style": "positive",
+                        "title": "Open"
+                      }
+                    ]
+                  }
+                ],
+                "width": "auto",
+                "spacing": "None"
+              }
+            ],
+            "separator": true
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "b9a98622-350e-47d3-b5a6-265bb8a646c5",
+    "name": "getUser",
+    "code": "get_user",
+    "position": {
+      "x": 192,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "26585c11-1c3e-4e5f-aec0-65410ede3625",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "GET",
+        "body": "",
+        "path": "/_ah/api/lumsites/v1/user/get",
+        "queryParams": [
+          {
+            "key": "fields",
+            "value": "apiProfile, email, lang, langs"
+          }
+        ],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "99d90fc5-1657-41d0-8726-53f18c04187e",
+    "name": "formatResult",
+    "code": "format_result",
+    "position": {
+      "x": 1488,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0424f005-76d1-4e3c-8701-8d0fbcf68395",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext  The execution context as a frozen object, you cannot update it directly.\n * @returns {Object}                 The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n\tlet output = {};\n\n\tconst rawCompletion = executionContext.actions.generate_answer.response.body.completions;\n\tconst start = executionContext.actions.date.inputs.start;\n\tconst end = executionContext.actions.date.inputs.end;\n\tconst displayContent = executionContext.actions.make_prompt.output.displayContent;\n\n\tlet data = [];\n\tconst cleanedJsonString = rawCompletion\n\t\t.replace(/```json\\s*/, '')         // remove opening ```json\n\t\t.replace(/```[\\s\\S]*$/, '')        // remove ending ``` and anything after\n\t\t.trim();\n\n\ttry {\n\t\tdata = JSON.parse(cleanedJsonString);\n\t} catch (e) {\n\t\toutput.error = \"Failed to parse JSON from completions\";\n\t\toutput.details = e.toString();\n\t\treturn output;\n\t}\n\n\t// Create a map from displayContent titles to the content object\n\tconst displayContentMap = {};\n\tdisplayContent.forEach(item => {\n\t\tif (item.title) {\n\t\t\tdisplayContentMap[item.title.toLowerCase()] = item;  // use lowercase for safer matching\n\t\t}\n\t});\n\n\t// Map AI results to full display content by matching titles and produce simplified final output\n\tconst mappedResultsSimplified = data.map(item => {\n\t\tconst key = item.title.toLowerCase();\n\t\tconst fc = displayContentMap[key] || {};\n\n\t\treturn {\n\t\t\ttitle: fc.title?.en || item.title || \"\",\n\t\t\tauthor: fc.author || \"\",\n\t\t\tdate: item.date ? item.date.split('T')[0] : \"\",\n\t\t\turl: fc.url || \"\",\n\t\t\texplanation: item.reason || \"\"\n\t\t};\n\t});\n\n\toutput.result = mappedResultsSimplified;\n\toutput.start = start.split('T')[0];\n\toutput.end = end.split('T')[0];\n\n\treturn output;\n}\n"
+    }
+  },
+  {
+    "id": "04e528a8-8ad7-454b-95b4-071d059669c0",
+    "name": "generateAnswer",
+    "code": "generate_answer",
+    "position": {
+      "x": 1236,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "99d90fc5-1657-41d0-8726-53f18c04187e",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n    \"prompt\": \"${actions.make_prompt.output.prompt}\"\r\n}",
+        "path": "/v2/organizations/${organization.id}/text-completions",
+        "queryParams": [],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "58821920-3019-451b-8fdd-dd08dbebb2fb",
+    "name": "makePrompt",
+    "code": "make_prompt",
+    "position": {
+      "x": 1020,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "04e528a8-8ad7-454b-95b4-071d059669c0",
+        "type": "default"
+      }
+    ],
+    "type": "function",
+    "settings": {
+      "language": "javascript",
+      "source": "/**\n * Process data from the execution context in order to either reformat or create new data.\n * @param {Object} executionContext  The execution context as a frozen object, you cannot update it directly.\n * @returns {Object}                 The result of your data processing which will be available in the next execution context.\n */\nfunction main(executionContext) {\n\tlet output = {};\n\n\tfunction removeDoubleQuotes(str) {\n\t\treturn str.replace(/[\"\\\\\\r\\n\\t]/g, '');\n\t}\n\n\tfunction pickTitle(titleObj) {\n\t\tif (typeof titleObj === 'string') return titleObj;\n\t\tif (titleObj?.en?.trim()) return titleObj.en.trim();\n\t\tif (titleObj?.fr?.trim()) return titleObj.fr.trim();\n\t\tif (titleObj?.ja?.trim()) return titleObj.ja.trim();\n\t\treturn '';\n\t}\n\n\tfunction pickUrl(urlObj) {\n\t\tif (typeof urlObj === 'string') return urlObj;\n\t\tif (urlObj?.en?.trim()) return urlObj.en.trim();\n\t\tif (urlObj?.fr?.trim()) return urlObj.fr.trim();\n\t\tif (urlObj?.ja?.trim()) return urlObj.ja.trim();\n\t\treturn '';\n\t}\n\n\tconst user = executionContext.actions.get_user.response.body;\n\tconst apiProfile = user?.apiProfile || {};\n\tconst userOrgs = apiProfile.organizations || [];\n\n\tconst content = executionContext.actions.get_content.response.body.items || [];\n\tconst metadataList = executionContext.actions.get_metadata.response.body.items || [];\n\n\t// Build metadata map for fast lookup\n\tconst metadataMap = {};\n\tmetadataList.forEach(meta => {\n\t\tif (meta.id) {\n\t\t\tmetadataMap[meta.id] = meta.name?.en || '';\n\t\t}\n\t});\n\n\t// Prepare data for AI: summarized content with short excerpt and metadata\n\tconst promptContent = content.map(item => {\n\t\tconst metadataNames = (Array.isArray(item.metadata) ? item.metadata : [])\n\t\t\t.map(id => metadataMap[id])\n\t\t\t.filter(Boolean);\n\n\t\tconst excerptText =\n\t\t\t(typeof item.excerpt?.en === 'string' && item.excerpt.en.trim()) ? item.excerpt.en.slice(0, 300) :\n\t\t\t(typeof item.excerpt?.fr === 'string' && item.excerpt.fr.trim()) ? item.excerpt.fr.slice(0, 300) :\n\t\t\t(typeof item.excerpt?.ja === 'string' && item.excerpt.ja.trim()) ? item.excerpt.ja.slice(0, 300) :\n\t\t\t'';\n\n\t\treturn {\n\t\t\ttitle: pickTitle(item.title),\n\t\t\tlastPublishedAt: item.lastPublishedAt,\n\t\t\tmetadata: metadataNames,\n\t\t\texcerpt: removeDoubleQuotes(excerptText) || ''\n\t\t};\n\t});\n\n\t// Store full content separately for display use after AI responds\n\tconst displayContent = content.map(item => {\n\t\treturn {\n\t\t\ttitle: pickTitle(item.title),\n\t\t\tauthor: item.author,\n\t\t\turl: pickUrl(item.canonicalUrl)\n\t\t};\n\t});\n\n\t// Construct user profile for prompt\n\tconst minimalUserProfile = {\n\t\torganizations: userOrgs\n\t};\n\n\t// Final prompt\n\toutput.prompt =\n\t\t\"Recommend the top 3 relevant content items this user may have missed during their leave. \" +\n\t\t\"Use this priority: location (country, city) > organization > job title > interests. \" +\n\t\t\"User profile: \" + removeDoubleQuotes(JSON.stringify(minimalUserProfile)) +\n\t\t\"Content list: \" + removeDoubleQuotes(JSON.stringify(promptContent)) +\n\t\t\" Return JSON: title, date, and a short reason (in the format 'Because you work in...'). \" +\n\t\t\"Order by date.\";\n\n\t// Separate display data\n\toutput.displayContent = displayContent;\n\n\treturn output;\n}\n"
+    }
+  },
+  {
+    "id": "26585c11-1c3e-4e5f-aec0-65410ede3625",
+    "name": "getContent",
+    "code": "get_content",
+    "position": {
+      "x": 396,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "e878dd7d-2da2-4955-aada-d2e3fa720641",
+        "type": "default"
+      }
+    ],
+    "type": "api_call",
+    "settings": {
+      "authentication": {
+        "method": "lumapps",
+        "providerType": "lumapps"
+      },
+      "endpoint": {
+        "httpMethod": "POST",
+        "body": "{\r\n    \"maxResults\": \"5\",\r\n    \"sortOrder\": \"-likes\",\r\n    \"status\": \"LIVE\",\r\n    \"startDate\": \"${actions.date.inputs.start}\",\r\n    \"endDate\": \"${actions.date.inputs.end}\",\r\n    \"liked\": \"false\",\r\n    \"currentUserReactions\": \"\"\r\n}",
+        "path": "/_ah/api/lumsites/v1/content/list",
+        "queryParams": [
+          {
+            "key": "fields",
+            "value": "canonicalUrl"
+          },
+          {
+            "key": "maxResults",
+            "value": "5"
+          }
+        ],
+        "url": ""
+      }
+    }
+  },
+  {
+    "id": "0f95cd37-252f-40a3-9051-7cbd093cdf12",
+    "name": "date",
+    "code": "date",
+    "position": {
+      "x": -60,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "b9a98622-350e-47d3-b5a6-265bb8a646c5",
+        "type": "default"
+      }
+    ],
+    "type": "adaptive_card",
+    "settings": {
+      "template": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "size": "Medium",
+            "text": "What did I miss during my time-off ?",
+            "type": "TextBlock",
+            "wrap": true,
+            "weight": "Bolder"
+          },
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "start",
+                    "type": "Input.Date",
+                    "label": "Start date:",
+                    "isRequired": true,
+                    "errorMessage": "Please select a start date"
+                  }
+                ],
+                "width": "stretch"
+              },
+              {
+                "type": "Column",
+                "items": [
+                  {
+                    "id": "end",
+                    "max": "${utcNow()}",
+                    "type": "Input.Date",
+                    "label": "End date:",
+                    "isRequired": true,
+                    "errorMessage": "Please select an end date"
+                  }
+                ],
+                "width": "stretch"
+              }
+            ]
+          },
+          {
+            "type": "ActionSet",
+            "actions": [
+              {
+                "type": "Action.Execute",
+                "style": "positive",
+                "title": "Next"
+              }
+            ]
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      }
+    }
+  },
+  {
+    "id": "996463c1-15f4-49da-8efd-a7baa9f823de",
+    "name": "Start",
+    "code": "start",
+    "position": {
+      "x": -288,
+      "y": 0
+    },
+    "links": [
+      {
+        "targetId": "0f95cd37-252f-40a3-9051-7cbd093cdf12",
+        "type": "default"
+      }
+    ],
+    "type": "trigger"
+  }
+]
