@@ -190,6 +190,13 @@
       "inputVariables": [
         {
           "id": "query",
+                                        "title": {
+            "lang": "en",
+            "value": "Default Query",
+            "translations": {
+              "en": "Default Query"
+            }
+          },
           "type": "string",
           "defaultValue": "VPN",
           "helper": {

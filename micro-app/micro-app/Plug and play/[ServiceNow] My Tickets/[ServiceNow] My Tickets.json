@@ -325,6 +325,13 @@
       "inputVariables": [
         {
           "id": "service_now_url",
+                    "title": {
+            "lang": "en",
+            "value": "Service now URL",
+            "translations": {
+              "en": "Service now URL"
+            }
+          },
           "defaultValue": "https://your_service_now_instance.service-now.com/"
         }
       ]

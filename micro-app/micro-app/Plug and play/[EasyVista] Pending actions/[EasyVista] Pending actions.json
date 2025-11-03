@@ -47,6 +47,13 @@
       "inputVariables": [
         {
           "id": "tenant_easy_vista",
+                              "title": {
+            "lang": "en",
+            "value": "Easy Vista tenant URL",
+            "translations": {
+              "en": "Easy Vista tenant URL"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,

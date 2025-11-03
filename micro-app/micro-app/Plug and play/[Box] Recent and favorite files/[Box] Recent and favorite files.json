@@ -240,6 +240,13 @@
       "inputVariables": [
         {
           "id": "box_url",
+                              "title": {
+            "lang": "en",
+            "value": "BOX instance URL",
+            "translations": {
+              "en": "BOX instance URL"
+            }
+          },
           "defaultValue": "https://yourenvironment.box.com/",
           "helper": {
             "lang": "en",

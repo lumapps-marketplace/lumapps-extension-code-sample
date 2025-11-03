@@ -73,6 +73,13 @@
       "inputVariables": [
         {
           "id": "itdesknumber",
+                                        "title": {
+            "lang": "en",
+            "value": "Phone number of it desk",
+            "translations": {
+              "en": "Phone number of it desk"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,

@@ -586,6 +586,13 @@
       "inputVariables": [
         {
           "id": "jira_project",
+                                        "title": {
+            "lang": "en",
+            "value": "Jira project name",
+            "translations": {
+              "en": "Jira project name"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,

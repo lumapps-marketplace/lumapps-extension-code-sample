@@ -278,6 +278,13 @@
       "inputVariables": [
         {
           "id": "list_journey_url",
+                                        "title": {
+            "lang": "en",
+            "value": "Lumapps tenant URL",
+            "translations": {
+              "en": "Lumapps Tenant URL"
+            }
+          },
           "defaultValue": "url_to_your_platform",
           "helper": {
             "lang": "en",

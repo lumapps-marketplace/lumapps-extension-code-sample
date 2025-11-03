@@ -200,6 +200,13 @@
       "inputVariables": [
         {
           "id": "query",
+                              "title": {
+            "lang": "en",
+            "value": "Default prompt",
+            "translations": {
+              "en": "Default prompt"
+            }
+          },
           "type": "string",
           "defaultValue": "who is henry viii",
           "multiValues": false,

@@ -120,6 +120,13 @@
       "inputVariables": [
         {
           "id": "query",
+                              "title": {
+            "lang": "en",
+            "value": "Default Query",
+            "translations": {
+              "en": "Default Query"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,
@@ -127,6 +134,13 @@
         },
         {
           "id": "spreadsheetid",
+                              "title": {
+            "lang": "en",
+            "value": "Spreadsheet ID",
+            "translations": {
+              "en": "Spreadsheet ID"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,
@@ -134,6 +148,13 @@
         },
         {
           "id": "sheet_name",
+                              "title": {
+            "lang": "en",
+            "value": "Sheet name",
+            "translations": {
+              "en": "Sheet name"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,
@@ -141,6 +162,13 @@
         },
         {
           "id": "range",
+                              "title": {
+            "lang": "en",
+            "value": "Range for the data",
+            "translations": {
+              "en": "Range for the data"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,

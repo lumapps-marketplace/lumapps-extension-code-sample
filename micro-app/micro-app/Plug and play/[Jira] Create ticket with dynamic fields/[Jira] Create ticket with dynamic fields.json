@@ -647,6 +647,13 @@
       "inputVariables": [
         {
           "id": "atlassian_url",
+                                        "title": {
+            "lang": "en",
+            "value": "Atlassian Tenant URL",
+            "translations": {
+              "en": "Atlassian Tenant URL"
+            }
+          },
           "defaultValue": "https://domain.atlassian.net/",
           "helper": {
             "lang": "en",

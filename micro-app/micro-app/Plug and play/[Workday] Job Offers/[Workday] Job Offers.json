@@ -235,6 +235,13 @@
       "inputVariables": [
         {
           "id": "department",
+                                        "title": {
+            "lang": "en",
+            "value": "ID of department",
+            "translations": {
+              "en": "ID of department"
+            }
+          },
           "type": "string",
           "required": false,
           "multiValues": false,
