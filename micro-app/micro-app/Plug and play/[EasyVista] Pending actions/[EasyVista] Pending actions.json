@@ -9,7 +9,7 @@
     },
     "links": [
       {
-        "targetId": "9ec8853d-74d7-45ca-90e2-108564984522-1742820333226",
+        "targetId": "51028853-d3e8-40b0-bf41-fdf3d48149aa",
         "type": "default"
       }
     ],
@@ -47,7 +47,7 @@
       "inputVariables": [
         {
           "id": "tenant_easy_vista",
-                              "title": {
+          "title": {
             "lang": "en",
             "value": "Easy Vista tenant URL",
             "translations": {
@@ -63,7 +63,7 @@
     }
   },
   {
-    "id": "9ec8853d-74d7-45ca-90e2-108564984522-1742820333226",
+    "id": "51028853-d3e8-40b0-bf41-fdf3d48149aa",
     "name": "get_user_actions",
     "code": "get_user_actions",
     "position": {
@@ -72,7 +72,7 @@
     },
     "links": [
       {
-        "targetId": "ae0dfcc3-4ed4-4cb4-ada8-5eb0f1fb3370-1742825664943",
+        "targetId": "f482b4f1-e870-4e6a-85e1-45378cc87ad2",
         "type": "default"
       }
     ],
@@ -92,7 +92,7 @@
     }
   },
   {
-    "id": "ae0dfcc3-4ed4-4cb4-ada8-5eb0f1fb3370-1742825664943",
+    "id": "f482b4f1-e870-4e6a-85e1-45378cc87ad2",
     "name": "actions_counter",
     "code": "actions_counter",
     "position": {
