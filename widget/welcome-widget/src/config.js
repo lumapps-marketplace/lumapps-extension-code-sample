@@ -1,8 +1,8 @@
-const extensionId = '';
+const extensionId = "";
 
 const config = {
-    extensionId,
-    category: 'widget',
+  extensionId,
+  category: "widget",
 };
 
 export default config;

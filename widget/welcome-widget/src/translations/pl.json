@@ -1,12 +1,12 @@
 {
-    "settings.time_of_day": "Pora dnia",
-    "settings.font_size": "Rozmiar czcionki",
-    "settings.coma_position": "Pozycja śpiączki",
-    "settings.coma_position.before": "Przed nazwą użytkownika",
-    "settings.coma_position.after": "Po nazwie użytkownika",
-    "hello": "Witam", 
-    "welcome":"Witamy",
-    "good_morning": "Dzień dobry",  
-    "good_afternoon": "Dzień dobry",  
-    "good_evening": "Dobry wieczór"
+  "settings.time_of_day": "Pora dnia",
+  "settings.font_size": "Rozmiar czcionki",
+  "settings.coma_position": "Pozycja śpiączki",
+  "settings.coma_position.before": "Przed nazwą użytkownika",
+  "settings.coma_position.after": "Po nazwie użytkownika",
+  "hello": "Witam",
+  "welcome": "Witamy",
+  "good_morning": "Dzień dobry",
+  "good_afternoon": "Dzień dobry",
+  "good_evening": "Dobry wieczór"
 }
