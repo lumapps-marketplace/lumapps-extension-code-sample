@@ -48,14 +48,17 @@ const Widget: WidgetProps = ({
    };
 
    return (
-      <div className="widget-welcome" style={getStyle()}>
+      <div
+         className="widget-welcome"
+         style={{ ...getStyle(), overflowWrap: "anywhere",  }}
+      >
          {displayWelcome ? (
             <FormattedMessage id={welcomeId}></FormattedMessage>
          ) : (
             <FormattedMessage id="welcome"></FormattedMessage>
          )}
          {comaPosition && comaPosition.value === "before" && ","}
-         <span></span>{" " + firstName}
+         <span>{" " + firstName}</span>
          {!comaPosition || (comaPosition.value === "after" && ",")}
       </div>
    );
