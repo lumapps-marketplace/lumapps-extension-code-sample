@@ -83,7 +83,7 @@
         }
       },
       {
-        "targetId": "2729bab9-4608-41b5-9e4e-d61a1a0b68a6-1740735159346",
+        "targetId": "c35b9170-8585-48ce-824a-818381c4493c",
         "conditions": {
           "combinator": "AND",
           "rulesGroup": [
@@ -372,9 +372,7 @@
                       {
                         "type": "Action.ToggleVisibility",
                         "title": "More info",
-                        "targetElements": [
-                          "hidden"
-                        ]
+                        "targetElements": ["hidden"]
                       }
                     ]
                   }
@@ -642,7 +640,7 @@
     "type": "trigger"
   },
   {
-    "id": "e82108fe-7c63-4328-ad6a-908f4322dd8c-1740654597021",
+    "id": "c723e023-da3a-47ac-97ac-df0bfdce59e5",
     "name": "log3",
     "code": "log_3",
     "position": {
@@ -681,7 +679,7 @@
     }
   },
   {
-    "id": "2729bab9-4608-41b5-9e4e-d61a1a0b68a6-1740735159346",
+    "id": "c35b9170-8585-48ce-824a-818381c4493c",
     "name": "resultnok",
     "code": "resultnok",
     "position": {
@@ -715,7 +713,7 @@
     }
   },
   {
-    "id": "8cb9397b-d5ae-4558-b9b9-7f4313cb73ca-1740735443724",
+    "id": "312a3674-e015-4d6d-a2da-6b7399ec5231",
     "name": "log5",
     "code": "log_5",
     "position": {
