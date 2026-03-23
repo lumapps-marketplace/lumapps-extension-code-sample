@@ -89,7 +89,7 @@
     },
     "links": [
       {
-        "targetId": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719"
+        "targetId": "a71ac078-5f52-4e77-9a4b-4b83bb4dd312"
       }
     ],
     "type": "api_call",
@@ -153,6 +153,13 @@
       "inputVariables": [
         {
           "id": "query",
+          "title": {
+            "lang": "en",
+            "value": "Query",
+            "translations": {
+              "en": "Query"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -160,6 +167,13 @@
         },
         {
           "id": "deployment",
+          "title": {
+            "lang": "en",
+            "value": "deployment",
+            "translations": {
+              "en": "deployment"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -167,6 +181,13 @@
         },
         {
           "id": "api_version",
+          "title": {
+            "lang": "en",
+            "value": "API version",
+            "translations": {
+              "en": "API version"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -174,6 +195,13 @@
         },
         {
           "id": "azure_search_endpoint",
+          "title": {
+            "lang": "en",
+            "value": "Azure Search endpoint",
+            "translations": {
+              "en": "Azure Search endpoint"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -181,6 +209,13 @@
         },
         {
           "id": "azure_search_key",
+          "title": {
+            "lang": "en",
+            "value": "Azure Search key",
+            "translations": {
+              "en": "Azure Search key"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -188,6 +223,13 @@
         },
         {
           "id": "azure_search_index_name",
+          "title": {
+            "lang": "en",
+            "value": "Azure Search index name",
+            "translations": {
+              "en": "Azure Search index name"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -195,6 +237,13 @@
         },
         {
           "id": "semantic_configuration",
+          "title": {
+            "lang": "en",
+            "value": "Semantic configuration",
+            "translations": {
+              "en": "Semantic configuration"
+            }
+          },
           "type": "string",
           "defaultValue": "",
           "multiValues": false,
@@ -204,7 +253,7 @@
     }
   },
   {
-    "id": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719",
+    "id": "a71ac078-5f52-4e77-9a4b-4b83bb4dd312",
     "name": "getdrive2",
     "code": "getdrive_2",
     "position": {
@@ -213,7 +262,7 @@
     },
     "links": [
       {
-        "targetId": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719-1741680845680"
+        "targetId": "3a3dd6cb-48d6-422b-b92b-5cb81aa2cebd"
       }
     ],
     "type": "api_call",
@@ -232,7 +281,7 @@
     }
   },
   {
-    "id": "6e6ecbf3-3ceb-48fe-9123-84ea3689ab0f-1741680842719-1741680845680",
+    "id": "3a3dd6cb-48d6-422b-b92b-5cb81aa2cebd",
     "name": "getdrive3",
     "code": "getdrive_3",
     "position": {
