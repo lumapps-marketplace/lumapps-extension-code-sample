@@ -418,7 +418,7 @@
         }
       },
       {
-        "targetId": "2729bab9-4608-41b5-9e4e-d61a1a0b68a6-1740735159346",
+        "targetId": "e8360f5d-9cd7-4dd9-bf73-57e10383b369",
         "type": "default",
         "conditions": {
           "combinator": "AND",
@@ -869,7 +869,7 @@
     "type": "trigger"
   },
   {
-    "id": "2729bab9-4608-41b5-9e4e-d61a1a0b68a6-1740735159346",
+    "id": "e8360f5d-9cd7-4dd9-bf73-57e10383b369",
     "name": "resultnok",
     "code": "resultnok",
     "position": {
