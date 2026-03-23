@@ -1,7 +1,7 @@
 # Zendesk LumApps Create Ticket
 
 ## Description
-This micro-app provides a simple interface for users to create support tickets in Zendesk directly from LumApps. It offers a streamlined form with essential fields for ticket creation and provides immediate feedback on submission status.
+This microapp provides a simple interface for users to create support tickets in Zendesk directly from LumApps. It offers a streamlined form with essential fields for ticket creation and provides immediate feedback on submission status.
 
 ## Features
 - User-friendly ticket creation form
