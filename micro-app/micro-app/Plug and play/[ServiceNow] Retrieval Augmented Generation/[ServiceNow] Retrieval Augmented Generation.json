@@ -182,7 +182,7 @@
     },
     "links": [
       {
-        "targetId": "001c9469-d7c6-404b-83bc-14a3b5636681-1740757338574"
+        "targetId": "fdfd13e8-fff4-4727-95fd-1a077f5ebace"
       }
     ],
     "type": "trigger",
@@ -190,7 +190,7 @@
       "inputVariables": [
         {
           "id": "query",
-                                        "title": {
+          "title": {
             "lang": "en",
             "value": "Default Query",
             "translations": {
@@ -213,7 +213,7 @@
     }
   },
   {
-    "id": "001c9469-d7c6-404b-83bc-14a3b5636681-1740757338574",
+    "id": "fdfd13e8-fff4-4727-95fd-1a077f5ebace",
     "name": "getarticles",
     "code": "getarticles",
     "position": {
