@@ -393,7 +393,7 @@
     },
     "links": [
       {
-        "targetId": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214"
+        "targetId": "4bbe16bd-1737-4bc4-8bcf-f26600349f5d"
       }
     ],
     "type": "adaptive_card",
@@ -647,7 +647,7 @@
       "inputVariables": [
         {
           "id": "atlassian_url",
-                              "title": {
+          "title": {
             "lang": "en",
             "value": "Atlassian Tenant URL",
             "translations": {
@@ -667,7 +667,7 @@
     }
   },
   {
-    "id": "f917e8b5-e68c-4c76-a734-7192a84ca998-1734535380214",
+    "id": "4bbe16bd-1737-4bc4-8bcf-f26600349f5d",
     "name": "preparePost",
     "code": "prepare_post",
     "position": {
@@ -686,7 +686,7 @@
     }
   },
   {
-    "id": "a588432d-08df-44e2-896e-2ddd0074db8b-1734553866597",
+    "id": "3c9d78e3-e0bd-4e93-ae22-ba260674e177",
     "name": "Success - Original",
     "code": "success_original",
     "position": {
