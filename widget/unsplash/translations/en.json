@@ -1,0 +1,20 @@
+{
+    "extension_name": "Unsplash image",
+    "empty_state": "Empty widget",
+    "no_client_id": "No Client ID defined for your extension, check with your administrator",
+    "global_settings.client_id": "Client ID",
+    "global_settings.client_id.helper": "You can create your Client ID here: <a>https://unsplash.com/developers</a>",
+    "settings.no_client_id": "You need a Client ID to perform this action, check with your administrator",
+    "settings.rate_limit": "You've reach the limit of your application for the hour, check with your administrator",
+    "settings.choose_image": "Choose an image",
+    "settings.selected_image": "Selected image",
+    "settings.selected_image.edit": "Edit",
+    "settings.selected_image.delete": "Delete",
+    "settings.ratio": "Ratio",
+    "settings.ratio.portrait": "Portrait",
+    "settings.ratio.square": "Square",
+    "settings.ratio.landscape": "Landscape",
+    "settings.search": "Search",
+    "settings.no_match": "No match found for",
+    "settings.try_another_term": "Try searching with another term"
+}
