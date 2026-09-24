@@ -195,7 +195,7 @@
     "links": [
       {
         "targetId": "a329cf7b-b730-4439-8ba4-f0d09225b791",
-        "type": "default"
+        "type": "go_back"
       }
     ],
     "type": "adaptive_card",
